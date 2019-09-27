@@ -1,0 +1,171 @@
+\chapter{Reynolds Stress Transport Equations}
+\label{chap:rste}
+We derive the Reynolds stress transport equations (RSTE) that describe the production, transport, and dissipation of energy in fluctuating modes in a flow. Examining the energy budgets of turbulent flows can lead to insights into factors driving turbulence and leading to its decay, spatial distribution, and how energy is transferred between mean and fluctuating modes. The detailed Reynolds stress budgets from DNS provide valuable information on the relative magnitudes of the terms and their possible scaling.
+
+\section{Navier-Stokes Equation}
+Consider the Navier-Stokes equations for incompressible fluid flow:
+\eqn{
+    \label{eqn:NS}
+    \rho(\ppp{t}\vect{v}+\vect{v}\cdot\grad\vect{v}) &= -\grad p + \mu \del^2\vect{v} +\rho \vect{g}\\
+    \grad\cdot\vect{v} &= 0
+}
+where $v_j(x_i,t),$ and $p(x_i,t)$ are time and space varying fields, and $g_i$ is a constant body force. We nondimensionalise velocity, time, and pressure with some canonical length $L$ and velocity $U$ as follows:
+\eqn{
+    \label{eqn:nondim}
+    v^*&=\dfrac{v}{U},\,t^*=\dfrac{tU}{L},\,p^*=\dfrac{p}{\rho U^2},\,g^*=\dfrac{g}{U^2/L}
+    \\
+    \ppp{t^*}&=\dfrac{L}{U}\ppp{t},\,\grad^*=L\grad
+}
+Substituting \autoref{eqn:nondim} into equation \autoref{eqn:NS} and multiplying by $\dfrac{L}{\rho U^2},$ we obtain the Navier-Stokes equations in non-dimensional form.
+\eqn{
+    \ppp{t^*}\vect{v}^*+\vect{v}^*\cdot\grad\vect{v}^* &= -\grad p^*+\dfrac{1}{\text{Re}}\del^2\vect{v}^*+\vect{g}^*
+    \\
+    \grad^*\cdot\vect{v}^* &= 0
+}
+We drop the asterisks and write in Einstein indicial notation for convenience.
+\eqn{
+    \ppp{t} v_j + v_i v_{j,i} &= -p_{,j} + \dfrac{1}{\text{Re}}v_{j,ii} + g_j\\
+    v_{i,i} &= 0
+}
+\section{Reynolds Decomposition}
+Splitting a quantity into its average value and a fluctuation from the average is called a Reynolds Decomposition. For a space and time varying quantity $\phi(x_i,t)$,
+\eqn{
+    \phi=\expval{\phi}+\phi'
+}
+where $\expval{\phi}$ is the ensemble average of $\phi,$ and $\phi'$ is fluctuation or deviation of $\phi$ from $\expval{\phi}$. In practice, ensemble averages are obtained by averaging in time and over homogeneous directions.
+\eqn{
+    \expval{\phi} = \dfrac{1}{\int\der t}\int\phi\der t
+}
+Some properties of Reynolds decomposition are below. Let $\phi$ and $\psi$ be any quantities. Then,
+\begin{itemize}
+    \item Averaging and differentiating commute since average of a derivative is the derivative of the average.
+        \eqn{
+            \expval{\phi}_{,i} &= \expval{\phi_i}
+            \\
+            \ppp{t}\expval{\phi} &= \expval{\ppp{t}\phi}
+        }
+    \item Ensemble of a fluctuation is zero.
+        \eqn{
+            \expval{\phi'} &=  \expval{\phi-\expval{\phi}}\\
+            \expval{\phi} &=\expval{\phi} - \expval{\phi'} \\
+            \expval{\phi'} &= 0
+        }
+    \item Ensemble of product is product of ensemble plus ensemble of product of fluctuations
+        \eqn{
+            \expval{\phi\psi} &= \expval{\big(\expval{\phi}+\phi'\big)\big(\expval{\psi}+\psi'\big)}\\
+                        &= \expval{ \expval{\phi}\expval{\psi} + \expval{\phi}\psi' + \phi'\expval{\psi} + \phi'\psi'}\\
+                        &= \expval{\phi}\expval{v} + \expval{\phi}\expval{v'} + \expval{\phi'}\expval{\psi}+\expval{\phi'\psi'} \\
+                        &= \expval{\phi}\expval{\psi} + \expval{\phi'\psi'}
+        }
+\end{itemize}
+
+\section{Reynolds Stresses}
+We take the expected value of the continuity equation to find that $\expval{v_i}$ is divergence free.
+\eqn{
+    \expval{0} &= \expval{v_{i,i} } \\
+    0 &= \expval{v_i}_{,i}
+}
+Similarly, we expand the continuity equation in terms of expected values of fluctuations,to find that $v_i'$ is also divergence free.
+\eqn{ 0 &= v_{i,i} = \cancelto{0}{\expval{v_{i}}_{,i}} + v'_{i,i} \\
+    0 &= v'_{i,i}
+}
+We take the expected value of the momentum equation.
+\eqn{
+    \label{eqn:NS-exp}
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} + \expval{v'_iv'_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{g_i}
+    \\
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{g_i} - \expval{v'_iv'_j}_{,i}
+}
+$\eta_{ij}=\expval{v'_iv'_j}$ is called the Reynolds stress tensor. We apply Reynolds decomposition to the momentum equation.
+\eqn{
+    \label{eqn:NS-decomp}
+    \ppp{t}(\expval{v_j}+v'_j) + (\expval{v_i}+v'_i)(\expval{v_{j,i}}+v'_{j,i})
+    &=
+    -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii})  + \expval{g_j} + \cancelto{0}{g'_j}
+    \\
+    \ppp{t}(\expval{v_j}+v'_j) + \expval{v_i}\expval{v_{j,i}} + \expval{v_i}v'_{j,i}
+        + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} 
+    &=
+        -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii}) + \expval{g_j}
+}
+Subtracting \autoref{eqn:NS-exp} from \autoref{eqn:NS-decomp}, we get
+\eqn{
+        \ppp{t}v'_j + \expval{v_i}v'_{j,i} + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} - \expval{v'_iv'_{j,i}}
+    =
+        -p'_{,j} + \dfrac{1}{\text{Re}}v'_{j,ii}
+}
+Multiply both sides by $v'_k$ and take the expected value.
+\eqn{
+        \expval{v'_k\ppp{t}v'_j} +  \expval{v_i}\expval{v'_kv'_{j,i}} +\expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_kv'_iv'_{j,i}} - \cancelto{0}{\expval{v'_k}}\expval{v'_iv'_{j,i}} 
+    =
+        -\expval{v'_kp'_{,j}} + \dfrac{1}{\text{Re}}\expval{v'_kv'_{j,ii}}
+}
+Take the transpose and add.
+%We simplify the equation with the following properties:
+%\eqn{
+%    v'_kv'_{j,i} + v'_{k,i}v'_j &= (v'_jv'_k)_{,i} \\
+%    v'_jv'_{k,ii} + v'_iv'_{j,ii} &= (v'_kv'_j)_{,ii} - 2v'_{j,i}v'_{k,i} \\
+%    v'_kv'_iv'_{j,i} + v'_kv'_iv'_{j,i} &= (v'_iv'_jv'_k)_{,i}
+%}
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}} + \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    -\big(\expval{v'_kp'_{,j}}+\expval{v'_jp'_{,k}} \big)+ \dfrac{1}{\text{Re}}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
+}
+We write the pressure transport term in terms of the pressure strain and pressure diffusion terms.
+\eqn{
+    v'_kp'_{,j} + v'_jp'_{,k} = -p'(v'_{j,k}+v'_{k,j}) + (p'v'_j)_{,k} + (p'v'_k)_{,j}
+}
+We finally arrive at the tensor equation describing the behaviour of Reynolds Stresses over time.
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}}+ \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
+    + \dfrac{1}{\text{Re}}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
+    \label{eqn:rs}
+}
+\eqn{
+    \ppp{t}\eta_{jk} + \expval{v_i}\eta_{jk,i} &+ \eta_{ki}\expval{v_{j,i}} + \eta_{ji}\expval{v_{k,i}}+ \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
+    + \dfrac{1}{\text{Re}}\eta_{jk,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
+}
+\section{Turbulent Kinetic Energy}
+To obtain the equation for Turbulent Kinetic Energy, we consider one-half of the trace of \autoref{eqn:rs} by multiplying with $\frac{1}{2}\delta_{ij}.$
+\eqn{
+    \label{eqn:tke}
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+    \cancelto{0}{\expval{p'v'_{i,i}}} - \expval{p'v'_j}_{,j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} - \cancelto{0}{\expval{p'v'_{i,i}}} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+}
+\section{RSTE Budgets}
+\autoref{eqn:rs} and \autoref{eqn:tke} describe the generation, transport and decay of Reynolds stresses in a flow. For each $\eta_{ik}$ in the symmetric Reynolds stress tensor, and for $k,$ we label the terms in \autoref{eqn:rs} and \autoref{eqn:tke}.
+\begin {table}[H]
+\centering  \caption{Budgets for Reynolds Stresses}
+\label{tbl:rs-budgets}
+\begin{tabular}{| r | l | l |}
+\hline
+\textbf{Reynolds Stress Expression} & \textbf{Budget Term} & \textbf{TKE Expression}\\
+\hline
+$\expval{v'_jv'_k}$                                                     & Reynold Stress      & $k=\dfrac{1}{2}\expval{v'_jv'_j}$               \\[0.5em]
+$\expval{v_i}\expval{v'_jv'_k}_{,i}$                                    & Convection          & $\expval{v_i}k_{,i}$                            \\[0.5em]
+$-\expval{v'_j v'_i}\expval{v_{k,i}}-\expval{v'_k v'_i}\expval{v_{j,i}}$& Production          & $-\expval{v'_jv'_i}\expval{v_{j,i}}$            \\[0.5em]
+$-\expval{v'_i v'_j v'_k}_{,i}$                                         & Turbulent Diffusion & $\expval{v'_iv'_jv'_j}_{,i}$                    \\[0.5em]
+$-\expval{v'_kp'_{,j} + v'_jp'_{,k}}$                                   & Pressure Transport  & $-\expval{v'_jp'_j}$                            \\[0.5em]
+$-\expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}$                               & Pressure Diffusion  & $-\expval{v'_jp'_j}$                            \\[0.5em]
+$\expval{p'(v'_{j,k}+v'_{k,j})}$                                        & Pressure Strain     & 0                                               \\[0.5em]
+$\dfrac{1}{\text{Re}}\expval{v'_j v'_k}_{,ii}$                          & Viscous Diffusion   & $\dfrac{1}{\text{Re}}k_{,ii}$                   \\[0.5em]
+$- \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}$                       & Viscous Dissipation & $\dfrac{-1}{\text{Re}}\expval{v'_{j,i}v'_{j,i}}$\\[0.5em]
+\hline
+\end{tabular}	
+\end{table}
+
+The convection term describes the transport of Reynolds stresses due to the motion of the mean flow $\expval{v_i}.$ The production term arises from interactions between fluctuations and shearing of the mean flow, resulting in a net transfer of energy from mean to turbulent fluctuations. The viscous diffusion term, as the name suggests, describes the diffusion of Reynolds stresses in the flow domain.
