@@ -1,7 +1,4 @@
 \documentclass[10pt,letterpaper]{report}
-
-\include{vpack}
-
 \pagestyle{plain}
 \usepackage{geometry}
 \geometry{
@@ -11,6 +8,9 @@
    ,tmargin=1.00in
    ,bmargin=1.00in
 }
+
+\include{vpack}
+
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -19,13 +19,12 @@
      urlcolor=black
 }
 
-\usepackage{tocloft}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % dots for table of contents
-
 \setlength{\parindent}{0pt}           % para indent
 \setlength{\parskip}{1em}             % para spacing
 \renewcommand{\baselinestretch}{1.0}  % line spacing
 
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % dots for table of contents
 \usepackage[toc,page]{appendix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
