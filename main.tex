@@ -1,0 +1,56 @@
+\documentclass[10pt,letterpaper]{report}
+
+\pagestyle{plain}
+\usepackage{geometry}
+\geometry{
+    letterpaper, % letterpaper ==> 8.5"x11.0"
+   ,lmargin=1.00in
+   ,rmargin=1.00in
+   ,tmargin=1.00in
+   ,bmargin=1.00in
+}
+
+\include{vpack}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+     urlcolor=black
+}
+
+\setlength{\parindent}{0pt}           % para indent
+\setlength{\parskip}{1em}             % para spacing
+\renewcommand{\baselinestretch}{1.0}  % line spacing
+
+\usepackage[toc,page]{appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STARTING DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\include{titleUIUC}
+
+\tableofcontents
+%\newpage
+%\listoftables
+%\listoffigures
+
+\newpage
+
+\include{fluids}
+
+\include{analysis}
+
+\include{sobolev}
+
+\include{bib}
+
+\include{appendix}
+
+
+\end{document}

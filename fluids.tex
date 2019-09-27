@@ -1,0 +1,396 @@
+\chapter{Fluid Mechanics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fluids}
+A fluid is a material that deforms continuously under action of a shear stress, however small. This contrasts with the behaviour of a solid which deforms only when stress values are in certain regimes. Solids are \textbf{elastic}: internal stresses in solids resist absolute deformation \vvis some original state; fluids are \textbf{viscous}: internal stresses in fluids resist the time rate of deformation. A corollary is that a fluid in static equilibrium supports only its weight and forces acting normal to its boundary. A material is said to be fluid if it seems to ``flow" in the timescale of observation $t_\mathrm{obs}$. That is, if the material is able to relax to a natural state in time less than $t_\mathrm{obs}.$ The relaxation time of a fluid is denoted $\lambda_\text{relax}$. The ratio of relaxation time to observation time is called Deborah Number. This dimensionless quantity is named after the prophet Deborah who, in the Book of Judges, proclaimed ``The mountains flowed before the lord." For large enough $t_\text{obs},$ even mountains will behave like fluids. A material is fluid if $\text{De}<<1.$
+\eqn{
+    \text{De} = \frac{\lambda_\text{relax}}{t_\text{obs}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Continuum Assumption}
+We tend to neglect the discrete, molecular nature of matter and treat the fluid to be made of a ``continuum". Macroscopic properties such as density and velocity are taken to be well defined for infinitesimal volume elements --small in comparison to system lengthscale but larger in comparison to molecular lengthscales. Fluid properties can vary continuously from one volume element to another and are average values of the molecular properties.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Control and Material Volumes}
+To derive the equations governing viscous fluid flow, we have to consider the time rate of change of quantities/properties in fluid control volumes. A control volume is an arbitrarily defined volume with a closed bounding surface. A material volume is a control volume that contains the same particles of matter at all times. A particular material volume may be defined by the closed bounding surface that envelops its material particles at a certain time. Hence, the velocity of the surface at every point is equal to the flow velocity at that point. The term ``fluid element" is synonymous with a material volume.
+
+We consider two disparate perspectives to view motion in a continuum: the \textbf{Lagrangian} perspective expresses position, velocity and other state variables in terms of material points travelling with a fluid; the \textbf{Eulerian} perspective expresses fluid properties with respect to some reference coordinate system. Consider the following example to illustrate the differences between the two perspectives. Let $\vect{F}$ be some property of a fluid at some material point $(\vect{X},t)\in\Omega\cross[0,T]$. $\vect{F}$ depends on $\vect{X},$ i.e. which material element one chooses and time $t$ as material elements may interact with other elements and lose/gain the property over time. The time evolution of the position of the material element $\vect{X}$ can be tracked on an Eulerian coordinate system with a vector $\vect{x}(\vect{X},t).$ Since only one material element can be located at an Eulerian coordinate at a given time, there exists an inverse relation $\vect{X}(\vect{x},t)$ mapping material elements $\vect{X}$ to the Eulerian coordinate position they occupy at time $t.$ Hence the property $\vect{F}$ following a material element varies with the element's Eulerian coordinate and time, i.e. $\vect{F}=\vect{F}(\vect{x},t).$ The rate of change of $\vect{F}$ following the material element is
+\eqn{
+    \ddd{t}\vect{F} &= \ppp{t}\vect{F} + \sum_{i=1}^n\ppp{x_i}\vect{F}\partial_t x_i
+    \\
+    \material\vect{F} &\defeq\ppp{t}\vect{F} + (\vect{v}\cdot\grad)\vect{F}
+}
+Another way to think of the time rate of change of property $\vect{F}$ as one follows a material point is the following: $\ppp{t}\vect{F}$ is the time rate of change of $\vect{F}$ at fixed position $\vect{x},$ and $\ppp{x_i}\vect{F}\partial_t x_i$ is the rate of change of $\vect{F}$ as one would travel in the direction $i$ multiplied by how fast the material point is travelling in said direction $i.$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reynolds Transport Theorem (RTT)}
+RTT relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
+For some property $\phi(\vect{x},t)$,
+
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+}
+For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\vect{x},t)$ about $\phi(\vect{x},t)$
+\eqn{
+    \phi(\vect{x},t+\Delta t) = \phi(\vect{x},t)+\Delta t\ppp{t}\phi(\vect{x},t) + \mathcal{O}(\Delta t^2)
+}
+Substituting,
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V &= \lim_{\Delta t\rightarrow 0}
+    \int_{\Omega(t+\Delta t)}\ppp{t}\phi(\vect{x},t)\der V + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V + \mathcal{O}(\Delta t^2)}{\Delta t}
+     \\
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+}
+We can approximate the difference between the integrals using a Taylor approximation (see appendix for more details).
+\eqn{
+    \int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V = \int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}\der A + \int_{\partial\Omega(t)}\phi(\vect{x},t)(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\der A + \mathcal{O}(\Delta t^3)
+}
+where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\der A\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\der A\subset\partial\Omega(t)$ throughout the volume $\der A(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0}
+    \dfrac{\int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}dA+\mathcal{O}(\Delta t^2)}{\Delta t} \\
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
+}
+$\ppp{t}\phi$ is the local the rate of production (or accumulation) of $\phi.$ It accounts for the effects of change in $\phi$ in the interior of the domain (say due to creation/dissipation or advection/diffusion). The divergence term accounts for the capture or loss of $\phi$ by the motion of the control surface. If $\Omega(t)$ is a material volume then, $\vect{v_c}=\vect{v},$ at all points in $\partial\Omega(t)$. Hence, the final form of the Reynolds Transport Theorem for material volumes $\Omega(t)$ is:
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\der A
+}
+Applying Gauss' law,
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi+\del\cdot(\vect{v}\phi)\der V
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Continuity/ Mass Conservation}
+Since a material volume always contains the same fluid elements, time rate of change of total mass in a material volume should be zero.
+\begin{equation}
+\begin{split}
+    m(t) &= \int_{\Omega}\rho\der V \\
+    0 &= \ddd{t}m = \int_{\Omega}\ppp{t}\rho +
+    \del\cdot(\rho\vect{v}) \der V
+\end{split}
+\end{equation}
+Since the integral is zero for arbitrary material volumes, the integrand must be zero.
+\begin{equation}
+\begin{split}
+    \ppp{t}\rho + \del\cdot(\rho\vect{v}) &= 0 \\
+    \material\rho = \ppp{t}\rho + (\vect{v}\cdot\del)\rho &= -\rho(\del\cdot\vect{v})
+\end{split}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Stress}
+Stress is defined as a force across a ``small" boundary ($\in\mathbb{R}^2$) per unit area of that boundary, for all orientations of the boundary. Stress is defined at a point with respect to a surface on which it would act. Consequently, stress depends on the orientation of the surface on which it acts. Hence, $\vect{\tau} = \vect{\tau}(\vect{x},t,\vect{n})$ where $\vect{n}$ is the outward pointing normal to the surface. In the limit $\delta A\rightarrow 0,$ stress at a point is independent of the magnitude of the area.
+\begin{equation}
+\begin{split}
+    \vect{\tau} &= \lim_{\delta A\rightarrow 0} \dfrac{\delta \vect{F}}{\delta A}
+\end{split}
+\end{equation}
+We probe the dependence of stress on the normal the surface it acts on. We consider a cases that reveals stress at a point acting on two sides of a surface to be equal in magnitude and opposite in direction.
+Consider an infinitesimal disk-shaped fluid element with area $\delta A$ and height $\delta h.$ Without loss of generality, label the normal on one face $\vect{n}$ and the other $-\uvect{n}.$ Let $x_0$ be the middle of the disk and let $\vect{g}$ be acceleration due to some applied body force. The equation of motion for the fluid element is:
+\eqn{
+    \delta A\delta h\material\vect{\rho v} &= \vect{\tau}(\vect{x}_0+0.5\delta h\uvect{n},t,\uvect{n})\delta A + \vect{\tau}(\vect{x}_0-0.5\delta h\uvect{n},t,-\uvect{n})\delta A + \rho\delta A\delta h\vect{g}
+    \\
+    \delta h\material\vect{\rho v} &= \vect{\tau}(\vect{x}_0+0.5\delta h\uvect{n},t,\uvect{n}) + \vect{\tau}(\vect{x}_0-0.5\delta h\uvect{n},t,-\uvect{n}) + \rho\delta h\vect{g}
+}
+In the limit $\delta h\rightarrow 0,$ the rate of change of momentum of the disk falls off, and we get
+\eqn{
+    &\vect{\tau}(\vect{x}_0,t,-\uvect{n}) + \vect{\tau}(\vect{x}_0,t,\uvect{n}) = 0 \\
+    &\vect{\tau}(\vect{x}_0,t,-\uvect{n}) = -\vect{\tau}(\vect{x}_0,t,\uvect{n})
+}
+Let stress at a point $x_0$ at time $t_0$ be a function of the normal to the surface it acts on i.e $\vect{\tau}=\vect{\tau}(\uvect{n}).$  Let $\sigma_{ij}$ be the component of stress in the $\uvect{j}$ direction on a surface with normal $\uvect{i}.$ Similarly, we have
+\eqn{
+    \vect{\tau}(\uvect{i}) &= \sigma_{ii}\uvect{i} + \sigma_{ji}\uvect{j} + \sigma_{ki}\uvect{k} \\
+    \vect{\tau}(\uvect{j}) &= \sigma_{ij}\uvect{i} + \sigma_{jj}\uvect{j} + \sigma_{kj}\uvect{k} \\
+    \vect{\tau}(\uvect{k}) &= \sigma_{ik}\uvect{i} + \sigma_{jk}\uvect{j} + \sigma_{kk}\uvect{k} \\
+}
+where each $\sigma_{**}$ is a scalar field varying in space and time. We now show that stress on a surface with an arbitrary normal can be represented as linear combinations of $\vect{\tau}(\uvect{i}),\, \vect{\tau}(\uvect{j}),\, \vect{\tau}(\uvect{k}).$ Consider a fluid element in the shape of an infinitesimal tetrahedral with vertices $\vect{x_0},\,\vect{x_0}+\delta x\uvect{i},\,\vect{x_0}+\delta y\uvect{j},\,\vect{x_0}+\delta z\uvect{k}$. This tetrahedral has a faces parallel to the $x\-y,\,x\-z,\,y\-z$ planes with areas $\delta A_z,\,\delta A_y,\,\delta A_x,$ and normals $-\uvect{k},\,-\uvect{j},\,-\uvect{i}$ respectively. Let the fourth face have area $\delta A$ and some arbitrary normal $\uvect{n}=n_x\uvect{i}+n_y\uvect{j}+n_z\uvect{k}.$ Let $\theta_x,\,\theta_y,\,\theta_z$ be the angle between $\uvect{n}$ and the coordinate axes. The areas are related by the following expressions:
+\eqn{
+    \delta A_x &= \cos\theta_x = n_x\delta A \\
+    \delta A_y &= \cos\theta_y = n_y\delta A \\
+    \delta A_z &= \cos\theta_z = n_z\delta A \\
+}
+We now apply Newton's laws to the fluid element in the limit $\delta x,\,\delta y,\,\delta z\rightarrow0.$ Since the volume of the fluid element, $\delta V$ falls much faster than any of the surface areas, the mass time acceleration and body forces go to zero faster than the surface forces.
+\eqn{
+\delta V   &\propto \delta x \delta y \delta z \\
+\delta A   &\propto \delta z \sqrt{\delta x^2+\delta y^2} \\
+\delta A_x &\propto \delta y \delta z \\
+\delta A_y &\propto \delta x \delta z \\
+\delta A_z &\propto \delta x \delta y \\
+}
+Say $\delta x,\,\delta y,\,\delta z$ go to zero as $\frac{1}{N}.$ Then, for bounded constants $c,\,c_v,$
+\eqn{
+    0 &=
+    \delta A\vect{\tau}(\uvect{n})    +
+    \delta A_x\vect{\tau}(-\uvect{i}) + 
+    \delta A_y\vect{\tau}(-\uvect{i}) +
+    \delta A_z\vect{\tau}(-\uvect{k}) 
+    \\
+    0 &=
+    \delta A\vect{\tau}(\uvect{n})     +
+    n_x\delta A\vect{\tau}(-\uvect{i}) + 
+    n_y\delta A\vect{\tau}(-\uvect{i}) +
+    n_z\delta A\vect{\tau}(-\uvect{k})
+    \\    
+    0 &= \lim_{N\rightarrow\infty}
+    \dfrac{c  \vect{\tau}(\uvect{n})}{N^2}  +
+    \dfrac{cn_x\vect{\tau}(-\uvect{i})}{N^2} +
+    \dfrac{cn_y\vect{\tau}(-\uvect{j})}{N^2} +
+    \dfrac{cn_z\vect{\tau}(-\uvect{k})}{N^2} +
+    \dfrac{c_v}{N^3}(\rho\vect{g}-\material{\rho\vect{v}})
+    \\
+    0 &= \lim_{N\rightarrow\infty}
+    c  \vect{\tau}(\uvect{n})  +
+    cn_x\vect{\tau}(-\uvect{i}) +
+    cn_y\vect{\tau}(-\uvect{j}) +
+    cn_z\vect{\tau}(-\uvect{k}) +
+    \dfrac{c_v}{N}(\rho\vect{g}-\material{\rho\vect{v}})
+    \\
+    0 &=
+       \vect{\tau}(\uvect{n})  +
+    n_x\vect{\tau}(-\uvect{i}) +
+    n_y\vect{\tau}(-\uvect{j}) +
+    n_z\vect{\tau}(-\uvect{k})
+    \\
+    \vect{\tau}(\uvect{n})  &=
+    n_x\vect{\tau}(\uvect{i}) +
+    n_y\vect{\tau}(\uvect{j}) +
+    n_z\vect{\tau}(\uvect{k})
+}
+Hence, forces due to surface stresses must balance each other in the limit of the tetrahedral shrinking to a point. Expressing the above expression in matrix notation,
+\eqn{
+    \vect{\tau}(\uvect{n}) &=
+                \mat{\vect{\tau}(\uvect{i}) &
+                    \vect{\tau}(\uvect{j}) &
+                    \vect{\tau}(\uvect{k})}
+                    \cdot\uvect{n} \\    
+    \vect{\tau}(\uvect{n}) &=
+                \mat{\sigma_{ii} & \sigma_{ij} & \sigma_{ik}
+                    \\
+                    \sigma_{ji} & \sigma_{jj} & \sigma_{jk}
+                    \\
+                    \sigma_{ki} & \sigma_{kj} & \sigma_{kk}}
+                    \cdot\uvect{n}
+}
+We call $\vect{\tau}$ the traction vector and $\tensor{\sigma}$ the stress tensor.
+\eqn{
+\tensor{\sigma}=\mat{\vect{\tau}(\uvect{i}) &
+                    \vect{\tau}(\uvect{j}) &
+                    \vect{\tau}(\uvect{k})
+                    } =
+                \mat{\sigma_{ii} & \sigma_{ij} & \sigma_{ik}
+                    \\
+                    \sigma_{ji} & \sigma_{jj} & \sigma_{jk}
+                    \\
+                    \sigma_{ki} & \sigma_{kj} & \sigma_{kk}}
+}
+\eqn{
+    \vect{\tau}(\vect{x},t,\uvect{n}) = \tensor{\sigma}(\vect{x},t)\cdot\uvect{n}
+}
+\hl{We now show that the stress tensor is symmetric.}
+\subsection{Fluid at Rest}
+% explain why pressure is a thing.
+Since a fluid continuously deforms under shear stress, a static, non-deforming fluid element in consequently under no shear stress. Hence for an arbitrary surface element in a fluid at rest, stress is in the normal direction. From equilibrium arguments, it can be proven that stress in a fluid at rest is isotropic.
+\begin{equation}
+\begin{split}
+    \vect{\tau} &= -p(\vect{x},t)\vect{n} \\
+    \vect{\tau} &= -p(\vect{x},t)\tensor{\delta}\cdot\vect{n}
+\end{split}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Stress Tensor for Newtonian Fluids}
+We still need to relate the stress tensor to the flow field. The \textit{Newtonian Model} is based on the following assumptions:
+\begin{enumerate}
+    \item shear stress is proportional to the rate of shear strain in a fluid particle;
+    \item shear stress is zero when the rate of shear strain is zero;
+    \item the stress to rate-of-strain relation is isotropic—that is, there is no preferred orientation in the fluid.
+\end{enumerate}
+From the first assumption, we have $\sigma_{ij}=\mathrm{K}_{ijkl}e_{kl}$ where $\mathrm{K}$ is a fourth order tensor.
+
+\hl{derive}
+\begin{equation}
+\begin{split}
+\tensor{\sigma}&= -p\tensor{\delta}+\tensor{\tau_v} \\
+&= -p\tensor{\delta} + \mu(\del\vect{v}+\del\vect{v}^\transp) + \lambda(\del\cdot\vect{v})\tensor{\delta}
+\end{split}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Momentum Conservation}
+Let $\vect{p}(t)$ denote the total momentum of a fluid element.
+\begin{equation}
+\begin{split}
+    \vect{p}(t) &= \int_{\Omega}\rho\vect{v}\der V \\
+    \ddd{t}\vect{p} &= \int_{\Omega}\ppp{t}(\rho\vect{v}) + \del\cdot(\vect{v}\otimes\rho\vect{v})   \der V \\
+    &=\int_{\Omega}\ppp{t}(\rho\vect{v}) + \rho\vect{v}(\del\cdot\vect{v}) + (\vect{v}\cdot\del)(\rho\vect{v}) \der V \\
+    &=\int_{\Omega}\material(\rho\vect{v}) + \rho\vect{v}(\del\cdot\vect{v}) \der V
+\end{split}
+\end{equation}
+Consider the total force applied on the fluid element.
+\eqn{
+\vect{F}_\text{ext} &= \int_{\Omega}\rho\vect{g}\der V + \int_{\partial\Omega}\tensor{\sigma}\cdot\vect{n}\der A \\
+&= \int_{\Omega}\rho\vect{g} + \del\cdot\tensor{\sigma}\der V \\
+&= \int_{\Omega}\rho\vect{g} + \del\cdot\Big(-p\tensor{\delta} + \mu(\del\vect{v}+\del\vect{v}^\transp) + \lambda(\del\cdot\vect{v})\tensor{\delta}\Big) \der V \\
+&= \int_{\Omega}\rho\vect{g} - \del p + \mu(\del^2\vect{v} + \del(\del\cdot\vect{v})) + \lambda\del(\del\cdot\vect{v}) \der V \\
+&= \int_{\Omega}\rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v}) \der V
+}
+From Newton's second law, time rate of change of momentum is equal to the sum of all external forces applied.
+\eqn{
+0 &= \ddd{t}\vect{p} - \vect{F}_\text{ext} \\
+&= \int_{\Omega} \ppp{t}(\rho\vect{v}) + \rho\vect{v}(\del\cdot\vect{v}) + (\vect{v}\cdot\del)(\rho\vect{v}) - \bigg(
+\rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v})
+\bigg)
+\der V
+}
+Since the integral is zero for an arbitrary domain (fluid element) $\Omega(t),$ it follows that the integrand must be zero everywhere.
+\eqn{
+\ppp{t}(\rho\vect{v}) + \rho\vect{v}(\del\cdot\vect{v}) + (\vect{v}\cdot\del)(\rho\vect{v}) &=
+\rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v})
+\\
+\vect{v}\cancelto{0\,\mathrm{(continuity)}}{(\ppp{t}\rho+\del\cdot\vect{v}+\vect{v}\cdot\grad\rho)} + \rho\material\vect{v}
+&= \rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v})
+\\
+\rho(\ppp{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= \rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v})
+}
+%-------------------------------------------------------------------------
+\subsection{Divergence of Momentum Equation}
+Take the divergence of the momentum equation.
+\eqn{
+\rho(\ppp{t}(\del\cdot\vect{v})+ \grad\vect{v}:\grad\vect{v}^\transp + (\vect{v}\cdot\grad)(\del\cdot\vect{v})) &= \rho(\del\cdot\vect{g}) - \del^2 p + \mu\del^2(\del\cdot\vect{v}) + (\mu+\lambda)\del^2(\del\cdot\vect{v})
+\\
+\rho\material(\del\cdot\vect{v}) &= \del^2(-p+(\lambda+2\mu)(\del\cdot\vect{v})) + \rho(\del\cdot\vect{g}-\grad\vect{v}:\grad\vect{v}^\transp)
+}
+where $\tensor{A}:\tensor{B}=A_{ij}B_{ji}$ is the double dot product. This equation simplifies into a laplace equation for pressure in case of incompressible flow.
+\eqn{
+-\del^2p = \rho(\grad\vect{v}:\grad\vect{v}^\transp - \del\cdot\vect{g})
+}
+%-------------------------------------------------------------------------
+\subsection{Vorticity Equation}
+We take the curl of the momentum equation. Define $\vect{\omega}=\del\cross\vect{v}$
+\eqn{
+\del\cross\rho(\ppp{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= 
+\del\cross(\rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v}))
+\\
+\grad\rho\cross\material\vect{v} + \rho\material\vect{\omega} + \epsilon_{ijk}v_{l,i}v_{j,l} &=
+\del\cross\vect{g} + \grad\rho\cross\vect{g} + \mu\del^2\vect{\omega} + \epsilon_{ijk}(-p+(\del\cdot\vect{v}))_{,ji}
+\\
+\grad\rho\cross(\material\vect{v}-\vect{g}) + \rho\material\vect{\omega} + \epsilon_{ijk}v_{l,i}v_{j,l} &=
+\del\cross\vect{g} + \mu\del^2\vect{\omega} + \epsilon_{ijk}(-p+(\del\cdot\vect{v}))_{,ji}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reynolds Stresses for Incompressible Flow}
+We switch to Einstein indicial notation for convenience. We start with the Navier-Stokes equations for incompresisble fluid flow
+\eqn{
+    \rho(\ppp{t} v_j + v_iv_{j,i}) &= -p,_j + \mu v_{j,ii} +\rho g_i\\
+    v_{i,i} &= 0
+}
+Non-dimensionalize with canonical length $H$, velocity $U$,
+\begin{equation}
+    v^*=\dfrac{v}{U},\,t^*=\dfrac{tU}{H},\,p^*=\dfrac{p}{\rho U^2},\,g^*=\dfrac{g}{U^2/H}
+\end{equation}
+where $\rho U^2$ is the stagnation pressure. We define $\text{Re}=\dfrac{\rho UH}{\mu}.$ Multiplying by $\dfrac{H}{\rho U^2},$
+
+\eqn{
+    \ppp{t^*} v^*_j + v^*_i v^*_{j,i} &= -p^*,{j} + \dfrac{1}{\text{Re}}v^*_{j,ii} + g^*_j\\
+    v^*_{i,i} &= 0
+}
+\noindent Dropping the asterisks,
+\eqn{
+    \ppp{t}v_j + v_i v_{j,i} &= -p_{,j} + \dfrac{1}{\text{Re}}v_{j,ii} + g_j\\
+    v_{i,i} &= 0
+}
+Define $u=\expval{u}+u',\,p=\expval{u} +p'$, where $\expval{s}$ is the ensemble average of quantity $s$ and $s'$ is fluctuation/deviation of $s$ from $\expval{s}$. Averaging and differentiating commute since average of a derivative is the derivative of the average. For any space and time varying quantities $u$ and $v$, we have the following properties:
+\eqn{
+    u &= \expval{u} + u' \\
+    \expval{u} &=  \expval{\expval{u}} + \expval{u'} \\
+    \expval{u} &=\expval{u} + \expval{u'} \\
+    \expval{u'} &= 0
+}
+and
+\eqn{
+    \expval{uv} &= \expval{\big(\expval{u}+u'\big)\big(\expval{v}+v'\big)} \\
+                &= \expval{ \expval{u}\expval{v} + \expval{u}v' + u'\expval{v} + u'v'  } \\
+                &= \expval{u}\expval{v} + \expval{u}\expval{v'} + \expval{u'}\expval{v}+\expval{u'v'} \\
+                &= \expval{u}\expval{v} + \expval{u'v'}
+}
+Taking the expected value of the continuity equation, we find that $\expval{v_i}$ is solenoidal.
+\eqn{
+    \expval{0} &= \expval{v_{i,i} } \\
+    0 &= \expval{v_i}_{,i}
+}
+Expanding the continuity equation in terms of expected values of fluctuations, we find that $u_i'$ is also solenoidal.
+\eqn{
+    0 &= v_{i,i} = \cancelto{0}{\expval{v_{i}}_{,i}} + v'_{i,i} \\
+    0 &= v'_{i,i}
+}
+Both expected value and fluctuation of velocity are divergence free. Taking the expected value of the momentum equation,
+\eqn{
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} + \expval{v'_iv'_{j,i}} = -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{g_i}
+}
+Expanding the momentum equation in terms of expected values and fluctuations,
+\eqn{
+    \ppp{t}(\expval{v_j}+v'_j) + (\expval{v_i}+v'_i)(\expval{v_{j,i}}+v'_{j,i})
+    &=
+    -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii})  + \expval{g_j} + \cancelto{0}{g'_j}
+    \\
+    \ppp{t}(\expval{v_j}+v'_j) + \expval{v_i}\expval{v_{j,i}} + \expval{v_i}v'_{j,i}
+        + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} 
+    &=
+        -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii}) + \expval{g_j}
+}
+
+\vspace{1em} Subtracting equations 35 from 36,
+\eqn{
+        \ppp{t}v'_j + \expval{v_i}v'_{j,i} + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} - \expval{v'_iv'_{j,i}}
+    =
+        -p'_{,j} + \dfrac{1}{\text{Re}}v'_{j,ii}
+}
+Multiply both sides by $v'_k$ and take the expected value.
+\eqn{
+        \expval{v'_k\ppp{t}v'_j} +  \expval{v_i}\expval{v'_kv'_{j,i}} +\expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_kv'_iv'_{j,i}} - \cancelto{0}{\expval{v'_k}}\expval{v'_iv'_{j,i}} 
+    =
+        -\expval{v'_kp'_{,j}} + \dfrac{1}{\text{Re}}\expval{v'_kv'_{j,ii}}
+}
+Take the transpose and add. We simplify the equation with the following properties:
+\eqn{
+    v'_k\ppp{t}v'_j + \ppp{t}(v'_k)v'_j &= \ppp{t}(v'_jv'_k) \\
+    v'_kv'_{j,i} + v'_{k,i}v'_j &= (v'_jv'_k)_{,i} \\
+    v'_jv'_{k,ii} + v'_iv'_{j,ii} &= (v'_kv'_j)_{,ii} - 2v'_{j,i}v'_{k,i} \\
+    v'_kv'_iv'_{j,i} + v'_kv'_iv'_{j,i} &= (v'_iv'_jv'_k)_{,i}
+}
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}} + \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    -\big(\expval{v'_kp'_{,j}}+\expval{v'_jp'_{,k}} \big)+ \dfrac{1}{\text{Re}}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
+}
+We write the pressure transport term in terms of the pressure strain and pressure diffusion terms.
+\eqn{
+    v'_kp'_{,j} + v'_jp'_{,k} = -p'(v'_{j,k}+v'_{k,j}) + (p'v'_j)_{,k} + (p'v'_k)_{,j}
+}
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}}+ \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
+    + \dfrac{1}{\text{Re}}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
+}
+\subsection{Turbulent Kinetic Energy}
+
+Multiply by $\frac{1}{2}\delta_{ij}.$ Define $k=\frac{1}{2}\expval{v'_jv'_j},\,q^2=v'_jv'_j$
+\eqn{
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iq^2}_{,i}
+    &=
+    \cancelto{0}{\expval{p'v'_{i,i}}} - \expval{p'v'_j}_{,j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iq^2}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} - \cancelto{0}{\expval{p'v_{i,i}}} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iq^2}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}     
+}

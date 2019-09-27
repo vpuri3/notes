@@ -1,0 +1,81 @@
+%
+% in preamble, \include{vpack}
+%
+\usepackage{amsfonts,amssymb,amsbsy,amsmath}
+\usepackage{physics}
+\usepackage{siunitx}     % \SI
+\usepackage{cancel}      % \cancel
+%\usepackage{multicol}
+%\usepackage{subfigure, epsfig}
+%\usepackage{psfrag}
+
+\usepackage{float}         % float positioning option \begin{figure}[H]
+\usepackage{graphicx}      % \includegraphics  
+\usepackage{xcolor}
+\definecolor{periwinkledark}{RGB}{102, 102, 128}
+\newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
+
+\newcommand{\todo}[1]{\hl{todo: #1}}
+
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % dots for table of contents
+
+\usepackage{hyperref} % \autoref
+
+%================================ THEOREMS ===============================%
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{theorem}{Proposition}[section]
+\newtheorem{remark}{Identity}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+
+%\renewcommand\qedsymbol{$\blacksquare$}
+
+%================================== MATHS ==================================%
+\newcommand{\eqn}[1]{ % numbered equation environment
+    \begin{equation}
+    \begin{aligned}
+        #1
+    \end{aligned}
+    \end{equation}
+}
+\newcommand{\eqnn}[1]{ % unnumbered equation environment
+    \begin{equation*}
+    \begin{aligned}
+        #1
+    \end{aligned}
+    \end{equation*}
+}
+\newcommand{\vv}{vis-\`a-vis }
+\newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}             % units
+\newcommand{\nvect}[1]{\underline{#1}}                         % discretized scalar field
+\newcommand{\vect}[1]{\boldsymbol{#1}}                         % vector field
+\newcommand{\uvect}[1]{\boldsymbol{\hat{#1}}}                  % unit vector (field)
+\newcommand{\tensor}[1]{\underline{\underline{#1}}}            % second order tensor field
+\newcommand{\der}{\,\mathrm{d}}                                % dx ==> \der x total derivative
+\newcommand{\Der}{\,\mathrm{D}}                                % Du ==> \Der u material derivative
+\newcommand{\ppp}[1]{\partial_{#1}}                            % partial derivative
+\newcommand{\vvv}{\delta}                                      % variation
+\newcommand{\del}{\vect{\nabla}}                               % gradient vector operator
+\newcommand{\grad}{\del}                                       % gradient vector operator
+\newcommand{\ddd}[1]{\dfrac{\mathrm{d}}{\mathrm{d} #1}}        % total derivative
+\newcommand{\material}{\mathrm{D}_{t}}                         % material derivative (wrt time)
+\newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
+\newcommand{\degree}{^\circ}                                   % degree
+\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components (also scalar product too)
+\newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix
+\newcommand{\transp}{\intercal}                                % matrix transpose A^\transp
+\newcommand{\expo}[1]{\mathrm{e}^{#1}}                         % e = 2.71..
+\newcommand{\al}{\alpha}                                       % \alpha
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}                       % support of a function
+\newcommand{\subsubset}{\subset\subset}                        % A compact subset of B
+\renewcommand{\st}{\text{ such that }}                         % such that
+\newcommand{\contradiction}{\ensuremath{\Rightarrow\!\Leftarrow}} % contradiction
+\newcommand{\root}[1]{\sqrt{#1}}
+\newcommand{\Re}{\text{Re}}                                    % Reynolds Number
+\newcommand{\Pe}{\text{Pe}}                                    % Peclet Number

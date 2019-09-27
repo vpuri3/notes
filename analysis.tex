@@ -1,0 +1,326 @@
+\chapter{Analysis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{basic}
+Relations, Sets, and Functions
+
+\hl{equivalance relations, functions (one-one, onto), fields, order, vector spaces}
+
+\hl{pigeonhole principle}
+
+\hl{$\mathbb{Q}$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{$\mathbb{R}$}
+
+\subsection{Construction: Dedekind's Cuts}
+\hl{todo} The completion of $\mathbb{Q}$
+
+\subsection{Properties}
+\begin{theorem}[Archimedean Property]
+   $\forall x,y\in\mathbb{R}^+\,\exists N\in\mathbb{N}:y<nx$ 
+\end{theorem}
+\begin{proof}
+   Fix $x,\,y\in\mathbb{R}$. Let $A=\mathbb{N}x$. Consider, \textit{ad absurdum,} $\forall n\in\mathbb{N},\,y\geq nx.$ That is, $y$ is an upper bound for $A.$ Let $\al=\sup{A}=n\al$ for some $n\in\mathbb{N}.$ As $x>0,$ $\al<\al+x=(n+1)x\in A$. Therefore $\al$ is not an upper bound for $A.$
+\end{proof}
+
+\begin{theorem}
+   $\mathbb{Q}$ is dense in $\mathbb{R},$ i.e. between any two reals, there exists a rational number.
+\end{theorem}
+\begin{proof}
+   Let $x,y\in\mathbb{R},x<y.$ Without loss of generality, consider the case where $x,y>0.$ Applying the Archimedean property, we get
+   \eqn{
+        &\exists n\in\mathbb{N}, n(y-x)>1\\
+        &\implies x < x+\frac{1}{n} < y\\
+        &\implies x < \frac{nx+1}{n} < y
+   }
+   Since the numerator is not guaranteed to be rational, we seek $m\in\mathbb{N}$ such that $nx<m<nx+1$. Apply the Archimedean property again to find positive integer $m_1$ such that $0<nx<m_1.$ Hence there exists $0<m\leq m_1$ such that
+   \eqn{
+       &m<nx<m+1\\
+       &nx<m<nx+1<ny\\
+       &x<\frac{m}{n}<y
+   }
+\end{proof}
+
+\begin{definition}[Dense subset]
+    A set $S\subset X$ is dense in $X$ if every element in $X$ is a limit point of $S.$
+\end{definition}
+
+The real number system is an ordered field $\mathbb{R}$, a complete extension of $\mathbb{Q}$ that has the least upper bound property. 
+
+\begin{definition}[Least Upper Bound Property]
+    For $S\subset \mathbb{R}$, an upper bound of $S$ in $\mathbb{R}$ is an element $x\in\mathbb{R}$ such that $\forall s\in S, s<x.$ The least upper bound of $S$ in $\mathbb{R}$ is an element $y$ such that
+    \begin{enumerate}
+        \item $y$ is an upper bound for $S$
+        \item if $x$ is an upper bound for $S,$ then $y<x.$
+    \end{enumerate}
+    The least upper bound property of $\mathbb{R}$ is that any nonempty set of real numbers that is bounded from above has a least upper bound.
+\end{definition}
+
+An ordered set satisfies the completeness axiom if every subset $S$ that is bounded above has a least upper bound denoted $\text{sup}S\in\mathbb{R}$. If $-S=\{-s|s\in S\},$ then $\text{inf}(S)=-\text{sup}(-S)$
+
+\begin{theorem}[Knaster-Tarski Fixed Point Theorem]
+    Consider a set $X\subset\mathbb{R}$, for which $a=\inf(X),\,b=\sup(X)\in X,$ then every increasing function $f:X\rightarrow X$ has at least one fixed point, i.e. $x_0\in X\st f(x_0)=x_0.$
+\end{theorem}
+\begin{proof}
+    Consider the set $S=\left\{ x\in X | x\leq f(x) \right\}$. $S$ is nonempty since $a\in S.$ Hence $\beta=\sup(S)\in X$ must exist.
+    \eqn{
+                &\forall x\in S, x\leq \beta&\qquad&                          \\
+        \implies& x\leq f(x),\,f(x)\leq f(\beta)   &&\text{($f$ increasing function)}\\
+        \implies& \forall x\in S,\,x\leq f(\beta)\label{eqn:forall}\\
+        \implies& \beta \leq f(\beta)              &&\text{(since $\beta=\sup(S)$ )}\\
+        \implies& f(\beta)\leq f\left(f(\beta)\right)\\
+    }
+
+\end{proof}
+
+\subsection{Extended Real Line: $\mathbb{R}\cup\{-\infty,\infty\}$}
+\hl{todo}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sequences}
+\begin{definition}[Sequence]
+    A sequence $(a_n)_{n\in\mathbb{N}}$ of elements in a set $X$ is a function $a_\cdot:\mathbb{N}\rightarrow X$.
+\end{definition}
+
+\begin{definition}[Limit of a sequence]
+    A sequence $(x_n)$ converges to $x\in X$ in norm $\norm{\cdot}$, abbreviated as $x_n\xrightarrow{n} x$, if
+    \eqn{
+        \forall\epsilon>0,\exists N\in\mathbb{N} \st \forall n\geq N, \norm{x-x_n}<\epsilon
+    }
+    The element $\lim_{n\rightarrow\infty}x_n=x$ is called the limit of sequence $x_n.$
+\end{definition}
+
+
+We will consider sequences of real numbers under the absolute value norm. Below listed are some properties of convergent sequences.
+
+\begin{enumerate}
+    \item The limit of a convergent sequence is unique.
+    \begin{proof}
+        $\epsilon>0$. Let $x_n\rightarrow a,\,x_n\rightarrow b\in\mathbb{R}$. Without loss of generality, let $b>a,$ and fix $\epsilon=\dfrac{b-a}{3}$. Then $\exists N_a,N_b\in\mathbb{N}\st$
+        \eqn{
+        &\forall n>N_a, \abs{a-x_n}<\epsilon\\
+        &\forall n>N_b, \abs{b-x_n}<\epsilon\\
+        }
+        Then, $\forall n>\max(N_a,N_b),$
+        \eqn{
+        \implies&\abs{b-a} < \abs{a-x_n}+\abs{b-x_n} < (b-a)\frac{2}{3} \contradiction
+        }
+    \end{proof}    
+    
+    \item $(a_n)$ convergent $\implies \{a_n\}_n$ bounded.
+    \begin{proof}
+        Let $a_n\rightarrow a.$ $\forall \epsilon, \exists N\st \forall n>N,\abs{a-a_n}<\epsilon.$ Therefore,
+        \eqn{
+            \forall n,\abs{a_n} < \max\big( \{\abs{a_m}\}_{m=1}^{N-1}\cup\{\abs{a\pm\epsilon}\}\big)
+        }
+    \end{proof}
+    
+    \item 
+    \eqn{
+        \begin{array}{r}
+        a_n\rightarrow a \\
+        b_n\rightarrow b
+        \end{array}\bigg\}
+        \implies a_nb_n\rightarrow ab
+    }
+    \begin{proof}
+       Fix $\epsilon>0$. For $\epsilon>0,$ $\exists N_a,\,N_b\st$
+       \eqn{
+           &\forall n>N_a \abs{a-a_n}<\epsilon_a>0\\
+           &\forall n>N_b \abs{b-b_n}<\epsilon_b>0\\
+       }
+       Since $b_n$ is a convergent sequence, $\exists \abs{b_n} < M_b\in\mathbb{R}$. Let $\epsilon_a=\dfrac{\epsilon}{2M_b},\,\epsilon_b=\dfrac{\epsilon}{2a}$. For $n>\max(N_a,N_b),$
+       \eqn{
+            \abs{ab-a_nb_n} &= \abs{ab+ab_n-ab_n-a_nb_n}\\
+            &\leq a\abs{b-b_n}+b_n\abs{a-a_n}\\
+            &< a\frac{\epsilon}{2a} + b_n\frac{\epsilon}{2M_b}\\
+            &< \epsilon
+       }
+    \end{proof}
+    
+    \item $a_n\rightarrow a\neq0\implies \dfrac{1}{a_n}\rightarrow\dfrac{1}{b}.$
+    \begin{proof}
+        Fix $0<\epsilon<\frac{\abs{b}}{2}$ (bounding $b_n$ away from $0$). $\exists N\st\forall n>N \abs{b-b_n}<\epsilon_b.$
+        \eqn{
+            \implies\abs{\frac{1}{b}-\frac{1}{b_n}} &= \abs{\frac{b-b_n}{bb_n}}\\
+            &< \frac{\epsilon_b}{\abs{b}\abs{b_n}}\\
+            &< \frac{2\epsilon_b}{\abs{b}^2}
+        }
+        Allowing $\epsilon_b=\frac{\abs{b}^2\epsilon}{2}$, we complete the proof.
+    \end{proof}
+    
+    \item 
+    \begin{theorem}[Squeeze Theorem]
+        $\forall n>N,L\leftarrow a_n \leq b_n \leq c_n\rightarrow L\in\mathbb{R}\implies b_n\rightarrow L.$
+    \end{theorem}
+    \begin{proof}
+        $\forall n,\abs{b_n-a_n}<c_n-a_n\rightarrow L-L=0$. Fix $\epsilon>0$. $\exists N>0\st\forall n>N,\abs{L-a_n}<\dfrac{\epsilon}{2},\,\abs{c_n-a_n}<\dfrac{\epsilon}{2}$
+        \eqn{
+            \implies \abs{L-b_n} &= \abs{L-a_n+a_n-b_n}\\
+            &< \abs{b_n-a_n} + \abs{a_n-L}\\
+            &< \frac{\epsilon}{2} + \frac{\epsilon}{2}\\
+            &= \epsilon
+        }
+    \end{proof}
+    
+    \item
+    \eqn{
+        \begin{array}{r}
+             a_n\rightarrow a  \\
+             \forall n, a_n > 0
+        \end{array}\bigg\}
+        \implies \forall k\geq 1, \sqrt[k]{a_n}\rightarrow\sqrt[k]{a}
+    }
+    \begin{proof}
+        Fix $0<\epsilon\leq\frac{\abs{a}}{2}$. When $a=0,\exists N\st\forall n>N \abs{a_n}<\epsilon^k.\implies \abs{\sqrt[k]{a_n}}<\sqrt[k]{\epsilon^k}=\epsilon.$ Consider when $a>0.$ Let $\epsilon_a>0.$ $\exists N\st\forall n>N,\abs{a-a_n}<\epsilon_a$
+        
+        We use the identity
+        \eqn{
+            A-B = \frac{A^k-B^k}{\sum_{i=0}^{k-1} A^iB^{k-1-i}}
+        }
+        When $A,\,B>0,$ we trivially have $\abs{A-B}<\dfrac{\abs{A^k-B^k}}{B^{k-1}}$
+        
+        \eqn{
+            \forall n>N, 0 \leq \abs{\sqrt[k]{a}-\sqrt[k]{a_n}} &< \frac{\abs{a-a_n}}{\sqrt[k]{a^{k-1}}}
+            < \frac{\epsilon_a}{\sqrt[k]{a^{k-1}}}
+        }
+        Allowing $\epsilon_a=\epsilon\sqrt[k]{a^{k-1}}$ completes the proof.
+    \end{proof}
+    
+    \item $\abs{a_n}\rightarrow 0\implies a_n\rightarrow 0$
+    \begin{proof}
+        Apply squeeze theorem to $0\leftarrow(-\abs{a_n})\leq a_n \leq \abs{a_n}\rightarrow 0.$
+    \end{proof}
+    
+    \item
+    \begin{theorem}[Monotone Convergence Theorem]
+    For $a_n$ bounded and monotone, $a_n\nearrow\sup\{a_n\}_n$ or $a_n\searrow\inf\{a_n\}$. (Note on notation: $a_n\nearrow L \iff a_n \text{ is a monotone sequence }, a_n\rightarrow L.$)
+    \end{theorem}
+    \begin{proof}
+        Consider the case when $a_n$ is a monotone increasing sequence. The assumption is without loss of generality, for if $a_n$ is monotone decreasing, we consider $-a_n$ and prove its convergence to $\sup\{-a_n\}_n=-\inf\{a_n\}_n.$ By the least upper bound property, we have a unique $L\defeq\sup\{a_n\}_n.$ We aim to prove that $\forall\epsilon>0\exists N\st\forall n>N,\abs{L-a_n}<\epsilon.$ If the statement is not true, then $\exists\epsilon_0>0\st\forall k\exists n_k>k,\abs{L-a_{n_k}}\geq\epsilon_0.$ Since $a_k\nearrow,$ we have $\forall k, a_k\leq a_{n_k}\leq L-\epsilon_0\implies (L-\epsilon_0)<L$ is an upper bound for $\{a_n\}.\contradiction$
+    \end{proof}
+    
+\end{enumerate}
+
+\begin{example}
+    $-1<a<1\implies a^n\rightarrow0.$
+    
+    The example is trivial when $a=0$. Consider the case when $0<\abs{a}<1.$ We consider the case when $0<\abs{a}<1\implies\frac{1}{\abs{a}}> 1$. Let $\frac{1}{\abs{a}}\defeq 1+h.$
+    \eqn{
+        &\left(\frac{1}{\abs{a}}\right)^n = \left( 1+h\right)^n = 1+ nh + \mathcal{O}(h^2) > 1+nh\\
+        &\implies\abs{a}^n < \frac{1}{1+nh}\\
+        &\implies \abs{a}^n\rightarrow 0
+    }
+    Since $a^n \leq \abs{a^n} \leq \abs{a}^n$ we conclude that $a^n\rightarrow 0.$
+\end{example}
+
+\begin{example}
+    $a_n=\sqrt[n]{n}$.
+    
+    For $n>1\implies \sqrt[n]{n}>\sqrt[n]{1}=1$. For $h_n>0$, let $a_n=1+h_n.$
+\end{example}
+
+\begin{example}
+    $a_n=\dfrac{a^n}{n!}$
+\end{example}
+
+\begin{example}[Decimal Expansion]
+
+\end{example}
+
+\begin{definition}[Cauchy Sequences]
+    \eqn{
+        a_n \text{Cauchy sequence} \iff\forall\epsilon>0\exists N\st\forall m,\,n>N,\abs{a_m-a_n}<\epsilon
+    }
+\end{definition}
+
+\newpage
+\eqn{
+    &\liminf_{x\rightarrow0}\\
+    &\limsup_{x\rightarrow0}
+}
+Properties of $\liminf,\limsup$
+
+\subsection{Subsequences}
+\begin{definition}[Subsequence]
+    A subsequence of a sequence $a_n$ is the sequence $(b_k)_k=(a_{n_k})_k$ where $n_\cdot:\mathbb{N}\rightarrow\mathbb{N}$ with the restriction that $\forall k, k\leq n_k.$
+\end{definition}
+
+\begin{definition}[Limit Point]
+\end{definition}
+
+Properties of subsequential limits
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\begin{lemma}[Nested Interval Property]
+\end{lemma}
+
+\begin{theorem}[Bolzano-Weierstrass]
+\end{theorem}
+
+\begin{lemma}[Finite intersection property]
+\end{lemma}
+
+\section{Series}
+
+All those tests
+
+\begin{theorem}[Rearrangement theorem]
+\end{theorem}
+
+\begin{theorem}[Fubini-Tonelli]
+Summability of infinite matrices
+\end{theorem}
+
+\begin{theorem}[Summability of infinite matrices]
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sets and Metric Spaces}
+
+We restrict ourselves to sets in finite dimensional spaces.
+
+Norm
+
+\begin{theorem}[Cauchy-Schwarz inequality]
+\end{theorem}
+
+Open, closed/ closue, interior, etc.
+
+DeMorgan's Laws (Unions and Intersections)
+
+The Cantor set
+
+\begin{definition}[Open Ball]
+    The open ball of radius $r$ around $x_0\in X$ is defined as follows:
+    \eqn{
+        B(x_0,r) = \{ x\in X | \norm{x-x_0} < r \} \subset X
+    }
+\end{definition}
+
+Precompact, compact, bounded.
+
+explain relation between precompact, compact, bounded, closed in finite dimensions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Continuous Functions}
+We consider functions between metric spaces.
+
+\begin{definition}[Continuity]
+    We say a function $f:X\rightarrow Y$ is continuous at $x_0\in X$
+\end{definition}
+
+equivalance between different definitions of continuity.
+
+Inverse images
+
+\hl{
+darboux integral, shuffling limits of integrals, prove everything from calculus
+}
+
