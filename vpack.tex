@@ -3,23 +3,20 @@
 %
 \usepackage{amsfonts,amssymb,amsbsy,amsmath}
 \usepackage{physics}
-\usepackage{siunitx}     % \SI
-\usepackage{cancel}      % \cancel
-%\usepackage{multicol}
-%\usepackage{subfigure, epsfig}
-%\usepackage{psfrag}
+\usepackage{siunitx}       % \SI
+\usepackage{cancel}        % \cancel
+\usepackage{listings}      % source code formatting
 
 \usepackage{soul}          % \hl
 \usepackage{float}         % float positioning option \begin{figure}[H]
 \usepackage{graphicx}      % \includegraphics  
+\usepackage{subfigure}
+%\usepackage{tikz}         % stick figures
 \usepackage{xcolor}
 \definecolor{periwinkledark}{RGB}{102, 102, 128}
 \newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
 
 \newcommand{\todo}[1]{\hl{todo: #1}}
-
-\usepackage{tocloft}
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % dots for table of contents
 
 \usepackage{hyperref} % \autoref
 
@@ -67,7 +64,7 @@
 \newcommand{\material}{\mathrm{D}_{t}}                         % material derivative (wrt time)
 \newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
 \newcommand{\degree}{^\circ}                                   % degree
-\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components (also scalar product too)
+\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components
 \newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix
 \newcommand{\transp}{\intercal}                                % matrix transpose A^\transp
