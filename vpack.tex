@@ -19,12 +19,14 @@
 \newcommand{\todo}[1]{\hl{todo: #1}}
 
 \usepackage{hyperref} % \autoref
+\renewcommand{\chapterautorefname}{Chapter}
+\renewcommand{\sectionautorefname}{Section}
 
 %================================ THEOREMS ===============================%
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
-%\newtheorem{theorem}{Proposition}[section]
+\newtheorem{proposition}{Proposition}[section]
 \newtheorem{remark}{Identity}[section]
 \newtheorem{example}{Example}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -74,6 +76,8 @@
 \newcommand{\subsubset}{\subset\subset}                        % A compact subset of B
 \renewcommand{\st}{\text{ such that }}                         % such that
 \newcommand{\contradiction}{\ensuremath{\Rightarrow\!\Leftarrow}} % contradiction
-\newcommand{\root}[1]{\sqrt{#1}}
+\newcommand{\rt}[2]{\sqrt[#1]{#2}}                             % root
 \newcommand{\Re}{\text{Re}}                                    % Reynolds Number
 \newcommand{\Pe}{\text{Pe}}                                    % Peclet Number
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}

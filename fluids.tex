@@ -13,74 +13,32 @@ We tend to neglect the discrete, molecular nature of matter and treat the fluid 
 \subsection{Control and Material Volumes}
 To derive the equations governing viscous fluid flow, we have to consider the time rate of change of quantities/properties in fluid control volumes. A control volume is an arbitrarily defined volume with a closed bounding surface. A material volume is a control volume that contains the same particles of matter at all times. A particular material volume may be defined by the closed bounding surface that envelops its material particles at a certain time. Hence, the velocity of the surface at every point is equal to the flow velocity at that point. The term ``fluid element" is synonymous with a material volume.
 
-We consider two disparate perspectives to view motion in a continuum: the \textbf{Lagrangian} perspective expresses position, velocity and other state variables in terms of material points travelling with a fluid; the \textbf{Eulerian} perspective expresses fluid properties with respect to some reference coordinate system. Consider the following example to illustrate the differences between the two perspectives. Let $\vect{F}$ be some property of a fluid at some material point $(\vect{X},t)\in\Omega\cross[0,T]$. $\vect{F}$ depends on $\vect{X},$ i.e. which material element one chooses and time $t$ as material elements may interact with other elements and lose/gain the property over time. The time evolution of the position of the material element $\vect{X}$ can be tracked on an Eulerian coordinate system with a vector $\vect{x}(\vect{X},t).$ Since only one material element can be located at an Eulerian coordinate at a given time, there exists an inverse relation $\vect{X}(\vect{x},t)$ mapping material elements $\vect{X}$ to the Eulerian coordinate position they occupy at time $t.$ Hence the property $\vect{F}$ following a material element varies with the element's Eulerian coordinate and time, i.e. $\vect{F}=\vect{F}(\vect{x},t).$ The rate of change of $\vect{F}$ following the material element is
+We consider two perspectives to view motion in a continuum: the \textbf{Lagrangian} perspective expresses position, velocity and other state variables in terms of material points travelling with a fluid; the \textbf{Eulerian} perspective expresses fluid properties with respect to some reference coordinate system. The time evolution of the position of the material point $\vect{X}$ can be tracked on an Eulerian coordinate system with a vector $\vect{x}(\vect{X},t).$ Since only one material point can be located at an Eulerian coordinate at a given time, there exists an inverse relation $\vect{X}(\vect{x},t)$ mapping material points $\vect{X}$ to the Eulerian coordinate position they occupy at time $t.$  To illustrate the difference, consider velocity. The velocity of a material point $\vect{X}(\vect{x_0},t)$ is given by $\eval{\ppp{t}\vect{X}(\vect{x},t)}_{\vect{x_0}} = \vect{v}(\vect{X}\left(\vect{x_0},t),t\right)$
+
+Let $\vect{F}$ be some property of a fluid at some material point $\vect{X}\in\Omega$ at time $t>0$. $\vect{F}$ depends on $\vect{X},$ i.e. which material point one chooses and time $t$ as material point may interact with other points and lose/gain the property over time. Hence the property $\vect{F}$ following a material point varies with the point's Eulerian coordinate and time, i.e. $\vect{F}=\vect{F}(\vect{x},t).$ The rate of change of $\vect{F}$ following the material point is
 \eqn{
     \ddd{t}\vect{F} &= \ppp{t}\vect{F} + \sum_{i=1}^n\ppp{x_i}\vect{F}\partial_t x_i
     \\
     \material\vect{F} &\defeq\ppp{t}\vect{F} + (\vect{v}\cdot\grad)\vect{F}
 }
 Another way to think of the time rate of change of property $\vect{F}$ as one follows a material point is the following: $\ppp{t}\vect{F}$ is the time rate of change of $\vect{F}$ at fixed position $\vect{x},$ and $\ppp{x_i}\vect{F}\partial_t x_i$ is the rate of change of $\vect{F}$ as one would travel in the direction $i$ multiplied by how fast the material point is travelling in said direction $i.$
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Reynolds Transport Theorem (RTT)}
-RTT relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
-For some property $\phi(\vect{x},t)$,
 
+Consider two points, $\vect{x_0},\,\vect{x_0}+\vect{h}$, in a flow at time $t=0$. We call the matrix $J$ the Jacobian of $\vect{X}$ (Lagrangian coordinate) with respect to $\vect{x}$ (Eulerian coordinate).
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+    J(x_0,t) = \left[J_i_j\right] =
+    \lim_{\abs{h}\to0}\frac{X_i(x_0_j+h_j,t) - X_i(x_0_j,t)}{\abs{h}} = \eval{\ppp{x_j}X_i(\vect{x},t)}_{\vect{x}=\vect{x_0}}
 }
-For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\vect{x},t)$ about $\phi(\vect{x},t)$
+An infinitesimal line element $\der V$ at time $t=0$ is stretched to $\det(J)\der V$ at time $t$. Consider the material derivative of the Jacobian. \todo{}
 \eqn{
-    \phi(\vect{x},t+\Delta t) = \phi(\vect{x},t)+\Delta t\ppp{t}\phi(\vect{x},t) + \mathcal{O}(\Delta t^2)
+    \ppp{t}\det(J) =& \ppp{t}\det\left(\ppp{x_j}X_i\right)
+    = \sum_{i,j}\frac{\partial\det(J)}{\partial J_{ij}}\ppp{t}\frac{\partial X_i}{\partial x_j}
+    = \sum_{i,j}\frac{\partial\det(J)}{\partial J_{ij}}\frac{\partial v_i}{\partial x_j}\\
+    =&\sum_{i,j}\frac{\partial\det(J)}{\partial J_{ij}}
+        \left(\sum_k\frac{\partial v_i}{\partial X_k}\frac{\partial X_k}{\partial x_j}\right)
+    = \sum_{i,k}\frac{\partial v_i}{\partial X_k}
+        \left(\sum_j\frac{\partial\det(J)}{\partial J_{ij}}\frac{\partial X_k}{\partial x_j}\right)
 }
-Substituting,
-\eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V &= \lim_{\Delta t\rightarrow 0}
-    \int_{\Omega(t+\Delta t)}\ppp{t}\phi(\vect{x},t)\der V + 
-    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V + \mathcal{O}(\Delta t^2)}{\Delta t}
-     \\
-    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0} + 
-    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
-}
-We can approximate the difference between the integrals using a Taylor approximation (see appendix for more details).
-\eqn{
-    \int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V = \int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}\der A + \int_{\partial\Omega(t)}\phi(\vect{x},t)(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\der A + \mathcal{O}(\Delta t^3)
-}
-where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\der A\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\der A\subset\partial\Omega(t)$ throughout the volume $\der A(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
-\eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
-    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0}
-    \dfrac{\int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}dA+\mathcal{O}(\Delta t^2)}{\Delta t} \\
-    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
-}
-$\ppp{t}\phi$ is the local the rate of production (or accumulation) of $\phi.$ It accounts for the effects of change in $\phi$ in the interior of the domain (say due to creation/dissipation or advection/diffusion). The divergence term accounts for the capture or loss of $\phi$ by the motion of the control surface. If $\Omega(t)$ is a material volume then, $\vect{v_c}=\vect{v},$ at all points in $\partial\Omega(t)$. Hence, the final form of the Reynolds Transport Theorem for material volumes $\Omega(t)$ is:
-\eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
-    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\der A
-}
-Applying Gauss' law,
-\eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
-    &= \int_{\Omega(t)}\ppp{t}\phi+\del\cdot(\vect{v}\phi)\der V
-}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuity/ Mass Conservation}
-Since a material volume always contains the same fluid elements, time rate of change of total mass in a material volume should be zero.
-\begin{equation}
-\begin{split}
-    m(t) &= \int_{\Omega}\rho\der V \\
-    0 &= \ddd{t}m = \int_{\Omega}\ppp{t}\rho +
-    \del\cdot(\rho\vect{v}) \der V
-\end{split}
-\end{equation}
-Since the integral is zero for arbitrary material volumes, the integrand must be zero.
-\begin{equation}
-\begin{split}
-    \ppp{t}\rho + \del\cdot(\rho\vect{v}) &= 0 \\
-    \material\rho = \ppp{t}\rho + (\vect{v}\cdot\del)\rho &= -\rho(\del\cdot\vect{v})
-\end{split}
-\end{equation}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Stress}
@@ -191,9 +149,8 @@ We call $\vect{\tau}$ the traction vector and $\tensor{\sigma}$ the stress tenso
 \eqn{
     \vect{\tau}(\vect{x},t,\uvect{n}) = \tensor{\sigma}(\vect{x},t)\cdot\uvect{n}
 }
-\hl{We now show that the stress tensor is symmetric.}
-\subsection{Fluid at Rest}
-% explain why pressure is a thing.
+\todo{We now show that the stress tensor is symmetric.}
+\subsection{Pressure}
 Since a fluid continuously deforms under shear stress, a static, non-deforming fluid element in consequently under no shear stress. Hence for an arbitrary surface element in a fluid at rest, stress is in the normal direction. From equilibrium arguments, it can be proven that stress in a fluid at rest is isotropic.
 \begin{equation}
 \begin{split}
@@ -211,7 +168,7 @@ We still need to relate the stress tensor to the flow field. The \textit{Newtoni
 \end{enumerate}
 From the first assumption, we have $\sigma_{ij}=\mathrm{K}_{ijkl}e_{kl}$ where $\mathrm{K}$ is a fourth order tensor.
 
-\hl{derive}
+\todo{derive}
 \begin{equation}
 \begin{split}
 \tensor{\sigma}&= -p\tensor{\delta}+\tensor{\tau_v} \\
@@ -220,7 +177,70 @@ From the first assumption, we have $\sigma_{ij}=\mathrm{K}_{ijkl}e_{kl}$ where $
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Momentum Conservation}
+\section{Reynolds Transport Theorem (RTT) and Consequences}
+RTT relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
+For some property $\phi(\vect{x},t)$,
+
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+}
+For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\vect{x},t)$ about $\phi(\vect{x},t)$
+\eqn{
+    \phi(\vect{x},t+\Delta t) = \phi(\vect{x},t)+\Delta t\ppp{t}\phi(\vect{x},t) + \mathcal{O}(\Delta t^2)
+}
+Substituting,
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V &= \lim_{\Delta t\rightarrow 0}
+    \int_{\Omega(t+\Delta t)}\ppp{t}\phi(\vect{x},t)\der V + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V + \mathcal{O}(\Delta t^2)}{\Delta t}
+     \\
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+}
+To explain the thought process, WLOG let $\phi=1$. We are looking for the difference in volume between the two integrals. That is equal to the net volume that the boundary has expanded into. For an infinitesimal patch $\der A$ on $\partial\Omega$ (containing point $\vect{x}$, and with outward normal $\uvect{n}$), that is
+\eqn{
+    \left(\vect{x}(t+\Delta t)-\vect{x}(t)\right)\cdot\uvect{n}\der A
+}
+Capturing the difference with a Taylor expansion and integrating over $\partial\Omega$, we get
+\eqn{
+    \int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V =
+    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\Delta t\vect{v_c})\cdot\uvect{n}\der A +
+    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\der A + \mathcal{O}(\Delta t^3)
+}
+where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\der A\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\der A\subset\partial\Omega(t)$ throughout the volume $\der A(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \lim_{\Delta t\rightarrow 0}
+    \dfrac{\int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}dA+\mathcal{O}(\Delta t^2)}{\Delta t} \\
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
+}
+$\ppp{t}\phi$ is the local the rate of production (or accumulation) of $\phi.$ It accounts for the effects of change in $\phi$ in the interior of the domain (say due to creation/dissipation or advection/diffusion). The divergence term accounts for the capture or loss of $\phi$ by the motion of the control surface. If $\Omega(t)$ is a material volume then, $\vect{v_c}=\vect{v},$ at all points in $\partial\Omega(t)$. Hence, the final form of the Reynolds Transport Theorem for material volumes $\Omega(t)$ is:
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi(\vect{x},t)\der V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\der A
+}
+Applying Gauss' law,
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V 
+    &= \int_{\Omega(t)}\ppp{t}\phi+\del\cdot(\vect{v}\phi)\der V \\
+    &= \int_{\Omega(t)}\material\phi+\phi(\del\cdot\vect{v})\der V \\
+}
+Since a material volume always contains the same fluid elements, time rate of change of total mass in a material volume should be zero.
+\begin{equation}
+\begin{split}
+    m(t) &= \int_{\Omega}\rho\der V \\
+    0 &= \ddd{t}m = \int_{\Omega}\ppp{t}\rho +
+    \del\cdot(\rho\vect{v}) \der V
+\end{split}
+\end{equation}
+Since the integral is zero for arbitrary material volumes, the integrand must be zero.
+\begin{equation}
+\begin{split}
+    \ppp{t}\rho + \del\cdot(\rho\vect{v}) &= 0 \\
+    \material\rho = \ppp{t}\rho + (\vect{v}\cdot\del)\rho &= -\rho(\del\cdot\vect{v})
+\end{split}
+\end{equation}
+
 Let $\vect{p}(t)$ denote the total momentum of a fluid element.
 \begin{equation}
 \begin{split}
@@ -256,8 +276,8 @@ Since the integral is zero for an arbitrary domain (fluid element) $\Omega(t),$ 
 \\
 \rho(\ppp{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= \rho\vect{g} - \del p + \mu\del^2\vect{v} + (\mu+\lambda)\del(\del\cdot\vect{v})
 }
+We have arrived at the Navier-Stokes equations.
 %-------------------------------------------------------------------------
-\subsection{Divergence of Momentum Equation}
 Take the divergence of the momentum equation.
 \eqn{
 \rho(\ppp{t}(\del\cdot\vect{v})+ \grad\vect{v}:\grad\vect{v}^\transp + (\vect{v}\cdot\grad)(\del\cdot\vect{v})) &= \rho(\del\cdot\vect{g}) - \del^2 p + \mu\del^2(\del\cdot\vect{v}) + (\mu+\lambda)\del^2(\del\cdot\vect{v})
@@ -269,7 +289,6 @@ where $\tensor{A}:\tensor{B}=A_{ij}B_{ji}$ is the double dot product. This equat
 -\del^2p = \rho(\grad\vect{v}:\grad\vect{v}^\transp - \del\cdot\vect{g})
 }
 %-------------------------------------------------------------------------
-\subsection{Vorticity Equation}
 We take the curl of the momentum equation. Define $\vect{\omega}=\del\cross\vect{v}$
 \eqn{
 \del\cross\rho(\ppp{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= 
@@ -280,4 +299,26 @@ We take the curl of the momentum equation. Define $\vect{\omega}=\del\cross\vect
 \\
 \grad\rho\cross(\material\vect{v}-\vect{g}) + \rho\material\vect{\omega} + \epsilon_{ijk}v_{l,i}v_{j,l} &=
 \del\cross\vect{g} + \mu\del^2\vect{\omega} + \epsilon_{ijk}(-p+(\del\cdot\vect{v}))_{,ji}
+}
+
+We explore energy conservation properties of the incompressible Navier Stokes equations. Define the energy in a fluid element $\Omega(t)$ as $\mathcal{E}=\int_{\Omega(t)}\frac{1}{2}\rho\abs{\vect{v}}^2\der\vect{x}$. Then,
+\eqn{
+    \ddd{t}\mathcal{E}
+    &=\ddd{t}\int_{\Omega(t)}\frac{1}{2}\rho v_jv_j\der\vect{x}
+     =\int_{\Omega(t)}\frac{1}{2}\rho\material(v_jv_j)\der\vect{x}\\
+    &=\int_{\Omega(t)}\rho \vect{v}^\transp\material(\vect{v})\der\vect{x}
+     =\int_{\Omega(t)}\vect{v}^\transp\left(-\grad p + \mu\del^2\vect{v}\right)\der\vect{x}\\
+    &=\int_{\Omega(t)}-\del\cdot(p\vect{v}) + \mu v_jv_{j,ii} \der\vect{x}\\
+    &=\int_{\Omega(t)}-\del\cdot(p\vect{v}) + \mu\left( (v_jv_{j,i})_{,i} -v_{j,i}v_{j,i} \right)  \der\vect{x}\\
+    &=\int_{\partial\Omega(t)} \vect{v}\cdot\left( -p\uvect{n}+ \mu\uvect{n}\cdot\grad\vect{v} \right) \der\vect{x} - \int_{\Omega(t)}\mu v_{j,i}v_{j,i}\der\vect{x}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Stokeslet and Stresslets}
+We discuss properties of fundamental solution to the Stokes equation.
+\eqn{
+    \label{eqn:stokes_steady}
+    \grad p - \mu\del^2\vect{v} &= \vect{f}\cdot\delta(\vect{x})\\
+    \grad\cdot\vect{v} &= 0
 }

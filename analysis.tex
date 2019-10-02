@@ -1,22 +1,62 @@
 \chapter{Analysis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{basic}
+\section{Basics, $\mathbb{R}$}
 Relations, Sets, and Functions
 
-\hl{equivalance relations, functions (one-one, onto), fields, order, vector spaces}
+\begin{definition}[Relation]
+    A relation $\sim$ (or $R$) on nonempty set $X$ is a subset of the set $X\cross X$. For $a,\,b\in X$, if $a\sim b$, then $(a,b)\in R$.
+\end{definition}
 
-\hl{pigeonhole principle}
+Properties of relations: $\forall a,\,b\,c\in X,$
+\begin{enumerate}
+    \item Reflexive: $a\sim a$
+    \item Symmetric: $a\sim b \iff b\sim a$
+    \item Transitive:
+        \eqn{
+            \left.
+            \begin{split}
+                a\sim b\\
+                b\sim c
+            \end{split}
+            \right\}\implies a\sim c
+        }
+    \item Antisymmetric:
+        \eqn{
+            \left.
+            \begin{split}
+                a\sim b\\
+                b\sim a
+            \end{split}
+            \right\}\implies a = b
+        }
+\end{enumerate}
 
-\hl{$\mathbb{Q}$}
+A relation that is reflexive, symmetric, and transitive is called equivalent relation. For $a\in X,$ the equivalent class of $a$ is
+\eqn{
+    \left[a\right]\defeq\left\{ x\in X | a\sim x \right\}\hspace{1em}
+}
+Equivalent classes of elements in $X$ form a partition of $X.$ An ordered relation is a relation that is reflexive, transitive, and antisymmetric, usually denoted by $\leq.$
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{$\mathbb{R}$}
+\todo{functions (one-one, onto), fields, ordered fields, vector spaces}
 
-\subsection{Construction: Dedekind's Cuts}
-\hl{todo} The completion of $\mathbb{Q}$
+\begin{theorem}[Pigeonhole Principle]
+    If $n$ items are put into $m$ containers, with $n>m$, then there exists at least one container with more than one item.
+\end{theorem}
 
-\subsection{Properties}
+\begin{theorem}
+    For $a\in\mathbb{R}\setminus\mathbb{Q}$, the set $[na]=\left\{[na]|\n\in\mathbb{N}\right\}$ of fractional parts is dense in $[0,1]$.
+\end{theorem}
+\begin{proof}
+    Fix $\epilon>0$. In this proof, $[\cdot]$ denotes the the fractional part of the argument. We aim to show that for every $x\in[0,1]\exists n\st \abs{x-[na]}<\epsilon$. Starting with $x=0,$ fix $M\st\frac{1}{M}<\epsilon.$ If $[0,1]$ is partitioned into $M$ panels of size $\frac{1}{M}$, then, by the Pigeonhole principle, $\exists n_1,\,n_2\in\{1,\dotsc,M+1\}\st$ $[n_1a],\,[n_2a]$ lie in the same panel. $\implies [(n_2-n_1)a]<\frac{1}{M}<\epsilon.$ Hence $0$ is a limit point of $[na]$.
+    
+    Now consider $x\in(0,1]$. Find $n\st[na]<\frac{1}{M}<\epsilon$. If $x\in[0,\frac{1}{M}],$ we are done. Else, let $x$ belong to the $j^\mathrm{th}$ panel: $x\in[\frac{j}{M},\frac{j+1}{M}]$. Since $[na]<\frac{1}{M},\exists p\in\mathbb{N}\st p[na]$ belongs to the $(j-1)^\mathrm{th}$ panel. Setting $p=\sup\{s\in\mathbb{N}|s[na]<\frac{j}{M}\}$. $\implies \abs{x - [(p+1)na]}<\frac{1}{M}<\epsilon.$
+\end{proof}
+
+\todo{$\mathbb{Q}$}
+\todo{Construction: Dedekind's Cuts}
+\todo{The completion of $\mathbb{Q}$}
+
 \begin{theorem}[Archimedean Property]
    $\forall x,y\in\mathbb{R}^+\,\exists N\in\mathbb{N}:y<nx$ 
 \end{theorem}
@@ -74,9 +114,46 @@ An ordered set satisfies the completeness axiom if every subset $S$ that is boun
 
 \end{proof}
 
-\subsection{Extended Real Line: $\mathbb{R}\cup\{-\infty,\infty\}$}
-\hl{todo}
+We define the following for $x,y\in\mathbb{R}$
+\eqn{
+    \abs{x} &=\left\{
+        \begin{split}
+             x,\hspace{1em} x>0\\
+            -x,\hspace{1em} x>0\\
+        \end{split}
+        \right.\\
+    \min(x) &= \frac{x+y-\abs{x-y}}{2}\\
+    \max(x) &= \frac{x+y+\abs{x-y}}{2}\\
+}
 
+\begin{definition}[Extended Real Line]
+We define $\infty\defeq\sup\mathbb{R}$ and $-\infty\defeq\inf\mathbb{R}$, and call $\mathbb{R}\cup\left\{ -\infty,\infty\right\}$ the extended real line.
+\end{definition}
+
+\begin{theorem}[Existence of $n^\mathrm{th}$ root]
+    $\forall a\in\mathbb{R}^+,\exists b\in\mathbb{R}+\st b^n=a$
+\end{theorem}
+\begin{proof}
+    \underline{Uniqueness:} Say $b^n=c^n=a.$
+    \eqn{
+        \implies 0 &= b^n-a^n = (b-c)\left(b^{n-1}+ ab^{n-2}+\dotsb+a^{n-1}\right)\\
+    }
+    Since $a,\,b,\,c>0,$ $b-c=0$.
+    \underline{Existence:} Consider the function $f:[0,a+1]\to\mathbb{R}$
+    \eqn{
+        f(x) &= x + \frac{a-x^n}{n(a+1)^{n-1}}\\
+    }
+    Observe that $f(x)$ is increasing, and that all fixed points of $f$ satisfy $x=a^n$. To prove that $f$ is increasing, let $0<x\leq y\leq a+1$
+    \eqn{
+        f(y)-f(x) &= (y-x) - \frac{y^n-x^n}{n(a+1)^{n-1}} \\
+        &= (y-x)\left(1 - \frac{\sum_{k=0}^{n-1}x^{k}y^{n-1-k}}{n(a+1)^{n-1}}\right)\\
+        &\geq 0\\
+    }
+    Now we eliminate $x=0,\,a+1$ as fixed points, and apply the fixed point theorem.
+    \eqn{
+        0 < f(0) &= \frac{a}{n(a+1)^{n-1}} < f(a+1) = \frac{(n-1)(a+1)^n+a}{n(a+1)^{n-1}} < \frac{(n-1)(a+1)^n+(a+1)^n}{n(a+1)^{n-1}} = a+1
+    }
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sequences}
@@ -196,7 +273,7 @@ We will consider sequences of real numbers under the absolute value norm. Below 
     
     \item
     \begin{theorem}[Monotone Convergence Theorem]
-    For $a_n$ bounded and monotone, $a_n\nearrow\sup\{a_n\}_n$ or $a_n\searrow\inf\{a_n\}$. (Note on notation: $a_n\nearrow L \iff a_n \text{ is a monotone sequence }, a_n\rightarrow L.$)
+    For $a_n$ bounded and monotone, $a_n\nearrow\sup\{a_n\}_n$ or $a_n\searrow\inf\{a_n\}$. (Note on notation: $a_n\nearrow L \iff a_n \text{ is a monotone increasing sequence }, a_n\rightarrow L.$)
     \end{theorem}
     \begin{proof}
         Consider the case when $a_n$ is a monotone increasing sequence. The assumption is without loss of generality, for if $a_n$ is monotone decreasing, we consider $-a_n$ and prove its convergence to $\sup\{-a_n\}_n=-\inf\{a_n\}_n.$ By the least upper bound property, we have a unique $L\defeq\sup\{a_n\}_n.$ We aim to prove that $\forall\epsilon>0\exists N\st\forall n>N,\abs{L-a_n}<\epsilon.$ If the statement is not true, then $\exists\epsilon_0>0\st\forall k\exists n_k>k,\abs{L-a_{n_k}}\geq\epsilon_0.$ Since $a_k\nearrow,$ we have $\forall k, a_k\leq a_{n_k}\leq L-\epsilon_0\implies (L-\epsilon_0)<L$ is an upper bound for $\{a_n\}.\contradiction$
@@ -219,45 +296,177 @@ We will consider sequences of real numbers under the absolute value norm. Below 
 \begin{example}
     $a_n=\sqrt[n]{n}$.
     
-    For $n>1\implies \sqrt[n]{n}>\sqrt[n]{1}=1$. For $h_n>0$, let $a_n=1+h_n.$
+    For $n>1\implies \sqrt[n]{n}>\sqrt[n]{1}=1$. For $h_n>0$, let $a_n=1+h_n.$ We aim to show that $h_n\to0$.
+    \eqn{
+        \implies n &= a_n^n = (1+h_n)^n = 1 + nh_n + \frac{n(n-1)}{2}h_n^2++\frac{n(n-1)(n-2)}{3!}h_n^3\dotsb\\
+        &\geq 1 + \frac{n(n-1)}{2}h_n^2
+    }
+    We get $h_n^2 \leq \frac{2}{n}\implies h_n\to0.$
 \end{example}
 
 \begin{example}
-    $a_n=\dfrac{a^n}{n!}$
+    $a_n=\dfrac{a^n}{n!}$ for fixed $a>0$.
+    
+    We consider the ration $\dfrac{a_{n+1}}{a_n} = \dfrac{a}{n+1}<1$ for large enough $n$.
+    \eqn{
+        \left.\begin{split}
+            &(a_n)_{n>n_0}\searrow\\
+            &\forall n, a_n > 0\\
+        \end{split}\right\}\implies a_n\to L \defeq\inf(a_n) \geq 0
+    }
+    If $L>0,\,\dfrac{a_{n+1}}{a_n}\xrightarrow{n}\dfrac{L}{L}=1=0\xleftarrow{n}\dfrac{a}{n+1}\contradiction$. Therefore, $L=0.$
 \end{example}
 
 \begin{example}[Decimal Expansion]
-
+    Given $d_0\in\mathbb{Z},(d_n)_{n>0}\in\left\{0,1,2,\dotsc,9\right\}$, consider
+    \eqn{
+        s_n &= \sum_{i=0}^n \frac{d_i}{10^i}
+    }
+    The sequence is monotonically increasing, and
+    \eqn{
+        d_0 &\leq s_n \leq s_\infty = d_0 + \sum_{i=1}^\infty\frac{d_i}{10^i} \leq d_0 + 9\sum_{i=1}^\infty\frac{1}{10^i} \leq d_0 + 9\left(\frac{1}{1-\frac{1}{10}}-1\right) = d_0 + 1
+    }
+    \eqn{
+        \left.
+        \begin{split}
+            d_0 \leq s_n \leq d_0+1 \\
+            s_n \nearrow \\
+        \end{split}
+        \right\}\implies s_n \mathrm{convergent}
+    }
+    Hence, $s\defeq\lim_n s_n = d_0.d_1d_2\dotso\in\left[d_0,d_0+1\right]$. This representation is not unique as
+    \eqn{
+        0.99\dotso = \sum_{i=1}^\infty\frac{9}{10^i} = 9\left(\frac{1}{1-\frac{1}{10}}-1\right) = 1.00\dotso
+    }
+    We can recapture the digits in $s$ as follows: $d_0=\floor{s}$. Define $T(x)=\floor{10(s-d_0)}$. Now, $d_1 = T^1(s),\, d_n = T^n(x)$
 \end{example}
 
-\begin{definition}[Cauchy Sequences]
+\begin{definition}[Cauchy Sequence]
     \eqn{
         a_n \text{Cauchy sequence} \iff\forall\epsilon>0\exists N\st\forall m,\,n>N,\abs{a_m-a_n}<\epsilon
     }
 \end{definition}
+The elements in the tail of a cauchy sequence get arbitrarily close to each other. $\forall k,\abs{a_n - a_{n+k}}\xrightarrow{n}0$
 
-\newpage
+\begin{proposition}
+    $a_n$ convergent $\implies$ $a_n$ cauchy
+\end{proposition}
+\begin{proof}
+    Suppose $a_n\to L$. Fix $\epilon > 0$, and sufficiently large $m,n$, we get $a_m,a_n\in B(L,\frac{\epsilon}{2})\implies$ maximum distance between $a_m,a_n$ is equal to the diameter of the ball. $\implies \abs{a_m-a_n}<\epilon$.
+\end{proof}
+
+\begin{example}[Harmonic Series]
+    $s_n = 1 + \frac{1}{2} +\dotsb+\frac{1}{n}$.
+    
+    Clearly $s_{n+k}-s_n = \sum_{i=1}^k\frac{1}{n+i}$.
+    \eqn{
+        \implies s_{2n} - s_n &= \sum_{i=1}^n\frac{1}{n+i} \geq n \frac{1}{2n} = \frac{1}{2}
+    }
+    Since $s_n$ is not a cauchy sequence, it is not convergent either. And since, $s_n\nearrow$, $s_n$ diverges to infinity.
+\end{example}
+
+\begin{example}
+    $s_n = 1 + \frac{1}{n^2} + \dotsb + \frac{1}{n^2}$
+    
+    Clearly, $s_n\nearrow.$ We try to find an upper bound for $s_n$
+    \eqn{
+        s_n &< 1 + \sum_{i=1}^n\frac{1}{i(i-1)} = 1 + \sum_{i=1}^n\frac{1}{i-1} - \frac{1}{i}\\
+        &= 1 + \left(\frac{1}{1}-\frac{1}{2}\right) + \left(\frac{1}{2}-\frac{1}{3}\right) + \left(\frac{1}{3}-\frac{1}{4}\right) + \dotsb + \left(\frac{1}{n-2}-\frac{1}{n-1}\right) + \left(\frac{1}{n-1}-\frac{1}{n}\right) 
+        &= 2 - \frac{1}{n}
+    }
+    Hence, $s_n$ convergent, and therefore cauchy.
+\end{example}
+
+\begin{example}
+    $a_n = \rt{n}{n!}$
+    
+    We aim to show that the tail of $a_n$ is larger than any arbitrarily chosen real. To do so, fix integer $M>1$. Now, $\forall n>2M,$
+    \eqn{
+        n! &= 1\cdot2\dotsb M\cdot(M+1)\dotsb(2M) \\
+        a_n &\geq M^{\frac{n-M}{n}} = M\frac{1}{\rt{n}{M^M}}
+    }
+    As $\rt{n}{M^M}\to1,\exists N>2M\st\forall n>N\rt{n}{M^M}>\frac{1}{2}$. Therefore, $\forall n>N,a_n>\dfrac{M}{2}$.
+\end{example}
+
+\begin{example}
+    $s_n=s_n(x)=1+\dfrac{x}{1}+\dfrac{x^2}{2}+\dotsb\dfrac{x^n}{n!}$
+    
+    \eqn{
+        s_{n+k}-s_n &= \sum_{i=1}^k\frac{x^{n+i}}{(n+i)!}
+        = \frac{x^{n+1}}{(n+1)!}\left( 1 + \frac{x}{n+2} + \frac{x^2}{(n+2)(n+3)}+\dotsb+\frac{x^{k-1}}{(n+2)\dotsb(n+k)} \right) \\
+        \abs{s_{n+k}-s_n} &\leq \frac{\abs{x}^{n+1}}{(n+1)!} \left( 1 + \frac{\abs{x}}{n+2} + \frac{\abs{x}^2}{(n+2)^2}+\dotsb+\frac{\abs{x}^{k-1}}{(n+2)^{k-1}} \right) \\
+        &\leq \frac{\abs{x}^{n+1}}{(n+1)!}\sum_{j=0}^\infty\left(\frac{\abs{x}}{n+2}\right)^j\\
+        &= \frac{\abs{x}^{n+1}}{(n+1)!}\frac{1}{1-\frac{\abs{x}}{n+2}}
+        \\
+    }
+    We look at the upper bound in the limit $n\to\infty.$
+    \eqn{
+        \lim_n \frac{\abs{x}^{n+1}}{(n+1)!}\frac{1}{1-\frac{\abs{x}}{n+2}} &=
+        \lim_n\frac{\abs{x}^{n+1}}{(n+1)!}\lim_n\frac{1}{1-\frac{\abs{x}}{n+2}} = 0\cdot1 = 0
+    }
+    Hence $s_n$ is cauchy and therefore convergent.
+\end{example}
+
+\begin{theorem}
+    Cauchy $\implies$ bounded.
+\end{theorem}
+\begin{proof}
+    Fix $\epsilon>0$. For cauchy sequence $a_n,\exists N\st\forall n>N,\forall k,\abs{a_{n+k}-a_n}<\epsilon$. The set $\{a_n\}_{n\in\mathbb{N}}$ lies in the interval $[-M,M]$ where
+    \eqn{
+        M \defeq \max\left(\left\{\abs{a_n}\right\}_{n<N} \cup \left\{\abs{a_N}+\epsilon\right\}\right)
+    }
+\end{proof}
+
+\begin{definition}[Limit Inferior and Limit Superior]
+Let $a_n$ be a sequence.
 \eqn{
-    &\liminf_{x\rightarrow0}\\
-    &\limsup_{x\rightarrow0}
+    \liminf_{x\rightarrow0}&=\lim_{n\to\infty}\sup_{k>n}a_k\\
+    \limsup_{x\rightarrow0}&=\lim_{n\to\infty}\inf_{k>n}a_k\\
 }
-Properties of $\liminf,\limsup$
+Limit inferior, and limit superior, are the limits of the infimum/supremum of the tail of the sequence $(a_k)_{k>n}$ in the limit $n\to\infty$. For every $n$, it is always true that a finite number of elements lie in the discarded part of the sequence, $(k<n)$, and an infinite number of elements lie in the tail, $(k>n)$, and $\liminf,\,\limsup$ are the bounds of the infinitely long tail. Consider $,\forall k,$ the truncated sequence $(a_n)_{n\geq k}$ and the set $A_k\defeq\left\{a_n\right\}_{n\geq k}$. Define $u_k=\inf A_k,\,v_k=\sup A_k$. Because
+\eqn{
+    A_1\supset A_2\supset A_3\dotsb A_{k-1}\supset A_k\\
+}
+we have,
+\eqn{
+    u_1\leq u_2\dotsb u_{k-1}\leq u_k\leq \dotsb \leq v_k \leq v_{k+1} \dotsb\leq v_2\leq v_1
+}
+If $(a_n)$ is bounded, $-\infty<u_1\leq v_1<\infty\implies u_n,v_n$ convergent (by monotone convergence theorem). Therefore,
+\eqn{
+    \liminf_n a_n &= \lim_k u_k = \sup_k u_k\\
+    \limsup_n a_n &= \lim_k v_k = \inf_k v_k\\
+}
+Another way to look at $\liminf,\,\limsup$ is the following: $L_i=\liminf_n a_n$ if
+\begin{enumerate}
+    \item $\forall x<L_i,$ there exist infinite number of $a_n$ greater than $x$
+    \item $\forall x>L_i,$ there exist infinite number of $a_n$ less than $x$
+\end{enumerate}
+\end{definition}
 
-\subsection{Subsequences}
+Some properties of $\liminf,\,\limsup$ are as follows:
+\begin{enumerate}
+    \item $\limsup_n a_n = -\liminf_n(-a_n)$
+    \item $\limsup_n (a_n+b_n) \leq \limsup_n a_n + \limsup_n b_n$ (follows from $\sup(A + B)\leq \sup A + \sup B$)
+\end{enumerate}
+
+\begin{lemma}[Nested Interval Property]
+    Let $I_n=\left[a_n,b_n\right]\subset \mathbb{R}$ be a sequence of intervals such that $I_n$ are nested as follows:
+    \eqn{
+        I_1 \supset I_2 \supset\dotsb \supset I_n \supset \dotsb
+    }
+    Then, $\cap_n I_n \neq \varnothing$. Further, if length of the interval is going to zero with $n,$ i.e., $(b_n-a_n)\to 0$, then $\cap_n I_n = \{x_0\}$ where $a_n,b_n\to x_0$.
+\end{lemma}
+\begin{proof}
+    \todo{}
+\end{proof}
+
 \begin{definition}[Subsequence]
     A subsequence of a sequence $a_n$ is the sequence $(b_k)_k=(a_{n_k})_k$ where $n_\cdot:\mathbb{N}\rightarrow\mathbb{N}$ with the restriction that $\forall k, k\leq n_k.$
 \end{definition}
 
 \begin{definition}[Limit Point]
+    (Also called accumulation point) A limit point $a_n$ is a limit of convergence of a subsequence $(a_{n_k})_k$.
 \end{definition}
-
-Properties of subsequential limits
-\begin{enumerate}
-    \item 
-\end{enumerate}
-
-\begin{lemma}[Nested Interval Property]
-\end{lemma}
 
 \begin{theorem}[Bolzano-Weierstrass]
 \end{theorem}
@@ -265,9 +474,9 @@ Properties of subsequential limits
 \begin{lemma}[Finite intersection property]
 \end{lemma}
 
-\section{Series}
-
-All those tests
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Series}
+\todo{those silly tests}
 
 \begin{theorem}[Rearrangement theorem]
 \end{theorem}
@@ -279,19 +488,17 @@ Summability of infinite matrices
 \begin{theorem}[Summability of infinite matrices]
 \end{theorem}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sets and Metric Spaces}
 
-We restrict ourselves to sets in finite dimensional spaces.
+For now, we restrict ourselves to sets in finite dimensional spaces.
 
 Norm
 
 \begin{theorem}[Cauchy-Schwarz inequality]
 \end{theorem}
 
-Open, closed/ closue, interior, etc.
+Open, closed/ closure, interior, etc.
 
 DeMorgan's Laws (Unions and Intersections)
 
@@ -304,9 +511,7 @@ The Cantor set
     }
 \end{definition}
 
-Precompact, compact, bounded.
-
-explain relation between precompact, compact, bounded, closed in finite dimensions.
+\todo{explain relation between precompact, compact, bounded, and closed in finite dimensions.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Continuous Functions}
@@ -320,7 +525,7 @@ equivalance between different definitions of continuity.
 
 Inverse images
 
-\hl{
+\todo{
 darboux integral, shuffling limits of integrals, prove everything from calculus
 }
 

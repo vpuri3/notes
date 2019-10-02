@@ -2,7 +2,6 @@
 \label{chap:rste}
 We derive the Reynolds stress transport equations (RSTE) that describe the production, transport, and dissipation of energy in fluctuating modes in a flow. Examining the energy budgets of turbulent flows can lead to insights into factors driving turbulence and leading to its decay, spatial distribution, and how energy is transferred between mean and fluctuating modes. The detailed Reynolds stress budgets from DNS provide valuable information on the relative magnitudes of the terms and their possible scaling.
 
-\section{Navier-Stokes Equation}
 Consider the Navier-Stokes equations for incompressible fluid flow:
 \eqn{
     \label{eqn:NS}
@@ -59,7 +58,7 @@ Some properties of Reynolds decomposition are below. Let $\phi$ and $\psi$ be an
         }
 \end{itemize}
 
-\section{Reynolds Stresses}
+\section{Reynolds Stresses and Turbulence Budgets}
 We take the expected value of the continuity equation to find that $\expval{v_i}$ is divergence free.
 \eqn{
     \expval{0} &= \expval{v_{i,i} } \\
@@ -130,7 +129,6 @@ We finally arrive at the tensor equation describing the behaviour of Reynolds St
     \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
     + \dfrac{1}{\text{Re}}\eta_{jk,ii} - \dfrac{2}{\text{Re}}\expval{v'_{j,i}v'_{k,i}}
 }
-\section{Turbulent Kinetic Energy}
 To obtain the equation for Turbulent Kinetic Energy, we consider one-half of the trace of \autoref{eqn:rs} by multiplying with $\frac{1}{2}\delta_{ij}.$
 \eqn{
     \label{eqn:tke}
@@ -146,7 +144,6 @@ To obtain the equation for Turbulent Kinetic Energy, we consider one-half of the
     &=
      - \expval{p'_{,j}v'_j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
 }
-\section{RSTE Budgets}
 \autoref{eqn:rs} and \autoref{eqn:tke} describe the generation, transport and decay of Reynolds stresses in a flow. For each $\eta_{ik}$ in the symmetric Reynolds stress tensor, and for $k,$ we label the terms in \autoref{eqn:rs} and \autoref{eqn:tke}.
 \begin {table}[H]
 \centering  \caption{Budgets for Reynolds Stresses}
