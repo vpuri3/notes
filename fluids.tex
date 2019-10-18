@@ -6,11 +6,8 @@ A fluid is a material that deforms continuously under action of a shear stress, 
 \eqn{
     \text{De} = \frac{\lambda_\text{relax}}{t_\text{obs}}
 }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Continuum Assumption}
 We tend to neglect the discrete, molecular nature of matter and treat the fluid to be made of a ``continuum". Macroscopic properties such as density and velocity are taken to be well defined for infinitesimal volume elements --small in comparison to system lengthscale but larger in comparison to molecular lengthscales. Fluid properties can vary continuously from one volume element to another and are average values of the molecular properties.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Control and Material Volumes}
+
 To derive the equations governing viscous fluid flow, we have to consider the time rate of change of quantities/properties in fluid control volumes. A control volume is an arbitrarily defined volume with a closed bounding surface. A material volume is a control volume that contains the same particles of matter at all times. A particular material volume may be defined by the closed bounding surface that envelops its material particles at a certain time. Hence, the velocity of the surface at every point is equal to the flow velocity at that point. The term ``fluid element" is synonymous with a material volume.
 
 We consider two perspectives to view motion in a continuum: the \textbf{Lagrangian} perspective expresses position, velocity and other state variables in terms of material points travelling with a fluid; the \textbf{Eulerian} perspective expresses fluid properties with respect to some reference coordinate system. The time evolution of the position of the material point $\vect{X}$ can be tracked on an Eulerian coordinate system with a vector $\vect{x}(\vect{X},t).$ Since only one material point can be located at an Eulerian coordinate at a given time, there exists an inverse relation $\vect{X}(\vect{x},t)$ mapping material points $\vect{X}$ to the Eulerian coordinate position they occupy at time $t.$  To illustrate the difference, consider velocity. The velocity of a material point $\vect{X}(\vect{x_0},t)$ is given by $\eval{\ppp{t}\vect{X}(\vect{x},t)}_{\vect{x_0}} = \vect{v}(\vect{X}\left(\vect{x_0},t),t\right)$
@@ -149,8 +146,7 @@ We call $\vect{\tau}$ the traction vector and $\tensor{\sigma}$ the stress tenso
 \eqn{
     \vect{\tau}(\vect{x},t,\uvect{n}) = \tensor{\sigma}(\vect{x},t)\cdot\uvect{n}
 }
-\todo{We now show that the stress tensor is symmetric.}
-\subsection{Pressure}
+\todo{We show that the stress tensor is symmetric.}
 Since a fluid continuously deforms under shear stress, a static, non-deforming fluid element in consequently under no shear stress. Hence for an arbitrary surface element in a fluid at rest, stress is in the normal direction. From equilibrium arguments, it can be proven that stress in a fluid at rest is isotropic.
 \begin{equation}
 \begin{split}
@@ -159,7 +155,7 @@ Since a fluid continuously deforms under shear stress, a static, non-deforming f
 \end{split}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Stress Tensor for Newtonian Fluids}
+
 We still need to relate the stress tensor to the flow field. The \textit{Newtonian Model} is based on the following assumptions:
 \begin{enumerate}
     \item shear stress is proportional to the rate of shear strain in a fluid particle;
@@ -177,8 +173,8 @@ From the first assumption, we have $\sigma_{ij}=\mathrm{K}_{ijkl}e_{kl}$ where $
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Reynolds Transport Theorem (RTT) and Consequences}
-RTT relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
+\section{Reynolds Transport Theorem and Consequences}
+Reynolds Transport Theorem (RTT) relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
 For some property $\phi(\vect{x},t)$,
 
 \eqn{
@@ -300,6 +296,9 @@ We take the curl of the momentum equation. Define $\vect{\omega}=\del\cross\vect
 \grad\rho\cross(\material\vect{v}-\vect{g}) + \rho\material\vect{\omega} + \epsilon_{ijk}v_{l,i}v_{j,l} &=
 \del\cross\vect{g} + \mu\del^2\vect{\omega} + \epsilon_{ijk}(-p+(\del\cdot\vect{v}))_{,ji}
 }
+
+
+Informally, the Laplacian operator $\del^2$ gives the difference between the average value of a function in the neighborhood of a point, and its value at that point. Thus, if $u$ is the temperature, $\del^2 u$ tells whether (and by how much) the material surrounding each point is hotter or colder, on the average, than the material at that point.
 
 We explore energy conservation properties of the incompressible Navier Stokes equations. Define the energy in a fluid element $\Omega(t)$ as $\mathcal{E}=\int_{\Omega(t)}\frac{1}{2}\rho\abs{\vect{v}}^2\der\vect{x}$. Then,
 \eqn{

@@ -1,7 +1,7 @@
-\chapter{Analysis}
+\chapter{Analysis Repository}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Basics, $\mathbb{R}$}
+\section{$\mathbb{R}$}
 Relations, Sets, and Functions
 
 \begin{definition}[Relation]
@@ -489,7 +489,7 @@ Summability of infinite matrices
 \end{theorem}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Sets and Metric Spaces}
+\section{Sets, Spaces and Functions}
 
 For now, we restrict ourselves to sets in finite dimensional spaces.
 
@@ -511,21 +511,63 @@ The Cantor set
     }
 \end{definition}
 
-\todo{explain relation between precompact, compact, bounded, and closed in finite dimensions.}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continuous Functions}
-We consider functions between metric spaces.
+The spirit of compactness is ``any bounded sequence has a convergent subsequence.''
 
 \begin{definition}[Continuity]
     We say a function $f:X\rightarrow Y$ is continuous at $x_0\in X$
 \end{definition}
+\begin{definition}[Compact Set]
+    A set
+\end{definition}
+\begin{definition}[Precompact Set]
+    A set in a normed vector space $X$ is precompact (also called relatively compact set) if its closure is compact.
+\end{definition}
 
 equivalance between different definitions of continuity.
-
-Inverse images
 
 \todo{
 darboux integral, shuffling limits of integrals, prove everything from calculus
 }
 
+\begin{definition}[Fixed Point Theorem]
+    A \textbf{fixed point} of $T:X\rightarrow X$ is an element $x_0\in X\st T(x_0)=x_0$. A fixed point is \textbf{globally attracting} if $\forall x\in X, T^n(x)\xrightarrow{n}x_0$
+\end{definition}
+We call $T$ a \textbf{contraction} if $\forall x_1,x_2\in X, d(Tx_1,Tx_2)\leq \al d(x_1,x_2),\al\in[0,1)$
+\begin{theorem}[Contraction Mapping Principle]
+    For a contraction map $T:X\rightarrow X$ on a complete metric space $X$, there exists a unique fixed point $x_0\in X$. The fixed point is globally attracting with geometric convergence rate.
+\end{theorem}
+\begin{proof}
+    Uniqueness: Suppose $x_1,x_2\in X\st x_1=Tx_1,\,x_2=Tx_2$. Then $T$ is no longer a contraction since $d(Tx_1,Tx_2)=d(x_1,x_2)$.
+    
+    $\forall x\in X$, we show that the sequence $T^nx$ is cauchy due to the contraction property.
+    \eqn{
+        d(T^{n+1}x,T^nx) \leq \al d(T^nx,T^{n-1}x)\leq\dotsb \leq \al^nd(Tx,x)
+    }
+    This implies, the distance between nonconsecutive iterates is bounded by
+    \eqn{
+        d(T^{n+m}x,T^nx) &\leq d(T^{n+m}x,T^{n+m-1}x)+\dotsb+d(T^{n+1}x,T^nx)\\
+        &\leq(\al^{n+m-1}+\dotsb+\al^{n})d(Tx,x)\\
+        &\leq\al^n\frac{1-\al^m}{1-\al}d(Tx,x)\\
+        &\leq\frac{\al^n}{1-\al}d(Tx,x)\\
+    }
+    Let $x_0=\lim_n T^nx$ for some $x$. $\implies Tx_0=T\lim_n T^nx = \lim_n T^{n+1}x= x_0$.
+\end{proof}
+
+\begin{theorem}[Contraction Power Mapping Principle]
+    For $T:X\rightarrow X$, if $T^m$ is a contraction, then $T$ has a fixed point that is globally attracting.
+\end{theorem}
+\begin{proof}
+    Uniqueness is clear since any fixed point of $T$ is a fixed point of $T^m$, and $T^m$ has a unique fixed point that is globally attracting. To prove existence, we observe that
+    \eqn{
+        &\forall x, T^{mn}x \xrightarrow{n} x_0\\
+        \implies &T^{mn+k}x \xrightarrow{n} x_0\\
+        \implies &d\left(T^{mn+k}x,T^{mn}x\right) \leq \al^n d\left(T^kx,x\right)\rightarrow0
+    }
+    illustrating that for sufficiently large $N=mn,\,d\left(T^{N+k}x,T^Nx\right)\rightarrow0$.
+\end{proof}
+
+Application to picard iteration, fredhold and volterra integral equations are straightforward. Existence and uniqueness of solutions are obtained from fixed point theorems by establishing that the operators are contractions (provided we are working in Banach spaces). However contractivity is a rather strong property. We now prove the existence of a fixed point assuming compactness of a mapping.
+
+\begin{definition}[Compact Operator]
+    An operator $T:X\rightarrow Y$ over normed vector spaces is compact if it is continuous, and for every bounded sequence $(x_n)\in X$, $Tx_n$ has a convergent subsequence. In other words, every bounded set is mapped to a precompact set.
+\end{definition}

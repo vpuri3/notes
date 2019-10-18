@@ -1,7 +1,20 @@
 %
 % in preamble, \include{vpack}
 %
+% convention
+% 
+% Lowercase Greek: Scalars (Reals)
+% Uppercase Greek/Latin: Operator (Matrix)
+% Lowercase Latin Bold: Vector Field (over some domain)
+% Lowercase Latin Underlined: Discretized Vector Field
+% Double Underlined: Second Order Tensor Field
+%
+% (u,v): Inner Product
+% <T,u>: function application T(u)
+% 
+
 \usepackage{amsfonts,amssymb,amsbsy,amsmath}
+\usepackage{enumitem}
 \usepackage{physics}
 \usepackage{siunitx}       % \SI
 \usepackage{cancel}        % \cancel
@@ -35,7 +48,9 @@
 
 %\renewcommand\qedsymbol{$\blacksquare$}
 
+\newcommand{\vv}{vis-\`a-vis }
 %================================== MATHS ==================================%
+
 \newcommand{\eqn}[1]{ % numbered equation environment
     \begin{equation}
     \begin{aligned}
@@ -50,7 +65,6 @@
     \end{aligned}
     \end{equation*}
 }
-\newcommand{\vv}{vis-\`a-vis }
 \newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}             % units
 \newcommand{\nvect}[1]{\underline{#1}}                         % discretized scalar field
 \newcommand{\vect}[1]{\boldsymbol{#1}}                         % vector field
@@ -66,9 +80,9 @@
 \newcommand{\material}{\mathrm{D}_{t}}                         % material derivative (wrt time)
 \newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
 \newcommand{\degree}{^\circ}                                   % degree
-\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components
+\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components <#,#>
 \newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
-\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix [# & # \\ # & #]
 \newcommand{\transp}{\intercal}                                % matrix transpose A^\transp
 \newcommand{\expo}[1]{\mathrm{e}^{#1}}                         % e = 2.71..
 \newcommand{\al}{\alpha}                                       % \alpha
@@ -81,3 +95,8 @@
 \newcommand{\Pe}{\text{Pe}}                                    % Peclet Number
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\N}{\mathbb{N}}                                    % Set of naturals
+\newcommand{\Z}{\mathbb{Z}}                                    % Set of integers
+\newcommand{\Q}{\mathbb{Q}}                                    % Set of rationals
+\newcommand{\R}{\mathbb{R}}                                    % Set of reals
+\newcommand{\L}{\mathcal{L}}                                   % Space of linear operators

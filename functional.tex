@@ -524,9 +524,7 @@ The space $C_0^\infty(\Omega)$ contains infinitely smooth functions with compact
     \forall\phi\in C^\infty_0(\Omega),\,\int_\Omega u\Der^\al\phi\der x = (-1)^\abs{\al}\int_\Omega v\phi\der x
 }
 It is straightforward to show that the weak derivative of $u,$ if it exists, is uniquely defined up to a set of measure zero. Further, if $u\in C^\abs{\al}(\Omega),$ its weak derivative is equal to its classical derivative.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Convolutions and Smoothing}
+
 A \textbf{mollifier}, $J(x),$ is a nonnegative, real-valued function belonging to $C_0^\infty(\mathbb{R}^d)$ used to create smooth functions approximating non-smooth functions via convolutions. Mollifiers satisfy the condition that $\int_{\mathbb{R}^d}J(x)\der x=1.$ We define the standard mollifier
 \eqn{
     J(x) = 
@@ -572,7 +570,7 @@ a.e. on $\Omega.$ Fix such a point $x$ on $\Omega.$ Then,
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Sobolev Spaces $W^{m,p}(\Omega)$}
+\section{Sobolev Intro}
 We introduce Sobolev spaces of integer order and establish some of their basic properties. These are vector subspaces of various spaces $L^p(\Omega).$ We define the functional $\norm{\cdot}_{m,p}$ where $m$ is a nonnegative integer and $1\leq p\leq \infty$ as follows:
 \eqn{
     \norm{u}_{m,p} &= \bigg\{ \sum_{0\leq\abs{\al}\leq m}\norm{\Der^\al u}_p^p \bigg\}^{1/p}
@@ -594,7 +592,6 @@ Any compactly supported function in $C^\infty(\Omega)$ belongs to $W^{m,p}(\Omeg
     Consider the sequence $\{u_n\}_n\subset W^{m,p}(\Omega)$ such that $\forall\varepsilon>0\exists N\,\mathrm{s.t.}\,\forall m,n\geq N,\,\norm{u_m-u_n}_{m,p}<\varepsilon.$
 \end{proof}
 
-\section{Trace Operator}
 A set $\Omega$ is said to have the \textbf{segment property} if $\forall x_0\in\partial\Omega,$ there exists an open neighbourhood of $x_0$ called $\Omega_{x_0}$ and a nonzero direction $y_{x_0}\in\mathbb{R}^d$ such that $\forall t\in[0,1],\,\overline{\Omega}\cap\Omega_{x_0}+ty_{x_0}\subset\Omega.$ Sets with the segment property are only present on one side of their boundary. Balls, polytopes and open sets with $C^1$ boundary have the segment property. However, not all sets with piecewise $C^1$ boundary have the segment property.
 \begin{theorem}
     Let $\Omega\subset\mathbb{R}^d$  be an open set with a bounded, piecewise $C^1$ boundary. If $\Omega$ has the segment property, then for $1\leq p<\infty,$ there exists the trace operator $T:W^{1,p}(\Omega)\rightarrow L^p(\partial\Omega).$ $T$ is linear and continuous and $Tf=f|_{\partial\Omega}$
@@ -605,4 +602,5 @@ A set $\Omega$ is said to have the \textbf{segment property} if $\forall x_0\in\
         \norm{Tf}_{L^p(\partial\Omega)} \leq K\norm{f}_{W^{1,p}(\Omega)}
     }
 \end{proof}
+
 
