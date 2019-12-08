@@ -29,6 +29,16 @@
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % dots for table of contents
 \usepackage[toc,page]{appendix}
 
+
+%================================ BIB ====================================%
+\usepackage[
+	hyperref = true,      	% Link to online documents
+  	backend  = bibtex,      % Use bibtex instead of biber
+  	sorting  = nyt,       	% Sorts by (name, year, title)
+  	style    = alphabetic 	% Citations look like [Har77]
+]{biblatex}
+\addbibresource{main.bib}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STARTING DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,12 +61,18 @@
 
 \newpage
 
-\include{fluids}
-\include{rste}
-\include{analysis}
-\include{functional}
+\include{chap/fluids}
+\include{chap/rste}
+\include{chap/analysis}
+\include{chap/functional}
+\include{chap/numerics}
 
-\include{bib}
+% Bibliography
+\newpage
+\nocite{*}
+\printbibliography[heading=bibnumbered,title={Bibliography}]
+
+% Appendix
 \include{appendix}
 
 

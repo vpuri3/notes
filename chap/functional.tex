@@ -77,11 +77,11 @@ The scalar product induces a norm $\norm{u}=\sqrt{(u,u)}.$ Another functional de
 \end{itemize}
 If $X$ is a Banach space under a norm that is induced by an inner product, then $X$ is called a \textbf{Hilbert space}. Given an inner-product, a norm on $X$ can be specified as follows: for $x\in X,$
 \eqn{
-    \norm{x} = (x,x)^{1/2}
+    \norm{x} = \inr{x,x}^{1/2}
 }
 We consider maps (or operators) between vector spaces $X$ and $Y$, $L:X\rightarrow Y$. A map is linear if $\forall x_1,x_2\in X,\forall \al\in\mathbb{R},f(x_1+\al x_2)=f(x_1)+\al f(x_2).$ For example, differentiation is a linear map from $C^n$ to $C^{n-1}$, and integration from $L^1_\mathrm{loc}$ to $\mathbb{R}$. Every linear map $L:\mathbb{R}^n\rightarrow\mathbb{R}^m$ has an associated $m\cross n$ matrix $A$ written as follows (where $\nvect{e_j}$ are unit vectors in the $j^\mathrm{th}$ cardinal direction):
 \eqn{
-    \nvect{y} = A\nvect{x} &= \mat{L(\nvect{e_1}) & \dots & L(\nvect{e_n})}_{m\cross n} \cdot \vvec{x_1\\\vdots\\x_n}_{n\cross 1} = \sum_{j=1}^n x_j L(\nvect{e_j}) = L\left( \sum_{j=1}^n x_j\nvect{e_j} \right) = L(\nvect{x})
+    \nvect{y} = A\nvect{x} &= \mat{L(\nvect{e_1}) & \dots & L(\nvect{e_n})}_{m\cross n} \cdot \vvec{x_1\\\vdots\\x_n}_{n\cross 1} = \sum_{j=1}^n x_j L(\nvect{e_j}) = L( \sum_{j=1}^n x_j\nvect{e_j} ) = L(\nvect{x})
 }
 A linear operator is said to be bounded if $\exists C>0\st \norm{Lx}_X\leq C\norm{x}_X$
 \begin{theorem}
@@ -456,7 +456,7 @@ H\"older's inequality \hl{clearly} extends to cover this case with $p=\infty,\,p
 
 \todo{We now consider the normed dual of $L^p(\Omega).$}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Measure Theory}
+\section{Measure Theory Intro}
 The \textbf{measure} of a set refers to its size in some measure space. We say a set $S\subset\mathbb{R}^d$ has \textbf{measure zero} ($\mu(S)=0$) if $\forall\varepsilon>0,$ $S$ can be covered by open balls of total volume less than $\varepsilon.$ $\mathbb{Q}\subset\mathbb{R},$ $C^1$ curves in $\mathbb{R}^2$, $C^1$ surfaces in $\mathbb{R}^3$ are examples of sets with measure zero. A countable union of sets of measure zero has measure zero. We say that a condition holds \textbf{almost everywhere (a.e.)} if the points where it does not hold form a set of zero measure. For example, the characteristic function for rationals on the set of real numbers is equal to zero almost everywhere.
 
 \begin{definition}[Measurable function]
@@ -603,4 +603,4 @@ A set $\Omega$ is said to have the \textbf{segment property} if $\forall x_0\in\
     }
 \end{proof}
 
-
+\todo{trace operator}

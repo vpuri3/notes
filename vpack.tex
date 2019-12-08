@@ -9,8 +9,9 @@
 % Lowercase Latin Underlined: Discretized Vector Field
 % Double Underlined: Second Order Tensor Field
 %
-% (u,v): Inner Product
-% <T,u>: function application T(u)
+% (u,v) . : Inner Product
+% <T,u> . : Function application T(u)
+% S[x'](x): Operator S acting on x', evaluated at x
 % 
 
 \usepackage{amsfonts,amssymb,amsbsy,amsmath}
@@ -29,11 +30,12 @@
 \definecolor{periwinkledark}{RGB}{102, 102, 128}
 \newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
 
-\newcommand{\todo}[1]{\hl{todo: #1}}
-
 \usepackage{hyperref} % \autoref
 \renewcommand{\chapterautorefname}{Chapter}
 \renewcommand{\sectionautorefname}{Section}
+
+\newcommand{\todo}[1]{\hl{todo: #1}}
+\newcommand{\vv}{vis-\`a-vis }
 
 %================================ THEOREMS ===============================%
 \usepackage{amsthm}
@@ -47,10 +49,7 @@
 \newtheorem{definition}{Definition}[section]
 
 %\renewcommand\qedsymbol{$\blacksquare$}
-
-\newcommand{\vv}{vis-\`a-vis }
 %================================== MATHS ==================================%
-
 \newcommand{\eqn}[1]{ % numbered equation environment
     \begin{equation}
     \begin{aligned}
@@ -74,13 +73,12 @@
 \newcommand{\Der}{\,\mathrm{D}}                                % Du ==> \Der u material derivative
 \newcommand{\ppp}[1]{\partial_{#1}}                            % partial derivative
 \newcommand{\vvv}{\delta}                                      % variation
-\newcommand{\del}{\vect{\nabla}}                               % gradient vector operator
-\newcommand{\grad}{\del}                                       % gradient vector operator
+\newcommand{\del}{\nabla}                                      % gradient vector operator
+\newcommand{\grad}{\vect{\del}}                                % gradient vector operator
 \newcommand{\ddd}[1]{\dfrac{\mathrm{d}}{\mathrm{d} #1}}        % total derivative
 \newcommand{\material}{\mathrm{D}_{t}}                         % material derivative (wrt time)
 \newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
 \newcommand{\degree}{^\circ}                                   % degree
-\newcommand{\component}[1]{\langle #1 \rangle}                 % vector components <#,#>
 \newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix [# & # \\ # & #]
 \newcommand{\transp}{\intercal}                                % matrix transpose A^\transp
@@ -93,10 +91,16 @@
 \newcommand{\rt}[2]{\sqrt[#1]{#2}}                             % root
 \newcommand{\Re}{\text{Re}}                                    % Reynolds Number
 \newcommand{\Pe}{\text{Pe}}                                    % Peclet Number
+\newcommand{\opap}[1]{\langle #1 \rangle}                      % operator application <T,x>
+\newcommand{\inr} [1]{( #1 )}                                  % inner product (f,g)
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
-\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\ceil }[1]{\left\lceil  #1 \right\rceil}
 \newcommand{\N}{\mathbb{N}}                                    % Set of naturals
 \newcommand{\Z}{\mathbb{Z}}                                    % Set of integers
 \newcommand{\Q}{\mathbb{Q}}                                    % Set of rationals
 \newcommand{\R}{\mathbb{R}}                                    % Set of reals
-\newcommand{\L}{\mathcal{L}}                                   % Space of linear operators
+\renewcommand{\L}{\mathcal{L}}                                 % Space of linear operators
+\newcommand{\I}{\mathcal{I}}                                   % Operator
+\newcommand{\V}{\mathcal{V}}                                   % Operator
+\renewcommand{\ul}[1]{\underline{#1}}
+\renewcommand{\bar}[1]{\overline{#1}}

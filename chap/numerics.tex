@@ -1,0 +1,113 @@
+\chapter{Numerics}
+
+We write out the spectral discretization for the Navier-Stokes equations in $d$ dimensions.
+\eqn{
+    \ppp{t}\vect{u} + (\vect{u}\cdot\grad)\vect{u} &= -\grad p + \frac{1}{\Re}\del^2\vect{u}+\vect{f},\hspace{1em}(\vect{x},t)\in\Omega\cross(0,T]\subset \R^{d+1}\\
+    \grad\cdot\vect{u} &= 0
+}
+
+We select an appropriate $n$ dimensional spaces $X^N,Y^N\subset \L^2(\Omega)$ for velocity and pressure respectively.
+
+%blah blah blah, regularity, $X^N_0$, affine mapping
+
+1d operators
+\eqn{
+    \hat{B}_{ij} =\int_{-1}^1\phi_i \phi_j\der x,\hspace{1em}
+    \hat{A}_{ij} =\int_{-1}^1\nu \frac{\der\phi_i}{\der x}\frac{\der\phi_j}{\der x}\der x,\hspace{1em}
+    %\hat{C}_{ij} =\int_{-1}^1 \phi_i c\frac{\der\phi_j}{\der x}\der x,\hspace{1em}
+    R = \texttt{eye}(n)(2:\texttt{end}-1,:),\hspace{1em}
+    \hat{J}_{vp} = \texttt{interp\_mat}(\texttt{zp,zv})
+}
+
+$R$ restriction matrix, ones at interior/neumann points, zeros at dirichlet points
+
+diagonal jacobian matrix
+\eqn{
+    J = \texttt{diag}(J(\vect{x}_i)),\hspace{1em}
+}
+
+2D operators
+\eqn{
+    \overline{B} = \hat{B_s} \otimes \hat{B_r},\hspace{1em}
+    \overline{A} = \hat{B_s} \otimes \hat{A_r} + \hat{A_s} \otimes \hat{B_r},\hspace{1em}
+    \overline{H} = \beta_0\overline{B} + \nu\overline{A}
+    \overline{J} = \hat{J_s} \otimes \hat{J_r},\hspace{1em}
+}
+
+\eqn{
+    B = R\overline{B}R^\transp,\hspace{1em}
+    A = R\overline{A}R^\transp,\hspace{1em}
+    H = R\overline{H}R^\transp
+}
+
+2D vector operators
+\eqn{
+    \mathbf{R} = \mat{R_{v_x} & \\ & R_{v_y}},\hspace{1em}
+    &\bar{\mathbf{B}} = \mat{\bar{B}       & \\ &\bar{B}      },\hspace{1em}
+    &\bar{\mathbf{A}} = \mat{\bar{A}       & \\ &\bar{A}      },\hspace{1em}
+    &\bar{\mathbf{H}} = \mat{\bar{H}       & \\ &\bar{H}      },\\
+}
+
+\eqn{
+    (q,\grad\cdot\vect{u}) &= \left(J_{vp}^\transp\ul{p}\right)^\transp B^v \mat{D_x & D_y}\ul{\vect{u}}\\
+    &= \vect{q}^\transp J_{vp}\bar{B^v}\mat{D_x & D_y}\ul{\vect{u}}\\
+    &= \vect{q}^\transp \bar{\mathbf{D}}\ul{\vect{u}}
+}
+
+\eqn{
+    \ul{\vect{u}} = \ul{\vect{u_b}} + \mathbf{R}^\transp\ul{\vect{u_b}}
+}
+
+Stokes system
+
+\eqn{
+    \mat{ \mathbf{R}\bar{\mathbf{H}}\mathbf{R}^\transp & -\mathbf{R}\bar{\mathbf{D}}^\transp\\
+    -\bar{\mathbf{D}}\mathbf{R}^\transp &
+    }
+    \vvec{\ul{\vect{u}}^n_h\\ \ul{\delta p}^n}
+    &=
+    \vvec{\mathbf{R}\left(\ul{\vect{f}}+\bar{\mathbf{D}}^\transp\ul{p}^{n-1}\right)\\
+    \bar{\mathbf{D}}\bar{\vect{u}}_b}
+    \\
+    \mat{ \mathbf{H} & -\mathbf{D}^\transp\\ -\mathbf{D} &}
+    \vvec{\ul{\vect{u}}^n_h\\ \ul{\delta p}^n}
+    &=
+    \vvec{\ul{\vect{f}}^*\\ \bar{\mathbf{D}}\bar{\vect{u}}_b}
+    \\
+    \mat{ \mathbf{H} & -\mathbf{H}\mathbf{Q}\mathbf{D}^\transp\\ -\mathbf{D} &}
+    \vvec{\ul{\vect{u}}^n_h\\ \ul{\delta p}^n}
+    &=
+    \vvec{\ul{\vect{f}}^*\\ \bar{\mathbf{D}}\bar{\vect{u}}_b}
+    \\
+    \mat{ \mathbf{H} & -\mathbf{H}\mathbf{Q}\mathbf{D}^\transp\\ & -\mathbf{DQD}^\transp}
+    \vvec{\ul{\vect{u}}^n_h\\ \ul{\delta p}^n}
+    &=
+    \vvec{\ul{\vect{f}}^*\\ \bar{\mathbf{D}}(\bar{\vect{u}}_b+\mathbf{H}^{-1}\ul{\vect{f}}^*)}
+}
+
+\eqn{
+    \mathbf{H}^{-1}\approx \mathbf{Q} &= \frac{1}{\beta_0}(\mathbf{R\bar{B}R}^\transp)^{-1}
+    = \frac{1}{\beta_0}\mathbf{R}\mathbf{\bar{B}}^{-1}\mathbf{R}^\transp
+}
+
+Pressure solve
+\eqn{
+    \mathbf{DQD}^\transp\ul{\delta p} &= -\bar{\mathbf{D}}\ul{\vect{u}}^*\\
+    \bar{\mathbf{D}}\mathbf{R}^\transp\mathbf{R}\mathbf{\bar{B}}^{-1}\mathbf{R}^\transp\mathbf{R}\bar{\mathbf{D}}^\transp
+    &= \ul{g}
+    \\
+    J_{vp}\bar{B}\mat{D_x D_y}
+    \mat{R^\transp_{v_x}R_{v_x}\bar{B}^{-1}R^\transp_{v_x}R_{v_x} & \\
+        &R^\transp_{v_y}R_{v_y}\bar{B}^{-1}R^\transp_{v_y}R_{v_y}
+    }
+    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}
+    &= \ul{g}
+    \\
+    J_{vp}\bar{B}\mat{D_x D_y}
+    \mat{M_{v_x}\bar{B}^{-1}M_{v_x} & \\
+        &M_{v_y}\bar{B}^{-1}M_{v_y}
+    }
+    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}
+    &= \ul{g}
+}
+

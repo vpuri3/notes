@@ -53,9 +53,8 @@ Equivalent classes of elements in $X$ form a partition of $X.$ An ordered relati
     Now consider $x\in(0,1]$. Find $n\st[na]<\frac{1}{M}<\epsilon$. If $x\in[0,\frac{1}{M}],$ we are done. Else, let $x$ belong to the $j^\mathrm{th}$ panel: $x\in[\frac{j}{M},\frac{j+1}{M}]$. Since $[na]<\frac{1}{M},\exists p\in\mathbb{N}\st p[na]$ belongs to the $(j-1)^\mathrm{th}$ panel. Setting $p=\sup\{s\in\mathbb{N}|s[na]<\frac{j}{M}\}$. $\implies \abs{x - [(p+1)na]}<\frac{1}{M}<\epsilon.$
 \end{proof}
 
-\todo{$\mathbb{Q}$}
-\todo{Construction: Dedekind's Cuts}
-\todo{The completion of $\mathbb{Q}$}
+\todo{$\R,$ the completion of $\Q$}\\
+\todo{Construction of $\R$ using Dedekind's Cuts}
 
 \begin{theorem}[Archimedean Property]
    $\forall x,y\in\mathbb{R}^+\,\exists N\in\mathbb{N}:y<nx$ 
@@ -511,14 +510,21 @@ The Cantor set
     }
 \end{definition}
 
-The spirit of compactness is ``any bounded sequence has a convergent subsequence.''
-
 \begin{definition}[Continuity]
     We say a function $f:X\rightarrow Y$ is continuous at $x_0\in X$
 \end{definition}
+
+
 \begin{definition}[Compact Set]
-    A set
+    A set for which every open cover contains a finite subcover.
 \end{definition}
+\begin{theorem}
+    Compact $\iff$ sequentially compact
+\end{theorem}
+\begin{proof}
+    The spirit of compactness is ``any bounded sequence has a sequence converging in the set.''
+\end{proof}
+
 \begin{definition}[Precompact Set]
     A set in a normed vector space $X$ is precompact (also called relatively compact set) if its closure is compact.
 \end{definition}
