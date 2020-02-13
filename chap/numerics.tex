@@ -93,21 +93,20 @@ Stokes system
 Pressure solve
 \eqn{
     \mathbf{DQD}^\transp\ul{\delta p} &= -\bar{\mathbf{D}}\ul{\vect{u}}^*\\
-    \bar{\mathbf{D}}\mathbf{R}^\transp\mathbf{R}\mathbf{\bar{B}}^{-1}\mathbf{R}^\transp\mathbf{R}\bar{\mathbf{D}}^\transp
+    \bar{\mathbf{D}}\mathbf{R}^\transp\mathbf{R}\mathbf{\bar{B}}^{-1}\mathbf{R}^\transp\mathbf{R}\bar{\mathbf{D}}^\transp\ul{\delta p} 
     &= \ul{g}
     \\
     J_{vp}\bar{B}\mat{D_x D_y}
     \mat{R^\transp_{v_x}R_{v_x}\bar{B}^{-1}R^\transp_{v_x}R_{v_x} & \\
         &R^\transp_{v_y}R_{v_y}\bar{B}^{-1}R^\transp_{v_y}R_{v_y}
     }
-    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}
+    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}\ul{\delta p} 
     &= \ul{g}
     \\
     J_{vp}\bar{B}\mat{D_x D_y}
     \mat{M_{v_x}\bar{B}^{-1}M_{v_x} & \\
         &M_{v_y}\bar{B}^{-1}M_{v_y}
     }
-    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}
+    \mat{D_x^\transp\\ D_y\transp}\bar{B}J^\transp_{vp}\ul{\delta p} 
     &= \ul{g}
 }
-

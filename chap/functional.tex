@@ -1,10 +1,10 @@
 \chapter{Functional Analysis}
 
 \section{Multi-Index Notation}
-A multi-index is a $d$-tuple of non-negative integers $\alpha=(\alpha_1,\dotsc,\alpha_d).$ The degree of a multi-index $\alpha$ is $\abs{\alpha}=\sum_{i=1}^d\alpha_i$. Consider a point in $d$-dimensional real Euclidean space $x=(x_1,\dotsc,x_d)\in\mathbb{R}^d.$ We denote by $x^\alpha$ the monomial $x_1^{\alpha_1}\cdots x_d^{\alpha_d}.$ If $\Der_{x_i}=\ppp{x_i},$ denotes the partial differential operator with respect to variable $x_i,$ then 
-$\Der^\alpha$ denotes a differential operator of order $\abs{\alpha}.$
+A multi-index is a $d$-tuple of non-negative integers $\alpha=(\alpha_1,\dotsc,\alpha_d).$ The degree of a multi-index $\alpha$ is $\abs{\alpha}=\sum_{i=1}^d\alpha_i$. Consider a point in $d$-dimensional real Euclidean space $x=(x_1,\dotsc,x_d)\in\mathbb{R}^d.$ We denote by $x^\alpha$ the monomial $x_1^{\alpha_1}\cdots x_d^{\alpha_d}.$ If $\D{x_i}=\p_{x_i},$ denotes the partial differential operator with respect to variable $x_i,$ then 
+$\D^\alpha$ denotes a differential operator of order $\abs{\alpha}.$
 \eqn{
-    \Der^\alpha = \Der_{x_1}^{\alpha_1}\cdots \Der_{x_d}^{\alpha_d} = \ppp{x_1}^{\alpha_1}\cdots\ppp{x_d}^{\alpha_d}
+    \D^\alpha = \D{x_1}^{\alpha_1}\cdots \D{x_d}^{\alpha_d} = \p_{x_1}^{\alpha_1}\cdots\p_{x_d}^{\alpha_d}
 }
 For two multi-indices $\beta,\,\alpha,$ we say $\beta\leq\alpha$ if $\beta_i\leq\alpha_i$ for $1\leq i\leq d.$ In this case, $\alpha\pm\beta$ are also multi-indices with elements $\alpha_i\pm\beta_i$ and order $\abs{\alpha\pm\beta}=\abs{\alpha}\pm\abs{\beta}.$ We also denote $\alpha!=(\alpha_1!,\dotsc,\alpha_d!)$ and if $\beta\leq\alpha,$
 \eqn{
@@ -21,21 +21,21 @@ For two multi-indices $\beta,\,\alpha,$ we say $\beta\leq\alpha$ if $\beta_i\leq
 \end{theorem}
 \begin{theorem}[Leibniz Formula]
 \eqn{
-    \Der^\alpha(uv) = \sum_{\beta\leq\al}\vvec{\alpha\\\beta}\Der^\beta u \Der^{\alpha-\beta}v
+    \D^\alpha(uv) = \sum_{\beta\leq\al}\vvec{\alpha\\\beta}\D^\beta u \D^{\alpha-\beta}v
 }    
 \end{theorem}
 \begin{proof}
 We prove the Leibniz formula by induction on $\abs{\alpha}.$ It is trivial to show that the equality holds for $\abs{\alpha}=0,1.$ Assuming the equality holds for for some $\alpha\neq0,$ we prove that the equality holds for $\alpha+e_i$ where is a multi-index with $1$ in the $i^\mathrm{th}$ position $\forall i\in\{1,\cdots,d\}$ and zeros elsewhere.
 \eqn{
-    \Der^{\al+e_i}(uv)
+    \D^{\al+e_i}(uv)
     &=
-    \Der^{e_i}\bigg(\sum_{\beta\leq\al}\vvec{\alpha\\\beta}
-    \Der^{\beta}u\Der^{\al-\beta}v\bigg)
+    \D^{e_i}\bigg(\sum_{\beta\leq\al}\vvec{\alpha\\\beta}
+    \D^{\beta}u\D^{\al-\beta}v\bigg)
     =
     \sum_{\beta\leq\al}\vvec{\alpha\\\beta}
-    \Der^{e_i}\big(\Der^{\beta}u\Der^{\al-\beta}v\big)
+    \D^{e_i}\big(\D^{\beta}u\D^{\al-\beta}v\big)
     \\&=
-    \sum_{\beta\leq\al}\vvec{\alpha\\\beta}\Der^{\beta+e_i}u\Der^{\al-\beta}v +     \vvec{\alpha\\\beta}\Der^{\beta}u\Der^{\al-\beta+e_i}v
+    \sum_{\beta\leq\al}\vvec{\alpha\\\beta}\D^{\beta+e_i}u\D^{\al-\beta}v +     \vvec{\alpha\\\beta}\D^{\beta}u\D^{\al-\beta+e_i}v
 }
 
     
@@ -44,7 +44,7 @@ We prove the Leibniz formula by induction on $\abs{\alpha}.$ It is trivial to sh
 \begin{theorem}
     \textit{(Taylor's Formula)} For sufficiently smooth functions $f:\mathbb{R}^d\rightarrow\mathbb{R},$
     \eqn{
-        f(x) = \sum_{\abs{\al}\leq k}\frac{1}{\al!}\Der^{\al}f(x_0)(x-x_0)^\al + \mathcal{O}(\abs{x}^{k+1})
+        f(x) = \sum_{\abs{\al}\leq k}\frac{1}{\al!}\D^{\al}f(x_0)(x-x_0)^\al + \mathcal{O}(\abs{x}^{k+1})
     }
 \end{theorem}
 
@@ -124,27 +124,27 @@ We say $A\subsubset B$ if and only if $\overline{A}$ is a compact subset of $B.$
 }
 We define the following family of vector spaces. For some integer $m,$ the vector space $C^m(\Omega)$ consists of all functions defined on $\Omega$ which, along with their partial derivatives up to order $m$ are continuous.
 \eqn{
-    C^m(\Omega) &= \{ \phi:\Omega\rightarrow \mathbb{R}: \forall\al\text{ with }\abs{\alpha}\leq m,\,\Der^\alpha\phi\hspace{4} \text{is continuous}\}
+    C^m(\Omega) &= \{ \phi:\Omega\rightarrow \mathbb{R}: \forall\al\text{ with }\abs{\alpha}\leq m,\,\D^\alpha\phi\hspace{4} \text{is continuous}\}
     \\
     C^\infty(\Omega)&=\cap_{m=0}^\infty C^m(\Omega)
 }
 We abbreviate $C^0(\Omega)$ to $C(\Omega).$ The subspace $C_0^m(\Omega)$ consists of all functions in $C^m(\Omega)$ that have compact support in $\Omega.$ We wish to define equivalent spaces for $\overline{\Omega},$ $C^m(\overline{\Omega}).$ However, since $\Omega$ is open, continuous functions on $\Omega$ need not be bounded. Therefore, not all functions in $C^m(\Omega)$ can be continuously extended to $\overline{\Omega}.$ For example, the function $f(x)=1/x$ is continuous on the open interval $(0,1),$ but discontinuous on $x=0.$ Functions that are uniformly continuous and bounded on $\Omega$ can be uniquely and continuously extended to $\overline{\Omega}.$ We define $C^\m(\overline{\Omega})$ as follows:
 \eqn{
-    C^m(\overline{\Omega}) = \{\phi\in C^m(\Omega):\forall\al,\,\abs{\al}\leq m,\, \Der^\al\phi\text{ bounded and uniformly continuous on }\Omega\}
+    C^m(\overline{\Omega}) = \{\phi\in C^m(\Omega):\forall\al,\,\abs{\al}\leq m,\, \D^\al\phi\text{ bounded and uniformly continuous on }\Omega\}
 }
 A function $f:\Omega\rightarrow\mathbb{R}$ is said to be \textbf{H\"older continuous} for exponent $\gamma$ ($0<\gamma\leq1$) if
 \eqn{
     \exists K\geq0\,\forall x,y\in\Omega,x\neq y,\frac{\abs{f(x)-f(y)}}{\norm{x-y}}\leq K
 }
-We define $C^{m,\gamma}(\overline{\Omega})$ to be the subspace of $C^m(\overline{\Omega})$ consisting of functions for which, for $\abs{\alpha}=m,$ $\Der^\alpha\phi$ satisfies the H\"older condition. We define the following norms and seminorms:
+We define $C^{m,\gamma}(\overline{\Omega})$ to be the subspace of $C^m(\overline{\Omega})$ consisting of functions for which, for $\abs{\alpha}=m,$ $\D^\alpha\phi$ satisfies the H\"older condition. We define the following norms and seminorms:
 \begin{align}
-    \norm{u}_{C^0(\overline{\Omega})} &= \sup_{x\in\Omega}\abs{\Der^\alpha u}
+    \norm{u}_{C^0(\overline{\Omega})} &= \sup_{x\in\Omega}\abs{\D^\alpha u}
     &
     \abs{u}_{C^{0,\gamma}(\overline{\Omega})} &= \sup_{\substack{x,y\in\Omega\\x\neq y}}\frac{\abs{u(x)-u(y)}}{\norm{x-y}_2}
     \\
     \norm{u}_{C^{m}(\overline{\Omega})} &= \max_{0\leq\abs{\al}\leq m}\norm{u}_{C^0(\overline{\Omega})}
     &
-    \norm{u}_{C^{m,\gamma}(\overline{\Omega})} &= \norm{u}_{C^m(\overline{\Omega})}+\max_{\abs{\al}=m}\abs{\Der^\al u}_{C^{0,\gamma}(\overline{\Omega})}
+    \norm{u}_{C^{m,\gamma}(\overline{\Omega})} &= \norm{u}_{C^m(\overline{\Omega})}+\max_{\abs{\al}=m}\abs{\D^\al u}_{C^{0,\gamma}(\overline{\Omega})}
 \end{align}
 \begin{theorem}
     $C^{m,\gamma}(\Omega)$ is complete for nonnegative integer $m$ and $0<\gamma\leq1$ with respect to the norm $\norm{\cdot}_{C^{m,\gamma}(\overline{\Omega})}.$
@@ -370,13 +370,13 @@ For nonnegative integer $m$ and $0<\nu\leq\lambda\leq 1,$ we prove the following
     }
     The term $\abs{x-y}^{\lambda-\nu}$ is bounded for bounded $\Omega.$ Hence, $C^{m,\lambda}(\overline{\Omega})\subset C^{m,\nu}(\overline{\Omega}).$ Next, we compare the norms of $C^{m,\lambda}(\overline{\Omega})$ and $C^{m,\nu}(\overline{\Omega}).$ For some $\phi\in C^{m,\lambda}(\overline{\Omega}),$ we note that
     \eqn{
-    \sup_{\substack{x,y\in\Omega\\\abs{x-y}<1}} \frac{\abs{\Der^\alpha\phi(x)-\Der^\alpha\phi(y)}}{\abs{x-y}^{\nu}}
+    \sup_{\substack{x,y\in\Omega\\\abs{x-y}<1}} \frac{\abs{\D^\alpha\phi(x)-\D^\alpha\phi(y)}}{\abs{x-y}^{\nu}}
     &\leq 
-    \sup_{\substack{x,y\in\Omega\\\abs{x-y}<1}} \frac{\abs{\Der^\alpha\phi(x)-\Der^\alpha\phi(y)}}{\abs{x-y}^{\lambda}}
+    \sup_{\substack{x,y\in\Omega\\\abs{x-y}<1}} \frac{\abs{\D^\alpha\phi(x)-\D^\alpha\phi(y)}}{\abs{x-y}^{\lambda}}
     \\
-    \sup_{\substack{x,y\in\Omega\\\abs{x-y}\geq1}} \frac{\abs{\Der^\alpha\phi(x)-\Der^\alpha\phi(y)}}{\abs{x-y}^{\nu}}
+    \sup_{\substack{x,y\in\Omega\\\abs{x-y}\geq1}} \frac{\abs{\D^\alpha\phi(x)-\D^\alpha\phi(y)}}{\abs{x-y}^{\nu}}
     &\leq 
-    2\sup_{\substack{x\in\Omega}}\abs{\Der^\alpha\phi(x)}
+    2\sup_{\substack{x\in\Omega}}\abs{\D^\alpha\phi(x)}
     }
     Hence, $\norm{\phi}_{C^{m,\nu}(\overline{\Omega})} \leq 3\norm{\phi}_{C^{m,\lambda}(\overline{\Omega})}$
 \end{itemize}
@@ -510,18 +510,18 @@ Any piecewise continuous function is locally integrable in $\mathbb{R}^d.$ An im
 \section{Distributions}
 We restate the divergence theorem: for $u\in C^1(\overline{\Omega})$ in scalar form (this can be derived from the vector form by considering a vector field with scalar $u$ being the $i^\text{th}$ component, and all other components being zero),
 \eqn{
-    \int_{\partial\Omega}u n_i\der S = \int_{\Omega}\ppp{x_i}u\der x
+    \int_{\partial\Omega}u n_i\der S = \int_{\Omega}\p_{x_i}u\der x
 }
 where $n_i$ is the $i^\text{th}$ component of the unit normal vector defined on $\partial\Omega.$ We derive the formula for integration by parts: for $u,v\in C^1(\Omega),$
 \eqn{
-    \int_{\partial\Omega}uvn_i\der S  &=\int_{\Omega}\ppp{x_i}(uv)\der x = \int_{\Omega}u\ppp{x_i}v+v\ppp{x_i}v \der x
+    \int_{\partial\Omega}uvn_i\der S  &=\int_{\Omega}\p_{x_i}(uv)\der x = \int_{\Omega}u\p_{x_i}v+v\p_{x_i}v \der x
     \\
-    \int_{\Omega}u\ppp{x_i}v\der x &= \int_{\partial\Omega}uvn_i\der S - \int_{\Omega}v\ppp{x_i}v\der x
+    \int_{\Omega}u\p_{x_i}v\der x &= \int_{\partial\Omega}uvn_i\der S - \int_{\Omega}v\p_{x_i}v\der x
 }
 
 The space $C_0^\infty(\Omega)$ contains infinitely smooth functions with compact support on $\Omega.$ We call functions belonging to $C_0^\infty(\Omega)$ \textbf{test functions}. A key feature of test functions is that their extension to $\partial\Omega$ is the zero function as they are continuous and compactly supported in a subset of $\Omega.$ Let $u,\,v\in L^1_{\mathrm{loc}}(\Omega)$ and $\al$ be a multi-index. We say that $v$ is the $\al^\mathrm{th}$ \textbf{weak derivative} of $u$ if
 \eqn{
-    \forall\phi\in C^\infty_0(\Omega),\,\int_\Omega u\Der^\al\phi\der x = (-1)^\abs{\al}\int_\Omega v\phi\der x
+    \forall\phi\in C^\infty_0(\Omega),\,\int_\Omega u\D^\al\phi\der x = (-1)^\abs{\al}\int_\Omega v\phi\der x
 }
 It is straightforward to show that the weak derivative of $u,$ if it exists, is uniquely defined up to a set of measure zero. Further, if $u\in C^\abs{\al}(\Omega),$ its weak derivative is equal to its classical derivative.
 
@@ -555,7 +555,7 @@ We define $\Omega_\varepsilon=\{x\in\Omega:\mathrm{dist}(x,\partial\Omega)<\vare
 \end{theorem}
 \begin{proof}
 \eqn{
-    \Der^\al(J_\varepsilon*u)(x)&=\int_{\mathbb{R}^d}(\Der_x^\al J_\varepsilon(y-x))u(y)\der y
+    \D^\al(J_\varepsilon*u)(x)&=\int_{\mathbb{R}^d}(\D^\al J_\varepsilon(y-x))u(y)\der y
 }
 $J_\varepsilon(y-x)$ is infinitely differentiable, and vanishes outside $B_{x}(\varepsilon)$ for every $x$ for every multi-index $\al.$ If $\supp{u}\subsubset\Omega,$ and $\varepsilon<\mathrm{dist} (\supp{u}, \partial\Omega),$ then $\forall x\notin\Omega,\,u_\varepsilon(x)=0.$ Therefore, $u_\varepsilon$ has compact support in $\Omega.$
 From the Lebesgue differentiation theorem,
@@ -573,14 +573,14 @@ a.e. on $\Omega.$ Fix such a point $x$ on $\Omega.$ Then,
 \section{Sobolev Intro}
 We introduce Sobolev spaces of integer order and establish some of their basic properties. These are vector subspaces of various spaces $L^p(\Omega).$ We define the functional $\norm{\cdot}_{m,p}$ where $m$ is a nonnegative integer and $1\leq p\leq \infty$ as follows:
 \eqn{
-    \norm{u}_{m,p} &= \bigg\{ \sum_{0\leq\abs{\al}\leq m}\norm{\Der^\al u}_p^p \bigg\}^{1/p}
+    \norm{u}_{m,p} &= \bigg\{ \sum_{0\leq\abs{\al}\leq m}\norm{\D^\al u}_p^p \bigg\}^{1/p}
     \\
-    \norm{u}_{m,\infty} &= \max_{0\leq\abs{\al}\leq m}\norm{\Der^\al u}_\infty
+    \norm{u}_{m,\infty} &= \max_{0\leq\abs{\al}\leq m}\norm{\D^\al u}_\infty
 }
 for any function for which the right side makes sense. The above functional defines a norm on any vector space of functions where the right side takes finite values provided functions are identified in the space if they are equal almost everywhere in $\Omega.$ We consider three such spaces corresponding to any given values of $m$ and $p.$
 \begin{itemize}
     \item $H^{m,p}(\Omega)\equiv$ the completion of $\{u\in C^m(\Omega):\norm{u}_{m,p}<\infty\}$
-    \item $W^{m,p}(\Omega)\equiv\{u\in L^p(\Omega):\Der^\al u\in L^p(\Omega)\,\mathrm{for}\,0\leq\abs{\al}\leq m\}$
+    \item $W^{m,p}(\Omega)\equiv\{u\in L^p(\Omega):\D^\al u\in L^p(\Omega)\,\mathrm{for}\,0\leq\abs{\al}\leq m\}$
     \item $W_0^{m,p}(\Omega)\equiv$ the closure of $C_0^\infty(\Omega)$ in $W^{m,p}(\Omega).$
 \end{itemize}
 Any compactly supported function in $C^\infty(\Omega)$ belongs to $W^{m,p}(\Omega)$ for any $m.$ If $\Omega$ is bounded, then $C^{m}(\Omega)\subset W^{m,p}(\Omega)$ for any $1\leq p\leq\infty.$

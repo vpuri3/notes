@@ -15,7 +15,7 @@
 % 
 
 \usepackage{amsfonts,amssymb,amsbsy,amsmath}
-\usepackage{enumitem}
+\usepackage[inline]{enumitem}
 \usepackage{physics}
 \usepackage{siunitx}       % \SI
 \usepackage{cancel}        % \cancel
@@ -26,15 +26,20 @@
 \usepackage{graphicx}      % \includegraphics  
 \usepackage{subfigure}
 %\usepackage{tikz}         % stick figures
+
+% comments
 \usepackage{xcolor}
 \definecolor{periwinkledark}{RGB}{102, 102, 128}
 \newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
+\newcommand{\todo}[1]{\hl{todo: #1}}
 
 \usepackage{hyperref} % \autoref
-\renewcommand{\chapterautorefname}{Chapter}
-\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\equationautorefname}{Eq.}
+\renewcommand{\chapterautorefname}{\S}
+\renewcommand{\sectionautorefname}{\S}
 
-\newcommand{\todo}[1]{\hl{todo: #1}}
+% English
+\renewcommand{\ldots}{\ldots\ }
 \newcommand{\vv}{vis-\`a-vis }
 
 %================================ THEOREMS ===============================%
@@ -57,52 +62,59 @@
     \end{aligned}
     \end{equation}
 }
-\newcommand{\eqnn}[1]{ % unnumbered equation environment
-    \begin{equation*}
-    \begin{aligned}
+\newcommand{\seqn}[2]{ % numbered subequation environment
+    \begin{subequations}
         #1
-    \end{aligned}
-    \end{equation*}
+        \begin{align}
+            #2
+        \end{align}
+    \end{subequations}
 }
-\newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}}             % units
+\newcommand{\unit}[1]{\ensuremath{\ \mathrm{#1}}}              % units
 \newcommand{\nvect}[1]{\underline{#1}}                         % discretized scalar field
 \newcommand{\vect}[1]{\boldsymbol{#1}}                         % vector field
 \newcommand{\uvect}[1]{\boldsymbol{\hat{#1}}}                  % unit vector (field)
 \newcommand{\tensor}[1]{\underline{\underline{#1}}}            % second order tensor field
-\newcommand{\der}{\,\mathrm{d}}                                % dx ==> \der x total derivative
-\newcommand{\Der}{\,\mathrm{D}}                                % Du ==> \Der u material derivative
-\newcommand{\ppp}[1]{\partial_{#1}}                            % partial derivative
+\renewcommand{\i}{\mathrm{i}}                                    % sqrt(-1)
+\renewcommand{\d}{\mathrm{d}}                                  % total derv
+\newcommand{\D}{\mathrm{D}}                                    % material derv = \p_t+(\vect{c}\cdot\grad)
+\newcommand{\p}{\partial}                                      % partial derv
+\newcommand{\ddd}[1]{\frac{\d}{\d #1}}                         % total derv
+\newcommand{\ppp}[1]{\frac{\p}{\p #1}}                         % partial derv
 \newcommand{\vvv}{\delta}                                      % variation
 \newcommand{\del}{\nabla}                                      % gradient vector operator
 \newcommand{\grad}{\vect{\del}}                                % gradient vector operator
-\newcommand{\ddd}[1]{\dfrac{\mathrm{d}}{\mathrm{d} #1}}        % total derivative
-\newcommand{\material}{\mathrm{D}_{t}}                         % material derivative (wrt time)
 \newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
-\newcommand{\degree}{^\circ}                                   % degree
+\newcommand{\deg}{^\circ}                                      % degree
 \newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix [# & # \\ # & #]
-\newcommand{\transp}{\intercal}                                % matrix transpose A^\transp
-\newcommand{\expo}[1]{\mathrm{e}^{#1}}                         % e = 2.71..
+\newcommand{\transp}{T}          % \intercal doesn't look good % matrix transpose A^\transp
+\newcommand{\e}{\mathrm{e}}                                    % e = 2.71..
 \newcommand{\al}{\alpha}                                       % \alpha
 \newcommand{\supp}[1]{\mathrm{supp}(#1)}                       % support of a function
 \newcommand{\subsubset}{\subset\subset}                        % A compact subset of B
-\renewcommand{\st}{\text{ such that }}                         % such that
+\renewcommand{\st}{\textit{ such that }}                       % such that
 \newcommand{\contradiction}{\ensuremath{\Rightarrow\!\Leftarrow}} % contradiction
 \newcommand{\rt}[2]{\sqrt[#1]{#2}}                             % root
 \newcommand{\Re}{\text{Re}}                                    % Reynolds Number
 \newcommand{\Pe}{\text{Pe}}                                    % Peclet Number
 \newcommand{\opap}[1]{\langle #1 \rangle}                      % operator application <T,x>
 \newcommand{\inr} [1]{( #1 )}                                  % inner product (f,g)
-\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
-\newcommand{\ceil }[1]{\left\lceil  #1 \right\rceil}
-\newcommand{\N}{\mathbb{N}}                                    % Set of naturals
-\newcommand{\Z}{\mathbb{Z}}                                    % Set of integers
-\newcommand{\Q}{\mathbb{Q}}                                    % Set of rationals
-\newcommand{\R}{\mathbb{R}}                                    % Set of reals
-\renewcommand{\L}{\mathcal{L}}                                 % Space of linear operators
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}          % floor
+\newcommand{\ceil }[1]{\left\lceil  #1 \right\rceil}           % ceiling
 \newcommand{\I}{\mathcal{I}}                                   % Operator
 \newcommand{\S}{\mathcal{S}}                                   % Operator
 \newcommand{\D}{\mathcal{D}}                                   % Operator
 \newcommand{\V}{\mathcal{V}}                                   % Operator
+\newcommand{\N}{\mathbb{N}}                                    % Set   of naturals
+\newcommand{\Z}{\mathbb{Z}}                                    % Set   of integers
+\newcommand{\Q}{\mathbb{Q}}                                    % Set   of rationals
+\newcommand{\R}{\mathbb{R}}                                    % Set   of reals
+\newcommand{\C}{\mathbb{C}}                                    % Set   of complex numbers
+\renewcommand{\P}{\mathbb{P}}                                  % Space of polynomials
+\renewcommand{\L}{\mathcal{L}}                                 % Function space
+\renewcommand{\H}{\mathcal{H}}                                 % Sobolev space
+\renewcommand{\O}{\mathcal{O}}                                 % Big-O Notation
+\newcommand{\o}{\varnothing}                                   % Empty set
 \renewcommand{\ul}[1]{\underline{#1}}
 \renewcommand{\bar}[1]{\overline{#1}}

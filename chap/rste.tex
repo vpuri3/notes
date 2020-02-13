@@ -1,29 +1,34 @@
 \chapter{Reynolds Stress Transport Equations}
 \label{chap:rste}
+
+\todo{refer to TSFP1979 to improve this section}
+
 We derive the Reynolds stress transport equations (RSTE) that describe the production, transport, and dissipation of energy in fluctuating modes in a flow. Examining the energy budgets of turbulent flows can lead to insights into factors driving turbulence and leading to its decay, spatial distribution, and how energy is transferred between mean and fluctuating modes. The detailed Reynolds stress budgets from DNS provide valuable information on the relative magnitudes of the terms and their possible scaling.
 
-Consider the Navier-Stokes equations for incompressible fluid flow:
+We repeat the incompressible Navier-Stokes equations here for convenience.
 \eqn{
-    \label{eqn:NS}
-    \rho(\ppp{t}\vect{v}+\vect{v}\cdot\grad\vect{v}) &= -\grad p + \mu \del^2\vect{v} +\rho \vect{g}\\
-    \grad\cdot\vect{v} &= 0
+    %\label{eqn:NS}
+    \rho(\ppp{t}\vect{v}+\vect{v}\cdot\grad\vect{v}) &= -\grad p + \mu \del^2\vect{v} + \rho\vect{f}
+    ,\hspace{1em}&(\vect{x},t)\in\Omega\cross(0,T]\\
+    \grad\cdot\vect{v} &= 0,&(\vect{x},t)\in\Omega\cross(0,T]\\
 }
-where $v_j(x_i,t),$ and $p(x_i,t)$ are time and space varying fields, and $g_i$ is a constant body force. We nondimensionalise velocity, time, and pressure with some canonical length $L$ and velocity $U$ as follows:
+
+where $v_j(x_i,t),$ and $p(x_i,t)$ are time and space varying fields, and $f_i$ is a constant body force. We nondimensionalise velocity, time, and pressure with some canonical length $L$ and velocity $U$ as follows:
 \eqn{
     \label{eqn:nondim}
-    v^*&=\dfrac{v}{U},\,t^*=\dfrac{tU}{L},\,p^*=\dfrac{p}{\rho U^2},\,g^*=\dfrac{g}{U^2/L}
+    \vect{v}^*&=\frac{\vec\vect{v}}{U},\,t^*=\frac{tU}{L},\,p^*=\frac{p}{\rho U^2},\,\vect{f}^*=\frac{\vect{f}}{U^2/L}
     \\
     \ppp{t^*}&=\dfrac{L}{U}\ppp{t},\,\grad^*=L\grad
 }
-Substituting \autoref{eqn:nondim} into equation \autoref{eqn:NS} and multiplying by $\dfrac{L}{\rho U^2},$ we obtain the Navier-Stokes equations in non-dimensional form.
+For high Reynolds number flows, we normalize pressure against stagnation pressure $\rho U^2$. Substituting \autoref{eqn:nondim} into equation \autoref{eqn:NS} and multiplying by $\dfrac{L}{\rho U^2},$ we obtain the Navier-Stokes equations in non-dimensional form.
 \eqn{
-    \ppp{t^*}\vect{v}^*+\vect{v}^*\cdot\grad\vect{v}^* &= -\grad p^*+\dfrac{1}{\text{Re}}\del^2\vect{v}^*+\vect{g}^*
+    \ppp{t^*}\vect{v}^*+\vect{v}^*\cdot\grad\vect{v}^* &= -\grad p^*+\dfrac{1}{\text{Re}}\del^2\vect{v}^*+\vect{f}^*
     \\
     \grad^*\cdot\vect{v}^* &= 0
 }
 We drop the asterisks and write in Einstein indicial notation for convenience.
 \eqn{
-    \ppp{t} v_j + v_i v_{j,i} &= -p_{,j} + \dfrac{1}{\text{Re}}v_{j,ii} + g_j\\
+    \ppp{t} v_j + v_i v_{j,i} &= -p_{,j} + \dfrac{1}{\text{Re}}v_{j,ii} + f_j\\
     v_{i,i} &= 0
 }
 \section{Reynolds Decomposition}
@@ -33,6 +38,7 @@ Splitting a quantity into its average value and a fluctuation from the average i
 }
 where $\expval{\phi}$ is the ensemble average of $\phi,$ and $\phi'$ is fluctuation or deviation of $\phi$ from $\expval{\phi}$. In practice, ensemble averages are obtained by averaging in time and over homogeneous directions.
 \eqn{
+    \label{eqn:ensemble}
     \expval{\phi} = \dfrac{1}{\int\der t}\int\phi\der t
 }
 Some properties of Reynolds decomposition are below. Let $\phi$ and $\psi$ be any quantities. Then,
@@ -71,21 +77,21 @@ Similarly, we expand the continuity equation in terms of expected values of fluc
 We take the expected value of the momentum equation.
 \eqn{
     \label{eqn:NS-exp}
-    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} + \expval{v'_iv'_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{g_i}
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} + \expval{v'_iv'_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{f_i}
     \\
-    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{g_i} - \expval{v'_iv'_j}_{,i}
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\text{Re}}\expval{v_j}_{,ii} + \expval{f_i} - \expval{v'_iv'_j}_{,i}
 }
 $\eta_{ij}=\expval{v'_iv'_j}$ is called the Reynolds stress tensor. We apply Reynolds decomposition to the momentum equation.
 \eqn{
     \label{eqn:NS-decomp}
     \ppp{t}(\expval{v_j}+v'_j) + (\expval{v_i}+v'_i)(\expval{v_{j,i}}+v'_{j,i})
     &=
-    -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii})  + \expval{g_j} + \cancelto{0}{g'_j}
+    -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii})  + \expval{f_j} + \cancelto{0}{g'_j}
     \\
     \ppp{t}(\expval{v_j}+v'_j) + \expval{v_i}\expval{v_{j,i}} + \expval{v_i}v'_{j,i}
         + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} 
     &=
-        -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii}) + \expval{g_j}
+        -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\text{Re}}(\expval{v_{j,ii}}+v'_{j,ii}) + \expval{f_j}
 }
 Subtracting \autoref{eqn:NS-exp} from \autoref{eqn:NS-decomp}, we get
 \eqn{
