@@ -1,0 +1,69 @@
+\chapter{Algebra}
+We discuss algebra\ldots
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Linear}
+An important object in linear algebra is a \textit{vector}, a quantity described completely by a \textit{magnitude} $\in\R$ and an abstract notion of a \textit{direction}, properties which can be independently varied. The magnitude of a vector is obtained by applying a metric to the vector, whereas the direction is defined to be the vector itself, albeit of magnitude unity. Vectors live in \textit{vector spaces}, sets on which operations are defined to manipulate these properties.
+
+It is not the objective of this section to describe vector algebra. Instead, we focus on proving facts pertinent to developing a geometric intuition of vector operators.
+
+\begin{definition}[Vector Space] A vector space $V$ over a field $\mathbb{F}$ is a set with operation of \textit{vector addition} ($+$) and \textit{scalar multiplication} defined so that $\forall \vect{x},\,\vect{y}\in V,\forall \lambda\in\mathbb{F}$, there is a unique element $\vect{x} + \lambda\vect{y} \in V$ such that the following conditions hold.
+\begin{itemize}[Axioms of vector spaces]
+    \item \todo{add axioms of vector space operations}
+\end{itemize}
+\end{definition}
+
+Relevant examples of vector spaces are
+\begin{itemize}
+    \item $\R^n$ - represented as a column vector
+    \eqn{
+        \vect{x} &= \vvec{x_1 \\ \vdots \\ x_n} \in \R^n
+    }
+    \item $M_{m\cross n}(\R)$ - space of $m\cross n$ real matrices over field $\R$
+    \eqn{
+        A = \mat{A_{11} & \dots  & A_{1n} \\
+                 \vdots & \ddots & \vdots \\
+                 A_{m1} & \dots  & A_{mn}
+                }
+        \in M_{m\cross n}(\R)
+    }
+    where $A_{ij}\in\R$. Scalar multiplication, and vector addition are defined element-vise as follows:
+    \seqn{}{
+        (A+B)_{ij} &= A_{ij} + B_{ij} & \textit{vector addition}\\
+        (\lambda A)_{ij} &= \lambda A_{ij} & \textit{scalar multiplication}
+    }
+    Every linear map $L:\mathbb{R}^n\rightarrow\mathbb{R}^m$ has an associated $m\cross n$ matrix $A$ written as follows (where $\nvect{e_j}$ are the $n$ orthonormal basis of $\R^n$):
+    \eqn{
+        \nvect{y} = A\nvect{x} &= \mat{L(\nvect{e_1}) & \dots & L(\nvect{e_n})}_{m\cross n} \cdot \vvec{x_1\\\vdots\\x_n}_{n\cross 1} = \sum_{j=1}^n x_j L(\nvect{e_j}) = L( \sum_{j=1}^n x_j\nvect{e_j} ) = L(\nvect{x})
+    }
+    \item $\mathbb{P}^n$ - space of polynomials of degree up to $n$
+    \eqn{
+        p(x) = \sum_{i=0}^n a_i x^i \in \mathbb{P}^n
+    }
+\end{itemize}
+
+\begin{definition}[Vector Subspace]
+    $W$ subspace of $V$ if $W$ is a subset of $V$ and is a vector space. Two trivial subspaces of $V$ are $\{\vect{0}\}$ and $V$ itself.
+\end{definition}
+
+%\begin{definition}
+%    For $S_1,\,S_2\subset V,\, S_1+S_2=\{\vect{s_1}+\vect{s_2}: \vect{s_1}\in S_1,\, \vect{s_2}\in S_2 \}$ is called the \textbf{sum} of $S_1$ and $S_2$. $V$ is called the \textbf{direct sum} of $S_1$ and $S_2$ if $S_1\cap S_2=\{\vect{0}\}$ and $V=S_1+S_2$. Then we write $V=S_1\oplus S_2$.
+%\end{definition}
+
+\begin{definition}
+    We denote $\mathrm{span}(\{v_i\}_i)=\{\sum_{i}a_i\vect{v_i}: \forall\{a_i\}_i\in\R\}$. We say $\{\vect{v_i}\}_{i}$ is \textbf{linearly independent} if $\sum_{i} a_i\vect{v_i}=0\iff \forall i,a_i=0$. Simply put, $\{v_i\}_i$ is linearly independent if its elements can be combined to form $\vect{0}$ in only one way (the trivial way). If elements can be combined to form the additive identity, then it is obvious that at least one of the $\vect{v_j}$ is in the span of the others meaning that it is not adding anything new to the set $\{\vect{v_i}\}_i$ (which is boring). We call a (nonunique) minimum spanning (linearly independent) set of a vector space ($V$) its \textbf{basis} and call its size (number of items) the \textbf{dimension} of the space $\dim(V)$. Vectors in a space can be uniquely expressed as a linear combination of its basis vectors.
+\end{definition}
+
+\begin{theorem}[Replacement Theorem]
+    Any set of vectors in $V$ of size greater than $\dim(V)$ is linearly dependent.
+\end{theorem}
+\begin{proof}
+    Let $\{\vect{v_i}\}_{i=1}^n$ be a basis for $V$.
+\end{proof}
+
+\todo{linear operations - null spaces, ranges, matrix meaning, rank, determinant, diagonalization, adjoint of an operator, canonical forms, matrix exponentials}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Abstract}
+
+abstract algebra is boring but necessary. something about symmetry

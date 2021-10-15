@@ -1,0 +1,490 @@
+\chapter{Turbulence}
+\label{chap:turb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Navier-Stokes Equations}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+A number of practical flows are governed by \autoref{eqn:NS-intro}, i.e. the \textit{unsteady incompressible Navier-Stokes} equations. The equations are coupled with appropriate initial conditions and boundary conditions on domain $\Omega$ to form a closed system. The Navier-Stokes system admits a form of fluid motion characterised by chaotic pressure and velocity fields called \textit{turbulence}. Flows which are turbulent, or turbulent flows, are characterised by highly irregular pressure and velocity signals in space and time. Due to the chaotic nature of the Navier-Stokes system (\autoref{eqn:NS-intro}), turbulence problems cannot be treated deterministically: miniscule perturbations in initial or boundary conditions magnify into completely different pressure and velocity fields. The trajectory to any particular state of the flow is virtually untraceable as a single bitwise shift caused due to roundoff in computation, or any minuscule perturbation to the experiment setup, would pollute the entire velocity and pressure fields. Turbulent problems are, therefore, treated statistically with the purpose of numerical simulations being the deduction of mean behaviour and high-order correlations.
+
+\seqn{\label{eqn:NS-intro}}{
+    \rho(\ppp{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= -\grad p + \mu \del^2\vect{v} + \rho\vect{f} \label{eqn:NS-intro-momentum}\\
+    \grad\cdot\vect{v} &= 0\label{eqn:NS-intro-cty}
+}
+\autoref{eqn:NS-intro} are defined on $(\vect{x},t)\in\Omega\cross(0,T)$ where $\Omega$, the computational domain, is an open subset of $\R^d,\ d=2,3$, $\mu \left[\textsf{M}^{1} \textsf{L}^{-1} \textsf{T}^{-1} \right]$ is the dynamic viscosity, $\rho \left[\textsf{M}^{1} \textsf{L}^{-3}\right]$ is the fluid density, and \vect{f} some known forcing function. \autoref{eqn:NS-intro-momentum} is called the \textit{momentum equation} as it arises from a balance of forces and rate of change of momentum on an infinitesimal fluid-element.
+\eqn{
+    \ppp{t}(\rho\vect{v}) + (\vect{v}\cdot\grad)\rho\vect{v} = \rho\vect{f} + \grad\cdot\tensor{\tau}
+}
+The operator $(\p_{t}+\vect{v}\cdot\grad)$, called the material derivative, computes the time-rate of change of its argument inside a fluid-element, as represented on an Eulerian coordinate system $\vect{x}=(x,\,y,\,z)$.
+\eqn{
+    \DDD = \ppp{t} + (\vect{v}\cdot\grad)
+}
+$\rho\vect{f}$ is a vector forcing function that acts on the interior points of a fluid-element. Gravitational force, electromagnetic forces, and inertial forces are examples. $\tensor{\tau}$ is the Newtonian stress tensor that acts only on the bounding surface of a fluid-element. Two components of $\tensor{\tau}$ are $\tensor{\delta}p$, the pressure stress, and $\tensor{\tau_v} = \mu\left(\grad\vect{v} + \grad\vect{v}^T - \frac{2}{3}(\grad\cdot\vect{v})\tensor{\delta}\right)$, the viscous stress.
+
+\eqn{
+    \label{eqn:stress-tensor}
+    \tensor{\tau} = -\tensor{\delta}p + \mu\left(\grad\vect{v}+\grad\vect{v}^T
+    -\frac{2}{3}(\grad\cdot\vect{v})\tensor{\delta}\right)
+}
+\autoref{eqn:NS-intro-cty} is called the \textit{continuity equation} as it ensures incompressibility of the flow by imposing the divergence-free constraint on the velocity field. \autoref{eqn:NS-intro-cty} is obtained by applying mass conservation to a fluid-element for a constant density $\rho$
+\eqn{
+    \ppp{t}\rho + \grad\cdot(\rho\vect{v}) = 0
+}
+We obtain the momentum equations \autoref{eqn:NS-intro-momentum} and the continuity equation \autoref{eqn:NS-intro-cty} by applying the \textit{Newton's second law} and the \textit{law of conservation of mass} respectively to arbitrary fluid-elements. We first prove the \textit{Reynolds Transport Theorem} which relates time rate of change of quantities in material volumes to the distribution of said properties in the volume.
+
+Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
+\begin{theorem}[Reynolds Transport Theorem]
+    For some $\phi(\vect{x},t)$, and material volume $\Omega(t)\subset\R^d$
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi+\grad\cdot(\vect{v}\phi)\d\vect{x} \\
+}
+\end{theorem}
+\begin{proof}
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x}}{\Delta t}
+}
+For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\vect{x},t)$ about $\phi(\vect{x},t)$
+\eqn{
+    \phi(\vect{x},t+\Delta t) = \phi(\vect{x},t)+\Delta t\p_{t}\phi(\vect{x},t) + \mathcal{O}(\Delta t^2)
+}
+Substituting,
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} &= \lim_{\Delta t\rightarrow 0}
+    \int_{\Omega(t+\Delta t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} + \mathcal{O}(\Delta t^2)}{\Delta t}
+     \\
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \lim_{\Delta t\rightarrow 0} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x}}{\Delta t}
+}
+To explain the thought process, without loss of generality, let $\phi=1$. We are looking for the difference in volume between the two integrals. That is equal to the net volume that the boundary has expanded into. For an infinitesimal patch $\d \vect{S_x}$ on $\partial\Omega$ (containing point $\vect{x}$, and with outward normal $\uvect{n}$), that is
+\eqn{
+    \left(\vect{x}(t+\Delta t)-\vect{x}(t)\right)\cdot\uvect{n}\d \vect{S_x}
+}
+Capturing the difference with a Taylor expansion and integrating over $\partial\Omega$, we get
+\eqn{
+    &\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} =\\
+    &\int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\Delta t\vect{v_c})\cdot\uvect{n}\d \vect{S_x} +
+    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\d \vect{S_x} + \mathcal{O}(\Delta t^3)
+}
+where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\d \vect{S_x}\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\d \vect{S_x}\subset\partial\Omega(t)$ throughout the volume $\d \vect{S_x}(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \lim_{\Delta t\rightarrow 0}
+    \dfrac{\int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}dA+\mathcal{O}(\Delta t^2)}{\Delta t} \\
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
+}
+$\p_{t}\phi$ is the local the rate of production (or accumulation) of $\phi.$ It accounts for the effects of change in $\phi$ in the interior of the domain (say due to creation/dissipation or advection/diffusion). The divergence term accounts for the capture or loss of $\phi$ by the motion of the control surface. If $\Omega(t)$ is a material volume then, $\vect{v_c}=\vect{v},$ at all points in $\partial\Omega(t)$. Hence, the final form of the Reynolds Transport Theorem for material volumes $\Omega(t)$ is:
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\d \vect{S_x}
+}
+We now apply the well known divergence theorem, also referred to as Gauss' Law,
+\eqn{
+    \int_{\partial\Omega}\vect{\psi}\cdot\uvect{n}\d\vect{S_x} =
+    \int_\Omega\grad\cdot\vect{\psi}\d\vect{x}
+}
+to get
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi+\grad\cdot(\vect{v}\phi)\d\vect{x} \\
+    &= \int_{\Omega(t)}\DDD\phi+\phi(\grad\cdot\vect{v})\d\vect{x} \\
+}
+\end{proof}
+Since a material volume always contains the same fluid elements, time rate of change of total mass in a material volume should be zero per law of conservation of mass.
+\eqn{
+    \label{eqn:RTT-mass}
+    m(t) &= \int_{\Omega}\rho\d\vect{x} \\
+    0 &= \ddd{t}m = \int_{\Omega}\p_{t}\rho +
+    \grad\cdot(\rho\vect{v}) \d\vect{x}
+}
+Now, we apply Newton's second law of motion \autoref{eqn:NewtonII} to an arbitrary fluid element. Let $\vect{p}(t)$ denote the total momentum of a fluid element.
+\seqn{}{
+    \vect{F}_\text{ext}(t) &= \ddd{t}\vect{p}(t)\label{eqn:NewtonII}\\
+    &= \ddd{t}\int_{\Omega(t)}\rho\vect{v}\d\vect{x}\\
+    &= \int_{\Omega}\p_{t}(\rho\vect{v}) + \grad\cdot(\vect{v}\otimes\rho\vect{v})   \d\vect{x} \\
+    &=\int_{\Omega}\p_{t}(\rho\vect{v}) + \rho\vect{v}(\grad\cdot\vect{v}) + (\vect{v}\cdot\grad)(\rho\vect{v}) \d\vect{x} \\
+    &=\int_{\Omega}\DDD(\rho\vect{v}) + \rho\vect{v}(\grad\cdot\vect{v}) \d\vect{x}
+}
+The net external force acting on a material element, $\vect{F}_\text{ext}$, is equation to the sum for body forces acting on the interior $\Omega(t)$ and traction forces acting on the boundary $\p\Omega(t)$. The traction forces are modelled by the stress tensor $\tensor{\tau}$ given in \autoref{eqn:stress-tensor}
+\eqn{
+\vect{F}_\text{ext} &= \int_{\Omega}\rho\vect{f}\d\vect{x} + \int_{\partial\Omega}\tensor{\tau}\cdot\vect{n}\d \vect{S_x} \\
+&= \int_{\Omega}\rho\vect{f} + \grad\cdot\tensor{\tau}\d\vect{x} \\
+&= \int_{\Omega}\rho\vect{f} + \grad\cdot\left(-p\tensor{\delta} + \mu(\grad\vect{v}+\grad\vect{v}^\transp) + \lambda(\grad\cdot\vect{v})\tensor{\delta}\right) \d\vect{x} \\
+&= \int_{\Omega}\rho\vect{f} - \grad p + \mu(\del^2\vect{v} + \grad(\grad\cdot\vect{v})) + \lambda\grad(\grad\cdot\vect{v}) \d\vect{x} \\
+&= \int_{\Omega}\rho\vect{f} - \grad p + \mu\grad^2\vect{v} + (\mu+\lambda)\grad(\grad\cdot\vect{v}) \d\vect{x}
+}
+From Newton's second law, time rate of change of momentum is equal to the sum of all external forces applied.
+\eqn{
+0 &= \ddd{t}\vect{p} - \vect{F}_\text{ext} \\
+&= \int_{\Omega} \p_{t}(\rho\vect{v}) + \rho\vect{v}(\grad\cdot\vect{v}) + (\vect{v}\cdot\grad)(\rho\vect{v}) - \left(
+\rho\vect{f} - \grad p + \mu\del^2\vect{v} + (\mu+\lambda)\grad(\grad\cdot\vect{v})
+\right)
+\d\vect{x}
+}
+Since the integral is zero for an arbitrary domain (fluid element) $\Omega(t),$ it follows that the integrand must be zero everywhere.
+\eqn{
+\p_{t}(\rho\vect{v}) + \rho\vect{v}(\grad\cdot\vect{v}) + (\vect{v}\cdot\grad)(\rho\vect{v}) &=
+\rho\vect{f} - \grad p + \mu\del^2\vect{v} + (\mu+\lambda)\grad(\grad\cdot\vect{v})
+\\
+\vect{v}\cancelto{0}{(\p_{t}\rho+\grad\cdot\vect{v}+\vect{v}\cdot\grad\rho)} + \rho\DDD\vect{v}
+&= \rho\vect{f} - \grad p + \mu\del^2\vect{v} + \cancelto{0}{(\mu+\lambda)\grad(\grad\cdot\vect{v})}
+\\
+\rho(\p_{t}\vect{v}+(\vect{v}\cdot\grad)\vect{v}) &= \rho\vect{f} - \grad p + \mu\del^2\vect{v}
+}
+\eqn{
+    \p_{t}\rho + \grad\cdot(\rho\vect{v}) &= 0 \\
+    \DDD\rho = \p_{t}\rho + (\vect{v}\cdot\grad)\rho &= -\rho(\grad\cdot\vect{v})
+}
+For incompressible (constant density) flows, the continuity equation boils down to
+\eqn{
+    \grad\cdot\vect{v} = 0
+}
+
+We have arrived at the Navier-Stokes equations.
+
+Before performing further analysis, we nondimensionalise velocity, time, and pressure with a canonical length $L$, and velocity $U$.
+\eqn{
+    \label{eqn:nondim}
+    \vect{v}^*&=\frac{\vec\vect{v}}{U},\,t^*=\frac{tU}{L},\,p^*=\frac{p}{\rho U^2},\,\vect{f}^*=\frac{\vect{f}}{U^2/L}
+    \\
+    \ppp{t^*}&=\dfrac{L}{U}\ppp{t},\,\grad^*=L\grad
+}
+We normalize pressure $p$ with the stagnation pressure $\rho U^2$. Substituting \autoref{eqn:nondim} into equation \autoref{eqn:NS-intro-momentum} and multiplying by $\dfrac{L}{\rho U^2},$ we obtain the Navier-Stokes equations in non-dimensional form
+\seqn{}{
+    \ppp{t^*}\vect{v}^*+\vect{v}^*\cdot\grad\vect{v}^* &= -\grad p^*+\dfrac{1}{\text{Re}}\del^2\vect{v}^*+\vect{f}^*
+    \\
+    \grad^*\cdot\vect{v}^* &= 0
+}
+$\Re=\dfrac{\rho U L}{\mu}$, the Reynolds number of the flow, is the ratio of viscous forces to inertial forces. Osborne Reynolds used the Reynolds number to predict turbulent transition of laminar flow in a pipe in his famous experiment in 1883 \cite{reynolds}. He observed that low Reynolds number flows tend to be laminar, and high Reynolds number flows tend towards turbulent motion. Turbulent flows with higher Reynolds number contain more intricate, and chaotic motion.
+
+Turbulent flows are characterised by a competition between viscous forces, which damp out velocity fluctuations by converting kinetic energy into heat, and inertial forces, which tend to generate and preserve velocity and pressure fluctuations\cite{wall-bounded-turb}. In low Reynolds number flows, viscous forces dominate and the flow is near perfectly damped, meaning that any random fluctuation in the velocity field would be smoothed out in no time. The velocity fields adjusts almost instantaneously to any changes in the pressure gradient that drives the flow. At high Reynolds numbers, however, viscous forces may not be strong enough to dampen out velocity fluctuations. As a result, even tiny disturbances may cause the entire flow to destabilise. 
+\eqn{
+    \label{eqn:Re-derv}
+    \Re = \frac{\text{inertial forces}}{\text{viscous forces}}
+    =\frac{ma}{\tau A}
+    =\frac{\rho V\cdot\frac{\d u}{\d t}}{\mu\frac{\d u}{\d y}\cdot A}
+    \propto \frac{\rho L^3\cdot\frac{\d u}{\d t}}{\mu\frac{\d u}{\d y}\cdot L^2}
+    = \frac{\rho L \frac{\d y}{\d t}}{\mu}
+    \propto \frac{\rho U L}{\mu}
+    = \frac{U L}{\nu}
+}
+In \autoref{eqn:Re-derv}, $\tau=\abs{\tensor{\tau}\cdot\uvect{n}}$ is the magnitude of shear stress, $t$ is time, $y$ is the cross-sectional position, $u=\ddd{t}x$ is the local flow streamwise velocity, and $\nu=\dfrac{\mu}{\rho} \left[\textsf{L}^2 \textsf{T}^{-1}\right]$ is the kinematic viscosity. In further discussions, we refer to kinematic viscosity, $\nu$, as simply viscosity.
+
+We drop the asterisks and restate the nondimensional Navier-Stokes system for further investigation.
+\seqn{\label{eqn:NS-intro-nondim}}{
+    \ppp{t}\vect{v}+\vect{v}\cdot\grad\vect{v} &= -\grad p + \frac{1}{\Re} \del^2\vect{v} + \vect{f} \label{eqn:NS-intro-momentum-nondim}\\
+    \grad\cdot\vect{v} &= 0\label{eqn:NS-intro-cty-nondim}
+}
+In low Reynolds number regimes, viscous effects dissipate energy from high-wavenumber modes into heat, making the velocity field rather smooth. Conversely, at high Reynolds numbers, the ability to dissipate energy from high wavenumber modes of the flow is decreased resulting in a large number of energy containing modes. The high Reynolds number regime, where the nonlinear advection term dominates, is characterised by thin boundary layers at the interface of fluid and a solid boundary as a consequence of the imposition of the no-slip boundary condition. At high Reynolds numbers, \autoref{eqn:NS-intro-momentum-nondim} become singularly perturbed, and give rise to thin boundary layers. \cite{wall-energy-cascade} The resolution requirements are heightened as it is pertinent to resolve the boundary layers in order to get the main flow right. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Turbulence}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We begin this section with a discussion Reynolds decomposition, an important mathematical technique in understanding turbulence, and then proceed to describing the energy cascade process, and the subtleties of wall-bounded turbulent flows. We derive the \textit{Reynolds Stress Transport Equations} (RSTE) and discuss their role in describing mechanisms of turbulent energy transport, production, and dissipation.
+
+\subsection{Reynolds Decomposition}
+Reynolds decomposition is a mathematical technique of splitting a quantity into its mean or expected value, and a time or space varying fluctuation. Let a space, and time-varying quantity, $\phi(\vect{x},t)\in C\left(\Omega\cross(0,T)\right)$, equal to the sum of its expected value $\expval{\phi}$, and a fluctuation $\phi'(\vect{x},t)=\phi(\vect{x},t)-\expval{\phi}$
+\eqn{
+    \phi(\vect{x},t)=\expval{\phi}+\phi'(\vect{x},t)
+}
+In practice, expected values or ensemble averages are computed by averaging a quantity in time, or over in time and over a homogeneous direction.
+\eqn{
+    \label{eqn:ensemble}
+    \expval{\phi} = \frac{1}{T}\int_0^T\phi(\vect{x},t)\d t
+}
+Some properties of Reynolds decomposition are below. Let $\phi$ and $\psi$ be any quantities. Then,
+\begin{enumerate}
+    \item Averaging and differentiation commute
+    
+    \textbf{Space}
+    \eqn{
+        \expval{\p_j\phi(\vect{x},t)}=\frac{1}{T}\int_0^T\p_j\phi(\vect{x},t)\d t = 
+    }
+    \textbf{Time}
+    
+    \item Ensemble of a fluctuation is zero.
+        \eqn{
+            \expval{\phi'} &=  \expval{\phi-\expval{\phi}}\\
+            \expval{\phi} &=\expval{\phi} - \expval{\phi'} \\
+            \expval{\phi'} &= 0
+        }
+    \item Ensemble of product is product of ensemble plus ensemble of product of fluctuations
+        \eqn{
+            \expval{\phi\psi} &= \expval{\left(\expval{\phi}+\phi'\right)\left(\expval{\psi}+\psi'\right)}\\
+            &= \expval{ \expval{\phi}\expval{\psi} + \expval{\phi}\psi' + \phi'\expval{\psi} + \phi'\psi'}\\
+            &= \expval{\phi}\expval{\psi} + \expval{\phi}\cancelto{0}{\expval{\psi'}} + \cancelto{0}{\expval{\phi'}}\expval{\psi}+\expval{\phi'\psi'} \\
+            &= \expval{\phi}\expval{\psi} + \expval{\phi'\psi'}
+        }
+\end{enumerate}
+
+
+
+\subsection{Energy Cascade}
+\label{sec:cascade}
+Here, we briefly cover the energy cascade in turbulent flows. Energy cascade in turbulent flows refers to the transfer of energy between differing lengthscales or, equivalently, wavenumbers. We discuss the work on Richardson (1922) and Kolmogorov (1941) in describing energy transfer from larger eddies to smaller ones.
+
+Turbulence is a multi-scale phenomenon involving transfer of energy between a spectrum of lengthscales and timescales. In turbulent flows, energy is said to reside in \textit{eddies}, coherent swirls of fluid motion. Energy is transferred between scales of motion through the interaction, breakup, and formation of eddies. and  cannot be dissipated until it is transferred to the smallest ones, in which viscosity acts\cite{wall-energy-cascade}.
+
+Pertinent assumptions of the theories in this section are that energy transfer between eddies is local in scale, and restricted to eddies of similar sizes. \autoref{sec:wall-bndd-turb} discusses turbulent flows in presence of walls, which creates anisotropy and the presence of smaller lengthscales than predicted by \autoref{eqn:kolmogorov}.
+
+Of note in the momentum equation (\autoref{eqn:NS-intro-momentum}) is the nonlienar advection term $(\vect{v}\cdot\grad)\vect{v}$ which is responsible for the entire velocity spectrum interacting with itself. To investigate the cascade process of the velocity field, we consider the Fourier expansion of the velocity field in free space
+\eqn{
+    \vect{v}(\vect{x},t) = \sum_{\vect{k}\in\Z^d} \vect{\hat{v}}_{\vect{k}}(t) \e^{\i\vect{k}\cdot\vect{x}}
+    ,\hspace{1em}\vect{x}\in\R^d,\,t\in\R\\
+}
+where $\vect{\hat{v}}\in\C^d$. We substitute the Fourier expansion in the advection equation
+\eqn{
+    \ppp{t}\vect{v} + (\vect{v}\cdot\grad)\vect{v} = 0
+}
+For the $\vect{k}^\mathrm{th}$ Fourier mode, we get
+\eqn{
+    \label{eqn:adv-Fourier}
+    \ppp{t}\vect{\hat{v}}_{\vect{k}} + \i\vect{k}\cdot \sum_{\vect{k}=\vect{p}+\vect{q}} \vect{\hat{v}}_{\vect{p}} \vect{\hat{v}}_{\vect{q}} = 0
+}
+expressing the interaction of the wavenumber triad $\vect{k} ,\,\vect{p} ,\,\vect{q}\in\Z^d$. As the entire spectrum is present in the equation for time-evolution of every more, it is pertinent for numerical simulations to sufficiently resolve/or account for the energy containing component of the velocity spectrum in order to correctly represent flow-physics.
+
+% Spectrum density
+%The equation for the velocity spectrum density $\vect{S_v}(\vect{k},t) = \vect{\hat{u}}_{\vect{k}}(t)\odot\vect{\hat{u}}_{-\vect{k}}(t)$, where $\odot$ is the Hamdard (element-wise) product binary operation on $x,\,y,\,z$ components of velocity, obtained from \autoref{eqn:adv-Fourier}, is
+%\eqn{
+%    \ppp{t}\vect{S_v}(\vect{k},t) + \i\vect{k}\sum_{\vect{k}=\vect{p}+\vect{q}}
+%    \vect{\hat{u}}_{-\vect{k}}\vect{\hat{u}}_{\vect{p}} \vect{\hat{u}}_{\vect{q}}
+%    -
+%    \vect{\hat{u}}_{\vect{k}}\vect{\hat{u}}_{-\vect{p}} \vect{\hat{u}}_{-\vect{q}}
+%    =0
+%}
+
+According to Richardson (1922), a flow can be thought of to be composed of eddies of differing sizes. The largest scales of turbulent motion, typically the size of the domain, are fed by an external source such as an imposed pressure gradient and contain the most kinetic energy. The moving fluid creates a negative-pressure gradient that gives rise to smaller eddies. Larger eddies, that are unstable, successively break-up and transfer their kinetic energy to smaller ones until energy in the smallest eddies is dissipated into heat by viscous effects.
+%Richardson (1922) succinctly summarised the phenomenon with the following verses
+%\begin{verse}
+%    Big whorls have little whorls,\\
+%    Which feed on their velocity;\\
+%    And little whorls have lesser whorls,\\
+%    And so on to viscosity\\
+%    (in the molecular sense).
+%\end{verse}
+Let $\Re_l=\dfrac{u_l l}{\nu}$ be the Reynolds number for eddies of size $l$ with velocity $u_l$. The energy cascade continues till eddies are sufficiently small that $\Re_l\approx 1$ and molecular viscosity can effectively dissipate its kinetic energy. In the inertial subrange, where $\Re_l$ is large, the velocity cascades to higher and higher wavenumbers due to nonlinear interactions, mirroring the breakup of large, unstable eddies into smaller ones. As dissipation is the last step in the process, the rate of dissipation $\epsilon \left[\textsf{L}^{2} \textsf{T}^{-3} \right]$ is determined by the first process in the sequence---that is energy transfer from the largest eddies. This is because at every stable state, the rate of energy gained from larger eddies must equal the rate of energy lost to smaller eddies, which is then equal to the dissipation rate for the smallest eddies. From dimensional analysis, dissipation rate is found to be
+\eqn{
+    \epsilon \propto \frac{U^3}{L}
+}
+independent of viscosity for high Reynolds number flows.
+
+The theory of Kolmogorov (1941) answered questions regarding the lengthscale of the smallest eddies by hypothesising local isotropy, and statistic similarity at small enough scales for high Reynolds number flows. \textit{Kolmogorov's hypothesis of local isotropy} states that the directional biases of large scales are lost in the chaotic scale-reduction process as energy is successively transferred to smaller eddies.
+%\begin{hypothesis}[Kolmogorov's hypothesis of local isotropy]
+%    At sufficiently high Reynolds number, the small-scale turbulent motion $(l<<l_0)$ are statistically isotropic.
+%\end{hypothesis}
+The next hypothesis in Kolmogorov's theory, called \textit{Kolmogorov's first similarity hypothesis} states that the statistics of small-scale turbulent motion have a universal form that is uniquely determined by viscosity $\nu$ and dissipation rate $\epsilon$. From dimensional analysis, the lengthscale $\eta$ and velocity $u_\eta$ of the smallest eddies are
+\eqn{
+    \eta &= \left(\frac{\nu^3}{\epsilon}\right)^{1/4}\\
+    u_\eta &= \left(\epsilon\nu\right)^{1/4}\\
+}
+The Reynolds number for the Kolmogorov scales $\Re_\eta=\dfrac{\eta u_\eta}{\nu}$, charecterising the smallest dissipative eddies, is unity, consistent with the notion that the energy cascade proceeds to smaller scales until the $\Re_l$ is small enough for dissipation to be effective. Further, the ratio of the smallest to largest lengthscales is readily determined by the Reynolds number of the flow
+\eqn{
+    \label{eqn:kolmogorov}
+    \frac{\eta}{L} &= \Re^{-3/4}
+}
+
+\subsection{Wall-Bounded Turbulence}
+\label{sec:wall-bndd-turb}
+The theories of Kolmogorov and Richardson are applicable to homogeneous isotropic turbulent flows---that is flows with properties independent of position and direction. However, the application of the \textit{no-slip boundary condition} introduces a new set of physical processes and associated lenthscales near the boundary. In this section, we consider turbulent flows in the vicinity of smooth walls. This section is motivated in part by the review of wall-bounded turbulence \cite{wall-bounded-turb}.
+
+We align the Cartesian coordinates $x ,\,y ,\,z$ with the streamwise (in the direction of the flow), wall-normal, and spanwise directions. The associated velocity components are $u ,\,v ,\,w$ respectively. For flows in a channel or a pipe, turbulent statistics become independent of downstream distance when measured far from the inlet if inlet conditions are steady. Then the flow is said to be fully developed. Viscous forces impose the no-slip boundary condition at the boundary-fluid interface dictating that
+\seqn{\label{eqn:no-slip}}{
+    (\vect{v}_\mathrm{fluid} - \vect{v}_\mathrm{wall}) \cdot\uvect{n} &= 0
+     &\textit{no-penetration condition}\\
+    (\vect{v}_\mathrm{fluid} - \vect{v}_\mathrm{wall}) \cdot\uvect{n} &= 0
+    &\textit{no-slip condition}
+}
+\todo{second no-slip condition}
+evaluated at $y=0$ where $y$ is the distance from the wall. Far from the wall, the streamwise velocity is close $U$, the flow's characteristic velocity. For example, laminar flow between two walls obeys a parabolic profile for streamwise velocity with the maximum at the centerline. Turbulent flows have smaller velocity gradients in the bulk as turbulent eddies mix momentum effectively, and since the no-slip boundary condition has to be satisfied at the walls, velocity gradients are large near the wall. Viscous forces, characterised by the magnitude of shear stress $\tau$, which are proportional to velocity gradients, are also large near the wall.
+\eqn{
+    \tau &= \abs{\mu\left(\grad\vect{u}+\grad\vect{u}^T -\frac{2}{3}(\grad\cdot\vect{v})\tensor{\delta} \right) \cdot\uvect{y}} \propto \mu\frac{\d u}{\d y}
+}
+Prandtl introduced the concept of a viscous \textit{boundary layer}, a region in the immediate vicinity of the wall where viscous effects dominate, and an inviscid region away from the wall following different scalings. Near the wall, velocity goes to zero, but its gradients become large, leading to viscous forces dominating over inertial forces. We define $\tau_w$ to be the magnitude of shear stress applied by the fluid on the wall, and $u_\tau$ to be the friction velocity at the wall.
+\eqn{
+    \tau_w &= \tau\rvert_{y=0}\\
+    u_\tau &= \sqrt{\frac{\tau_w}{\rho}}\\
+}
+Here, the relevant velocity and length scales are $u_\tau$ and $\nu/u_\tau$. Quantities nondimensionalised by these wall units, $u_\tau$ and $\nu$, are labelled with a subscript $\cdot^+$. For example, the non-dimensional wall-distance $y^+$ and non-dimensional streamwise velocity $u^+$ are
+\eqn{
+    u^+ &= \frac{u}{u_\tau}\\
+    y^+ &= \frac{y}{\nu/u_\tau}
+}
+respectively.
+
+Turbulent eddies in the boundary layer are restricted in size by the boundary layer thickness. The assumption in \autoref{sec:cascade} on homogeneous, isotropic turbulence that the most energetic eddies are much larger than the least energetic ones breaks down in the near-wall region, where the most energetic eddies are relatively small, often on the order or $\eta$. Turbulent energy is typically supplied to wall-bounded flows by the anisotropy due to the presence of the wall, there can even exist a reverse energy cascade from smaller to larger scales\cite{wall-bounded-turb}.
+
+Prandtl postulated that the mean streamwise velocity near the wall is independent of boundary layer thickness $\delta \left[\textsf{L}^{1} \right]$ leading to \textit{the law of the wall}
+\eqn{
+    \expval{u^+} &= F(y^+)
+}
+where $F(\cdot)$ is some universal function. In the inviscid region, the characteristic scales $U$ and $L$ remain valid while $\delta$ and $u_\tau$ are still relevant as the outer edge of the boundary layer sets up a no-slip condition for the outer flow. von Karman formulated the \textit{velocity-defect law} in 1930 as \todo{cite}
+\eqn{
+    \expval{u^+} - u_e^+ &= G(\eta)
+}
+where $u_e$ is the streamwise velocity of the outer edge of the boundary layer, $\eta=\dfrac{y}{L}$ and $G(\cdot)$ is another universal function. The Reynolds number based on the friction velocity and the domain characteristic lengthscale is called the friction Reynolds number. $\Re_\tau$ is experimentally measured, and gives an idea of the scale separation in wall-bounded flows.
+\eqn{
+    \Re_\tau = \frac{u_\tau L}{\nu}
+%   = \frac{L\sqrt{\tau_w/\rho}}{\nu}
+%   \propto \frac{L\sqrt{\nu\frac{\d u}{\d y}}}{\nu}
+}
+The distance $y^+$ is the Reynolds number for structures reaching from $y$ to the wall, and is never large in the boundary layer\cite{wall-energy-cascade}. Between the inner and outer flow, lies a buffer layer (typically $10\leq y^+\leq 100$) where both inertial and viscous effects are important. Below $y^+\approx 5$, fluid viscosity is dominant and the scaled mean velocity resembles a linear profile. In the buffer region, the streamwise velocity transitions to a logarithmic profile. Most of the turbulent energy is generated in the buffer region through a self-sustaining nonlinear \textit{near-wall cycle} at least in moderate Reynolds number flows\cite{near-wall-cycle}.
+
+\todo{momentum fluxes, von Karman constant. few words on importance of wall-bounded flows}
+
+\subsection{Boundary Curvature}
+
+\todo{streamline curvature and pressure-differences}
+
+\todo{turbulence - mean strain rate}
+
+\subsection{Roughness}
+We expand on the discussion in \autoref{sec:wall-bndd-turb} 
+
+\todo{definition of roughness/rough wall}
+
+Flow features associated with roughness\cite{roughwalls}
+
+% roughness
+Roughness - \cite{nakayama2002}\cite{roughwalls}
+
+\subsection{Reynolds Stress Transport Equations}
+\todo{refer to TSFP1979 to improve this section}
+
+For brevity, we employ the Einstein summation notation.
+ 
+We derive the Reynolds stress transport equations (RSTE) which describe the production, transport, and dissipation of energy in fluctuating modes of a flow. Examining the energy budgets of turbulent flows can lead to insights into factors driving turbulence and leading to its decay, spatial distribution, and how energy is transferred between mean and fluctuating modes. Reynolds stress budgets provide valuable information on the relative magnitudes of the terms and their possible scaling as well as reveal the production, dissipation, and spatial redistribution mechanisms of turbulent energy.
+
+We repeat the non-dimensional, unsteady, incompressible Navier-Stokes equations in Einstein indicial notation.
+\eqn{
+    \ppp{t} v_j + v_i v_{j,i} &= -p_{,j} + \dfrac{1}{\Re}v_{j,ii} + f_j\\
+    v_{i,i} &= 0
+}
+
+We take the expected value of the continuity equation to find that $\expval{v_i}$ is divergence free.
+\eqn{
+    \expval{0} &= \expval{v_{i,i} } \\
+    0 &= \expval{v_i}_{,i}
+}
+Similarly, we expand the continuity equation in terms of expected values of fluctuations,to find that $v_i'$ is also divergence free.
+\eqn{ 0 &= v_{i,i} = \cancelto{0}{\expval{v_{i}}_{,i}} + v'_{i,i} \\
+    0 &= v'_{i,i}
+}
+We take the expected value of the momentum equation.
+\eqn{
+    \label{eqn:NS-exp}
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} + \expval{v'_iv'_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\Re}\expval{v_j}_{,ii} + \expval{f_i}
+    \\
+    \ppp{t}\expval{v_j} + \expval{v_i} \expval{v_{j,i}} &= -\expval{p_{,j}} + \dfrac{1}{\Re}\expval{v_j}_{,ii} + \expval{f_i} - \expval{v'_iv'_j}_{,i}
+}
+$\eta_{ij}=\expval{v'_iv'_j}$ is called the Reynolds stress tensor. We apply Reynolds decomposition to the momentum equation.
+\eqn{
+    \label{eqn:NS-decomp}
+    \ppp{t}(\expval{v_j}+v'_j) + (\expval{v_i}+v'_i)(\expval{v_{j,i}}+v'_{j,i})
+    &=
+    -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\Re}(\expval{v_{j,ii}}+v'_{j,ii})  + \expval{f_j} + \cancelto{0}{f'_j}
+    \\
+    \ppp{t}(\expval{v_j}+v'_j) + \expval{v_i}\expval{v_{j,i}} + \expval{v_i}v'_{j,i}
+        + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} 
+    &=
+        -(\expval{p_{,j}}+p'_j) + \dfrac{1}{\Re}(\expval{v_{j,ii}}+v'_{j,ii}) + \expval{f_j}
+}
+Subtracting \autoref{eqn:NS-exp} from \autoref{eqn:NS-decomp}, we get
+\eqn{
+        \ppp{t}v'_j + \expval{v_i}v'_{j,i} + v'_i\expval{v_{j,i}} + v'_iv'_{j,i} - \expval{v'_iv'_{j,i}}
+    =
+        -p'_{,j} + \dfrac{1}{\Re}v'_{j,ii}
+}
+Multiply both sides by $v'_k$ and take the expected value.
+\eqn{
+        \expval{v'_k\ppp{t}v'_j} +  \expval{v_i}\expval{v'_kv'_{j,i}} +\expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_kv'_iv'_{j,i}} - \cancelto{0}{\expval{v'_k}}\expval{v'_iv'_{j,i}} 
+    =
+        -\expval{v'_kp'_{,j}} + \dfrac{1}{\Re}\expval{v'_kv'_{j,ii}}
+}
+Take the transpose and add.
+%We simplify the equation with the following properties:
+%\eqn{
+%    v'_kv'_{j,i} + v'_{k,i}v'_j &= (v'_jv'_k)_{,i} \\
+%    v'_jv'_{k,ii} + v'_iv'_{j,ii} &= (v'_kv'_j)_{,ii} - 2v'_{j,i}v'_{k,i} \\
+%    v'_kv'_iv'_{j,i} + v'_kv'_iv'_{j,i} &= (v'_iv'_jv'_k)_{,i}
+%}
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}} + \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    -\left(\expval{v'_kp'_{,j}}+\expval{v'_jp'_{,k}} \right)+ \dfrac{1}{\Re}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\Re}\expval{v'_{j,i}v'_{k,i}}
+}
+We write the pressure transport term in terms of the pressure strain and pressure diffusion terms.
+\eqn{
+    v'_kp'_{,j} + v'_jp'_{,k} = -p'(v'_{j,k}+v'_{k,j}) + (p'v'_j)_{,k} + (p'v'_k)_{,j}
+}
+We finally arrive at the tensor equation describing the behaviour of Reynolds Stresses over time.
+\eqn{
+    \ppp{t}\expval{v'_jv'_k} + \expval{v_i}\expval{v'_jv'_k}_{,i} &+ \expval{v'_k v'_i}\expval{v_{j,i}} + \expval{v'_j v'_i}\expval{v_{k,i}}+ \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
+    + \dfrac{1}{\Re}\expval{v'_j v'_k}_{,ii} - \dfrac{2}{\Re}\expval{v'_{j,i}v'_{k,i}}
+    \label{eqn:rs}
+}
+\eqn{
+    \ppp{t}\eta_{jk} + \expval{v_i}\eta_{jk,i} &+ \eta_{ki}\expval{v_{j,i}} + \eta_{ji}\expval{v_{k,i}}+ \expval{v'_i v'_j v'_k}_{,i} \\
+    &=
+    \expval{p'(v'_{j,k}+v'_{k,j})} - \expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}
+    + \dfrac{1}{\Re}\eta_{jk,ii} - \dfrac{2}{\Re}\expval{v'_{j,i}v'_{k,i}}
+}
+To obtain the equation for Turbulent Kinetic Energy, we consider one-half of the trace of \autoref{eqn:rs} by multiplying with $\frac{1}{2}\delta_{ij}.$
+\eqn{
+    \label{eqn:tke}
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+    \cancelto{0}{\expval{p'v'_{i,i}}} - \expval{p'v'_j}_{,j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} - \cancelto{0}{\expval{p'v'_{i,i}}} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+    \\
+    \ppp{t}k + \expval{v_i}k_{,i} + \expval{v'_jv'_i}\expval{v_{j,i}} + \expval{v'_iv'_jv'_j}_{,i}
+    &=
+     - \expval{p'_{,j}v'_j} + \dfrac{1}{\mathrm{Re}}k_{,ii} - \frac{1}{\mathrm{Re}}\expval{v'_{j,i}v'_{j,i}}
+}
+\autoref{eqn:rs} and \autoref{eqn:tke} describe the generation, transport and decay of Reynolds stresses in a flow. For each $\eta_{ik}$ in the symmetric Reynolds stress tensor, and for $k,$ we label the terms in \autoref{eqn:rs} and \autoref{eqn:tke}.
+\begin {table}[H]
+\centering  \caption{Budgets for Reynolds Stresses}
+\label{tbl:rs-budgets}
+\begin{tabular}{| r | l | l |}
+\hline
+\textbf{Reynolds Stress Expression} & \textbf{Budget Term} & \textbf{TKE Expression}\\
+\hline
+$\expval{v'_jv'_k}$                                                     & Reynold Stress      & $k=\dfrac{1}{2}\expval{v'_jv'_j}$               \\[0.5em]
+$\expval{v_i}\expval{v'_jv'_k}_{,i}$                                    & Convection          & $\expval{v_i}k_{,i}$                            \\[0.5em]
+$-\expval{v'_j v'_i}\expval{v_{k,i}}-\expval{v'_k v'_i}\expval{v_{j,i}}$& Production          & $-\expval{v'_jv'_i}\expval{v_{j,i}}$            \\[0.5em]
+$-\expval{v'_i v'_j v'_k}_{,i}$                                         & Turbulent Diffusion & $\expval{v'_iv'_jv'_j}_{,i}$                    \\[0.5em]
+$-\expval{v'_kp'_{,j} + v'_jp'_{,k}}$                                   & Pressure Transport  & $-\expval{v'_jp'_j}$                            \\[0.5em]
+$-\expval{(p'v'_j)_{,k} + (p'v'_k)_{,j}}$                               & Pressure Diffusion  & $-\expval{v'_jp'_j}$                            \\[0.5em]
+$\expval{p'(v'_{j,k}+v'_{k,j})}$                                        & Pressure Strain     & 0                                               \\[0.5em]
+$\dfrac{1}{\Re}\expval{v'_j v'_k}_{,ii}$                          & Viscous Diffusion   & $\dfrac{1}{\Re}k_{,ii}$                   \\[0.5em]
+$- \dfrac{2}{\Re}\expval{v'_{j,i}v'_{k,i}}$                       & Viscous Dissipation & $\dfrac{-1}{\Re}\expval{v'_{j,i}v'_{j,i}}$\\[0.5em]
+\hline
+\end{tabular}	
+\end{table}
+
+The convection term describes the transport of Reynolds stresses due to the motion of the mean flow $\expval{v_i}.$ The production term arises from interactions between fluctuations and shearing of the mean flow, resulting in a net transfer of energy from mean to turbulent fluctuations. The viscous diffusion term, as the name suggests, describes the diffusion of Reynolds stresses in the flow domain.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modelling and Simulation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todo{difficulties in meshing due to complicated geometries resulting in low-order methods}.
+
+\todo{Inability to accurately represent boundary irregularities leading to differences between model and true setup.}
+
+\todo{no existing statistical closure models}
+
+\todo{onto LES, RANS}
+
+% DNS, LES
+Numerical calculations in which energy containing lengthscale are sufficiently resolved are called Direct Numerical Simulations (DNS), which are an effective tool in turbulence research \cite{moin_DNS_research} as DNS allow one to gain insight into the mechanisms pertinent to energy transfer between fluctuating and mean modes. Large Eddy Simulation (LES) is a technique to simulate turbulent flows whereby the Navier-Stokes equations are low-pass filtered, and only the small wavenumber modes are solved for. large eddy simulation (LES) of such flows, where the resolved/filtered scales of motion are evolved, and the unresolved scaled are modeled, is still intractable. Courtesy of the nonlinear advection term, the effect of the unresolved modes on the resolved ones has to be accounted for by means of an appropriate model. Wall models too. A common technique in the domain of subgrid stress modelling is to perform DNS of flows in simplified domains, filter the resulting velocity-pressure fields and find functional relations between the DNS results and filtered data. Despite recent advances in computing technology, wall-resolved LES still remain intractable for complex geometries.
+
+
+\todo{accurate/turbulent inlet-outlet, BC data generation}
+    
+%roughness in context of LES - want LES simulation to approximate filtered RWW, not SWW. complex domain simulation difficulties: messy mesh - poor convergence, low order/general methods - low fidelity, higher computational cost.
+
+Flows of practical interest often involve modelling complicated geometries containing multiscale features. Due to infeasibility of modelling extremely complicated geometries, the effect of small-scale features on the flow may be accounted for as roughness, though it is not clear what features must be modelled and what discarded\cite{nakayama2002}. Larger undulations are considered as part of the boundary shape. If a boundary irregularity is not modelled, the motion associated with that detail is lost. Various studies of numerical simulation of smooth-surface wall flows have indicated that proper representation of the near-wall flow is essential for accurate reproduction of the main flow\cite{nakayama2009}. Proper representation of the flow near rough and irregular boundaries can also be very important in computation of flows over rough surfaces. In order to study the effects of small boundary irregularities, a direct numerical simulation of a model flow with a ``simplified'' complex boundary has been conducted.

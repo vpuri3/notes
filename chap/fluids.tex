@@ -1,6 +1,6 @@
 \chapter{Fluid Mechanics}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Fluids}
 A fluid is a material that deforms continuously under action of a shear stress, however small. This contrasts with the behaviour of a solid which deforms only when stress values are in certain regimes. Solids are \textbf{elastic}: internal stresses in solids resist absolute deformation \vvis some original state; fluids are \textbf{viscous}: internal stresses in fluids resist the time rate of deformation. A corollary is that a fluid in static equilibrium supports only its weight and forces acting normal to its boundary. A material is said to be fluid if it seems to ``flow" in the timescale of observation $t_\mathrm{obs}$. That is, if the material is able to relax to a natural state in time less than $t_\mathrm{obs}.$ The relaxation time of a fluid is denoted $\lambda_\text{relax}$. The ratio of relaxation time to observation time is called Deborah Number. This dimensionless quantity is named after the prophet Deborah who, in the Book of Judges, proclaimed ``The mountains flowed before the lord." For large enough $t_\text{obs},$ even mountains will behave like fluids. A material is fluid if $\text{De}<<1.$
 \eqn{
@@ -12,7 +12,23 @@ To derive the equations governing viscous fluid flow, we have to consider the ti
 
 We consider two perspectives to view motion in a continuum: the \textbf{Lagrangian} perspective expresses position, velocity and other state variables in terms of material points travelling with a fluid; the \textbf{Eulerian} perspective expresses fluid properties with respect to some reference coordinate system. The time evolution of the position of the material point $\vect{X}$ can be tracked on an Eulerian coordinate system with a vector $\vect{x}(\vect{X},t).$ Since only one material point can be located at an Eulerian coordinate at a given time, there exists an inverse relation $\vect{X}(\vect{x},t)$ mapping material points $\vect{X}$ to the Eulerian coordinate position they occupy at time $t.$  To illustrate the difference, consider velocity. The velocity of a material point $\vect{X}(\vect{x_0},t)$ is given by $\eval{\p_{t}\vect{X}(\vect{x},t)}_{\vect{x_0}} = \vect{v}(\vect{X}\left(\vect{x_0},t),t\right)$
 
-Let $\vect{F}$ be some property of a fluid at some material point $\vect{X}\in\Omega$ at time $t>0$. $\vect{F}$ depends on $\vect{X},$ i.e. which material point one chooses and time $t$ as material point may interact with other points and lose/gain the property over time. Hence the property $\vect{F}$ following a material point varies with the point's Eulerian coordinate and time, i.e. $\vect{F}=\vect{F}(\vect{x},t).$ The rate of change of $\vect{F}$ following the material point is
+\begin {table}[H]
+\centering  \caption{Lagrangian and Eulerian Points of View}
+\label{tbl:bdf}
+\begin{tabular}{|c | c | c |}
+\hline
+ & Eulerian & Langrangian\\\hline
+Coordinate & $\vect{x}(\vect{X},t)$ & $\vect{X}(\vect{x},t)$ \\
+\hline
+Input &  &    \\
+      & $t$ (time) & $t$ (time)\\\hline
+Output &  &    \\\hline
+Velocity & $\p_t\vect{x}(\vect{X},t)$ & $\p_t\vect{X}(\vect{x},t)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+Let $\vect{F}$ be some property of a fluid at some material point $\vect{X}\in\Omega$ at time $t>0$. $\vect{F}$ depends on $\vect{X},$ i.e. which material point one chooses and time $t$ as material points may interact with other points and lose/gain $\vect{F}$ over time. Hence the property $\vect{F}$ following a material point varies with the point's Eulerian coordinate and time, i.e. $\vect{F}=\vect{F}(\vect{x},t).$ The rate of change of $\vect{F}$ following the material point is
 \eqn{
     \ddd{t}\vect{F} &= \p_{t}\vect{F} + \sum_{i=1}^n\p_{x_i}\vect{F}\partial_t x_i
     \\
@@ -36,9 +52,9 @@ An infinitesimal line element $\d V$ at time $t=0$ is stretched to $\det(J)\d V$
         \left(\sum_j\frac{\partial\det(J)}{\partial J_{ij}}\frac{\partial X_k}{\partial x_j}\right)
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \todo{flow visualization - streamlines, streaklines, pathlines}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Stress}
 Stress is defined as a force across a ``small" boundary ($\in\mathbb{R}^2$) per unit area of that boundary, for all orientations of the boundary. Stress is defined at a point with respect to a surface on which it would act. Consequently, stress depends on the orientation of the surface on which it acts. Hence, $\vect{\tau} = \vect{\tau}(\vect{x},t,\vect{n})$ where $\vect{n}$ is the outward pointing normal to the surface. In the limit $\delta A\rightarrow 0,$ stress at a point is independent of the magnitude of the area.
 \begin{equation}
@@ -155,7 +171,7 @@ Since a fluid continuously deforms under shear stress, a static, non-deforming f
     \vect{\tau} &= -p(\vect{x},t)\tensor{\delta}\cdot\vect{n}
 \end{split}
 \end{equation}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 We still need to relate the stress tensor to the flow field. The \textit{Newtonian Model} is based on the following assumptions:
 \begin{enumerate}
@@ -169,17 +185,16 @@ From the first assumption, we have $\sigma_{ij}=\mathrm{K}_{ijkl}e_{kl}$ where $
 \begin{equation}
 \begin{split}
 \tensor{\sigma}&= -p\tensor{\delta}+\tensor{\tau_v} \\
-&= -p\tensor{\delta} + \mu(\del\vect{v}+\del\vect{v}^\transp) + \lambda(\del\cdot\vect{v})\tensor{\delta}
+&= -p\tensor{\delta} + \mu\left(\del\vect{v}+\del\vect{v}^\transp - \frac{2}{3}(\del\cdot\vect{v})\tensor{\delta}\right)
 \end{split}
 \end{equation}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reynolds Transport Theorem and Consequences}
-Reynolds Transport Theorem (RTT) relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
+We begin with the derivation for the Reynolds Transport Theorem which relates time rate of change of quantities in material volumes to the distribution of said properties in the volume. Consider an arbitrary, finite (finite, nonzero measure) control volume $\Omega(t)\subset\mathbb{R}^3$ bounded by some control surface $\partial\Omega(t)\subset\mathbb{R}^3$ in some time varying flow.
 For some property $\phi(\vect{x},t)$,
-
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\der V = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\der V - \int_{\Omega(t)}\phi(\vect{x},t)\der V}{\Delta t}
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} = \lim_{\Delta t\rightarrow 0}\dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t+\Delta t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x}}{\Delta t}
 }
 For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\vect{x},t)$ about $\phi(\vect{x},t)$
 \eqn{
@@ -187,40 +202,45 @@ For reasonably smooth  $\phi(\vect{x},t),$ use the taylor expansion of $\phi(\ve
 }
 Substituting,
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d V &= \lim_{\Delta t\rightarrow 0}
-    \int_{\Omega(t+\Delta t)}\p_{t}\phi(\vect{x},t)\d V + 
-    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d V - \int_{\Omega(t)}\phi(\vect{x},t)\d V + \mathcal{O}(\Delta t^2)}{\Delta t}
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} &= \lim_{\Delta t\rightarrow 0}
+    \int_{\Omega(t+\Delta t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} + \mathcal{O}(\Delta t^2)}{\Delta t}
      \\
-    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d V + \lim_{\Delta t\rightarrow 0} + 
-    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d V - \int_{\Omega(t)}\phi(\vect{x},t)\d V}{\Delta t}
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \lim_{\Delta t\rightarrow 0} + 
+    \dfrac{\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x}}{\Delta t}
 }
-To explain the thought process, WLOG let $\phi=1$. We are looking for the difference in volume between the two integrals. That is equal to the net volume that the boundary has expanded into. For an infinitesimal patch $\d A$ on $\partial\Omega$ (containing point $\vect{x}$, and with outward normal $\uvect{n}$), that is
+To explain the thought process, without loss of generality, let $\phi=1$. We are looking for the difference in volume between the two integrals. That is equal to the net volume that the boundary has expanded into. For an infinitesimal patch $\d \vect{S_x}$ on $\partial\Omega$ (containing point $\vect{x}$, and with outward normal $\uvect{n}$), that is
 \eqn{
-    \left(\vect{x}(t+\Delta t)-\vect{x}(t)\right)\cdot\uvect{n}\d A
+    \left(\vect{x}(t+\Delta t)-\vect{x}(t)\right)\cdot\uvect{n}\d \vect{S_x}
 }
 Capturing the difference with a Taylor expansion and integrating over $\partial\Omega$, we get
 \eqn{
-    \int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d V - \int_{\Omega(t)}\phi(\vect{x},t)\d V =
-    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\Delta t\vect{v_c})\cdot\uvect{n}\d A +
-    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\d A + \mathcal{O}(\Delta t^3)
+    &\int_{\Omega(t+\Delta t)}\phi(\vect{x},t)\d\vect{x} - \int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} =\\
+    &\int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\Delta t\vect{v_c})\cdot\uvect{n}\d \vect{S_x} +
+    \int_{\partial\Omega(t)} \phi(\vect{x},t)\cdot(\ddd{t}\vect{v}_c\dfrac{\Delta t^2}{2})\cdot\uvect{n}\d \vect{S_x} + \mathcal{O}(\Delta t^3)
 }
-where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\d A\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\d A\subset\partial\Omega(t)$ throughout the volume $\d A(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
+where $\vect{v_c}(\vect{x},t)$ is the velocity of the control surface at time $t$ at point $\vect{x}\in\partial\Omega(t)$ and $\uvect{n}$ is the outward pointing unit normal vector on $\partial\Omega(t)$. An infinitesimal area element $\d \vect{S_x}\subset\partial\Omega(t)$ moves a distance of $(\Delta t\vect{v_c}\cdot\uvect{n}+\mathcal{O}(\Delta t^2))$ normal to the surface in time $\Delta t.$ Another way to think of this approximation is the following: project the value of $\phi(\vect{x},t)$ on $\d \vect{S_x}\subset\partial\Omega(t)$ throughout the volume $\d \vect{S_x}(\Delta t\vect{v_c}\cdot\uvect{n})+\mathcal{O}(\Delta t^2)$
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d V 
-    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d V + \lim_{\Delta t\rightarrow 0}
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \lim_{\Delta t\rightarrow 0}
     \dfrac{\int_{\partial\Omega(t)}\phi(\vect{x},t)(\Delta t\vect{v_c})\cdot\uvect{n}dA+\mathcal{O}(\Delta t^2)}{\Delta t} \\
-    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v_c}\cdot\uvect{n}dA
 }
 $\p_{t}\phi$ is the local the rate of production (or accumulation) of $\phi.$ It accounts for the effects of change in $\phi$ in the interior of the domain (say due to creation/dissipation or advection/diffusion). The divergence term accounts for the capture or loss of $\phi$ by the motion of the control surface. If $\Omega(t)$ is a material volume then, $\vect{v_c}=\vect{v},$ at all points in $\partial\Omega(t)$. Hence, the final form of the Reynolds Transport Theorem for material volumes $\Omega(t)$ is:
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d V 
-    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d V + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\d A
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi(\vect{x},t)\d\vect{x} + \int_{\partial\Omega(t)}\phi(\vect{x},t)\vect{v}\cdot\uvect{n}\d \vect{S_x}
 }
-Applying Gauss' law,
+We now apply the well known divergence theorem, also referred to as Gauss' Law,
 \eqn{
-    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d V 
-    &= \int_{\Omega(t)}\p_{t}\phi+\del\cdot(\vect{v}\phi)\d V \\
-    &= \int_{\Omega(t)}\D_t\phi+\phi(\del\cdot\vect{v})\d V \\
+    \int_{\partial\Omega}\vect{\psi}\cdot\uvect{n}\d\vect{S_x} =
+    \int_\Omega\grad\cdot\vect{\psi}\d\vect{x}
+}
+to get
+\eqn{
+    \ddd{t}\int_{\Omega(t)}\phi(\vect{x},t)\d\vect{x} 
+    &= \int_{\Omega(t)}\p_{t}\phi+\grad\cdot(\vect{v}\phi)\d\vect{x} \\
+    &= \int_{\Omega(t)}\DDD\phi+\phi(\grad\cdot\vect{v})\d\vect{x} \\
 }
 Since a material volume always contains the same fluid elements, time rate of change of total mass in a material volume should be zero.
 \begin{equation}
@@ -314,7 +334,7 @@ We explore energy conservation properties of the incompressible Navier Stokes eq
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Stokeslet and Stresslets}
 We discuss properties of fundamental solution to the Stokes equation. But first, review of potential theory..?
 \eqn{

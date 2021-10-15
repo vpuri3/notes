@@ -1,0 +1,215 @@
+\chapter{Discrete Differential Geometry}
+
+Based on Keenan Crane's youtube lecture series
+
+%======================================================================%
+\section{Meshes}
+
+\begin{definition}[Simplicial Complex]
+\end{definition}
+
+Chains and co-chains
+
+%======================================================================%
+\section{Manifold}
+
+\begin{definition}[Manifold]
+    An $n$-manifold is a space that locally looks like (is homeomorphic to) $\R^n$.
+\end{definition}
+
+\begin{definition}[Simplicial Manifold]
+    A simplicial $k$-complex is a manifold if the linik of every vertex looks like  (i.e. is homeomorphic to) a $(k-1)$-dimensional sphere.
+\end{definition}
+%======================================================================%
+\section{Exterior Algebra}
+
+A language for manipulating signed volumes.
+
+\begin{definition}[Wedge Product $\wedge$]
+    (Analogy: oriented span of vectors)
+    For vectors $u,\,v$, the wedge product, $u \wedge v$ describe the oriented area vector. Wedging $k$ vectors gives us a {\bfseries $k$-vector}, or $k$-dimensional volumes. A $k$-vector encodes only two pieces of information: a direction and a magnitude. therefore, we can say that $k$-vectors (or $k$-vector) are the equivalance class of k-dimensional volumes with the same k-dimensional volume and orientation. For convenience, we say that a $0$-vector has no orientation, just magnitude. i.e. just a scalar.
+\end{definition}
+Since the wedge product is oriented, it is antisymmetric. Wedge product is also associative, i.e. $(u \wedge v) \wedge w = u \wedge (v \wedge w)$. Wedge product is also distributive over addition: i.e. $u \wedge v_1 + u \wedge v_2 = u \wedge (v_1 + v_2)$.
+
+\begin{definition}[Orthogonal Complement]
+    Let $U\subset V$ be linear subspace of vector space $V$ with an inner product $\ipr{\cdot}{\cdot}$. The orthogonal complement of $U$ is the collection of vectors
+    \eqn{
+        U^\perp \defeq \{ v\in V \vert \ipr{u}{v} = 0\, \forall u \in U  \} 
+    }
+\end{definition}
+
+\begin{definition}[Hodge Star $\star$]
+    (analogy: orthogonal complement to a wedge product) When you say, 
+    \eqn{
+        \star(u \wedge v) = w
+    }
+    it means that the vector $w$ is orthogonal to $u$, and $v$. More generally, in $n$-dimensional space, the hodge star of a $k$-vector $v$, $w = \star v = \star (\bigwedge_{i=1}^k v_i)$ is the $(n-k)$-vector $w = \bigwedge_{i=1}^{n-k}w_i$ the span of whose elements $\{w_i\}$ is the orthogonal complement of $\{v_i\}$ with some inner product. These two definitions are describing the same thing!
+    
+    To fix orientation, we assert the convention that for $k$-vector $z$, $z \wedge \star z$ is a positively oriented $n$-vector.
+    
+\end{definition}
+For $k$-vector $u$, we have:
+\eqn{
+    u \wedge \star u &> 0 \\
+    \star u \wedge \star \star u &> 0\\
+    \implies \star\star u &= - u
+}
+
+Summary: let $V$ be an $n$-dimensional vector space consisting of $1$-vectors. We can wedge together $k$ vectors to get a $k$-vector ($k$ dimensional signed volume). We can also apply the Hodge star to get the complementary $(n-k)$-vector.
+
+The geometric meaning of $k$-vector and vectors has nothing to do with coordinates. A vector can be represented by a list of numbers, but it isn't fundamentally a list of numbers.
+
+For any basis $k$-vector $\alpha = \bigwedge_{l=1}^k e_{i_l}$ where ${i_l}_{l=1}^k \subset {1,\dotsc,n}$, we define the Hodge star such that $\det(\alpha \wedge \star \alpha) = 1$. In other words, if we start with a unit $k$-volume, wedging with its Hodge star must give a unit, positively oriented unit $n$-volume. For example, if $\alpha=e_2$, then $\star \alpha = e_3 \wedge e_1$ since $\det(e_2 \wedge e_3 \wedge e_1) = 1$, since its an even permutation of $e_1 \wedge e_2 \wedge e_3$.
+
+\subsection{$k$-Forms and Duality}
+
+A $k$-form is something that measures a $k$-vector. Something to remember is that measurement devices have the same dimension as the thing they're measuring, i.e. a ruler (1D) measures length, a container (3D) measures volume. A vector can be paired with another vector to get some measurement (inner product). Exterior calculus generalises this idea: a $k$-dimensional volume ($k$-form) is paired with a \textit{dual} ($k$-form) $k$-dimensional volume to get a measurement.
+
+Duality is a pervasive idea in mathematics. In this chapter, we consider duality between (primal) vectors ($k$-vectors) i.e. things that are, and (dual) covectors ($k$-forms) i.e. things that measure. Just as vectors can be wedged together to form $k$-vectors, covectors can be wedged together to form $k$-forms. Covectors are represented by row vectors (adjoints), and vectors by column vectors. Then they can be combined by inner products. We can think of row vectors as a linear map that sends column vectors to $\R$ via the inner product.
+
+\begin{definition}[Dual Space]
+    For any real vector space $V$, its dual space, $V^*$ is the collection of linear functions $\alpha:V\rightarrow \R$ together with the operations of addition and scalar multiplication.
+\end{definition}
+
+An element of the dual space is called a dual vector or a covector. Example: for $V = \L[0,1],\, \delta:V\rightarrow\R;\, \delta(f)=f(0)$. i.e. the Dirac delta function is a member of the dual space of $\L[0,1]$.
+
+\begin{definition}[Sharp $\sharp$, and Flat $\flat$]
+    (analogous to transpose operator in matrix algebra). Flat $\flat$ "flattens" a primal (column) vector and turns it into its dual (row) vector.
+    
+    \eqn{
+        u,v \rightarrow^\flat u^\flat(v)
+    }
+    
+    Likewise sharp $\sharp$ converts a covector (row vector) into its primal (column vector)
+    \eqn{
+        \alpha,\beta \rightarrow^\sharp \alpha(\beta^\sharp)
+    }
+\end{definition}
+
+In general, the inner product involves a mass matrix. Eg. for vectors $u,v \in \R^n$, $\ipr{u}{v}= u^T M v$ where $M\in \R^{n\cross n}$ is a positive-definite "mass" matrix (or a metric) that conveys that angle means in the space we're working in. The standard dot product is obtained when $M$ is the identity matrix. Then,
+\eqn{
+    u^\flat(v) &= (u^T M)v \\
+    \alpha(\beta^\sharp) &= \alpha (M^{-1}\beta^T)
+}
+
+In other words,
+\eqn{
+    u^\flat(\cdot) &= \ipr{u}{\cdot} \\
+    \ipr{\alpha^\sharp}{\cdot} &= \alpha(\cdot)
+}
+
+\begin{definition}[Determinant and Singed Volumes]
+    Determinant is a signed volume. In 2D, the determinant of two vectors is the signed area of parallelogram spanned by the vectors. More generally, the determinant of vectors $\{v_i\}^n\subset\R^n$ is the signed volume of the parallelopipped spanned by the vectors.
+\end{definition}
+
+
+\begin{definition}[$k$-forms]
+    What does it mean to take a multi-linear measurement of a $2$-vector $v = v_1\wedge v_2$ done by $\alpha = \alpha_1,\alpha_2$? It is the area of the projection of $v$ onto the plane described by $a$, scaled by the magnitude of $\alpha$.
+    
+    \eqn{
+        \alpha(v) &\defeq \alpha_1(v_1)\alpha_2(v_2) - \alpha_1(v_2)\alpha_2(v_1)
+    }
+    
+    In general a $k$-forms is a fully antisymmetric (i.e. exchanging any two arguments changes the sign), multilinear measurement of a $k$-vector. Conceptually, you project $v_1,\dotsc,v_k$ onto $\alpha_1,\dotsc,\alpha_k$ and make the area measurement via the determinant.
+    \eqn{
+        (\bigwedge^k \alpha_i)(\bigwedge^k v_k) = \det
+        \begin{bmatrix}
+            \alpha_1(v_1) & \hdots & \alpha_1(v_k) \\
+            \vdots & \ddots & \vdots \\
+            \alpha_k(v_1) & \hdots & \alpha_k(v_k)
+        \end{bmatrix}
+    }
+    $\alpha_i(v_j)$ can be thought of the component of $v_j$ along the direction $\alpha_i$
+\end{definition}
+
+Moving the analogy ahead, a $0$-form is something that takes no vector as input and gives a $\R$ output.
+
+When working with coordinates, the \textbf{Dual basis} are written with superscripts $e^1,\dotsc,e^n$, and primal basis are written with subscripts $e_1,\dotsc,e_n$. Further, $e^i$ is the dual basis for $e_i$ have a special relationship:
+\eqn{
+    e^i(e_j) = \delta^i_j
+}
+We also follow \textbf{Einstein summation notation}: if an index appears twice (once superscript, and once subscript), we consider an implicit summation of the quantity over the range of the index.
+
+\eqn{
+    x^iy_i \defeq \sum_{i=1}^n x^iy_i
+}
+
+%======================================================================%
+\section{Differential Forms}
+If a vector field is the assignment of a vector to each point in space, then a differential form is the assignment of a little volume measurement to each point in space. A differential $0$-form is just a scalar field - it takes zero vectors as input and assigns a value at each point in space. A differential $1$-form is a linear function mapping a vector to $\R$ at each point in space. We apply all exterior algebra operations pointwise to differential $k$-forms.
+
+\textbf{Basis vector fields}: Just as we can pick a basis for vectors, we can pick a basis for vector fields: $\p_{x^1},\, \p_{x^2}, \dotsc, \p_{x^n}$ are constant vector fields of unit magnitude along the coordinate axes in $\R^n$. They look like partial derivatives but don't think about what these symbols have to do with derivatives. These are just the basis for vector fields in $\R^n$. Vector fields can be formed by a linear combination of the basis vector fields, but the coefficient of the linear combination may vary across the domain. So a vector field on these basis in $\R^2$ would look like
+
+\eqn{
+    v = a(x_1,x_2)\p_{x^1} + b(x,y)\p_{x^2}
+}
+For differential one forms, the dual basis are written as $\d x^i$ with the relationship $\d x^i(\p_{x^j}) = \delta^i_j$. These are just the basis for $1$-forms, no relation to derivatives. A differential $1$-form is written as
+\eqn{
+    \alpha = \alpha_1\d x^1 + \alpha_2\d x^2
+}
+
+The explanation for the relation to the derivative is as follows: consider the scalar field $u = x_1$. The gradient is the constant field pointing to the right. The derivative of a coordinate function gives a constant field pointing in that direction. 
+%======================================================================%
+\section{Exterior Calculus}
+We discuss differentiation of $k$-forms via the exterior derivative, and integration of $k$-forms over $k$-dimensional regions of space. In calculus, integration and differentiation are linked by the fundamental theorem of calculus, which states
+\eqn{
+    \int_a^b f'(x)\d x = f(b) - f(a)
+}
+In exterior calculus, the Stokes theorem says something similar: if we integrate a derivative, it gives out some values at the boundary:
+\eqn{
+    \int_M \d\alpha = \int_{\p M}\alpha
+}
+
+\subsection{Differentiation}
+We think about derivatives of all kinds (partial, total, directional, gradient, curl, divergence) in terms of a `pushforward`: if a map (function) tells you how a domain is deformed, its derivative tells you how tangent vectors on a domain get stretched out when the map is applied.
+\eqn{
+    \text{Scalar Field}\hspace{1em}& \phi&:\R^3\rightarrow \R \\
+    \text{Vector Field}\hspace{1em}& X &=  u\p_x + v\p_y + w\p_z \\
+    \text{Gradient} \hspace{1em}& \grad\phi &= (\p_x\phi)\p_x + (\p_y\phi )\p_y + (\p_z\phi)\p_z\\
+    \text{Divergence}\hspace{1em}& \grad\cdot X &= \p_x u + \p_y v + \p_z w\\
+    \text{Curl}\hspace{1em}& \grad \cross X &= \det
+    \begin{bmatrix}
+        \p_x & \p_y & \p_z \\
+        \p_x & \p_y & \p_z \\
+        u & v & w
+    \end{bmatrix}
+}
+
+\begin{definition}[Exterior Derivative]
+    The exterior derivative is a unique linear map $\d:\Omega^k\rightarrow\Omega^{k+1}$ (where $\Omega^k$ is the space of all differential $k$-forms) such that:
+    \begin{enumerate}
+        \item Differential: for $k=0, \, \d\phi(X)=D_X\phi \defeq \lim_{\epsilon\rightarrow0}\dfrac{\phi(x+\epsilon X) - \phi(x)}{\epsilon}$, i.e. the differential of $0$-form $\phi$ gives a $1$-form which when applied to vector field $X$ gives the directional derivative of $\phi$ along $X$. The exterior derivative of a $0$-form behaves like the gradient, $\d\phi = (\p_x\phi)\d_x + (\p_y\phi )\d_y + (\p_z\phi)\d_z$.
+        
+        In a coordinate free approach, we would say the gradient is the unique vector field $\grad\phi$ whose inner product with any vector field $X$ yield the directional derivative $D_X\phi$ along $X$, $\ipr{\grad\phi}{X} = D_X\phi$ for all $X$, assuming $\phi$ is differentiable.
+        
+        We have, $\d\phi(\cdot) = \ipr{\grad\phi}{\cdot}=$ the directional derivative of $\phi$. The gradient depends on the inner product, whereas the exterior derivative can be defined in the absence of an inner product and coordinates. $(\d\phi)^\sharp = \grad\phi$, and $(\grad\phi)^\flat = \d\phi$
+        
+        \item Product rule: $\d(\alpha\wedge\beta) = \d\alpha\wedge\beta + (-1)^k\alpha\wedge\d\beta$ where $\alpha\in\Omega^k$, $\beta\in\Omega^l$
+        \item Exactness: $\d \circ \d = 0$. Consider exterior derivative of $1$-form $u\d x$. $\d (u \d x) = \d (u\wedge \d x)$ ($u$ is a $0$-form), $= \d u \wedge \d x + (-1)^0 u\wedge \d\d x = \d u \wedge \d x = (\p_x u\d x + \p_y u\d y + \p_z u\d z)\wedge \d x$
+    \end{enumerate}
+    
+    $d$ increases the degree of differential forms.
+\end{definition}
+
+Example: compute exterior derivative of $1$-form $\d(u \d x + v \d y + w \d z)$
+\eqn{
+    \d(u \d x + v \d y + w \d z) &= \d(u\wedge \d x) + \d(v\wedge \d y) + \d(w\wedge \d z)\\
+    &= (\d u \wedge \d x + u\wedge\d\d x)
+    +  (\d v \wedge \d y + v\wedge\d\d y)
+    +  (\d w \wedge \d z + w\wedge\d\d z)\\
+    &= (\d u \wedge \d x)
+    +  (\d v \wedge \d y)
+    +  (\d w \wedge \d z)\\
+    &= (\p_x u\d x + \p_y u\dy + \p_z u\d z)\wedge\d x
+    +  (\p_x v\d x + \p_y v\dy + \p_z v\d z)\wedge\d y
+    +  (\p_x w\d x + \p_y w\dy + \p_z w\d z)\wedge\d z
+}
+Simplifies to the curl. For vector field $X$, $\grad\cross X = (\star \d X^\flat)^\sharp$. \textbf{Codifferential operator}: $\delta = \star\d\star$
+
+\subsection{Integration}
+Integration of $1$-forms
+%======================================================================%
+\section{Discrete Exterior Calculus}
+
+\subsection{Discrete Differential Forms}
+%======================================================================%

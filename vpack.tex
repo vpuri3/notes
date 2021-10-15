@@ -24,22 +24,24 @@
 \usepackage{soul}          % \hl
 \usepackage{float}         % float positioning option \begin{figure}[H]
 \usepackage{graphicx}      % \includegraphics  
-\usepackage{subfigure}
+%\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{subcaption}
 %\usepackage{tikz}         % stick figures
 
 % comments
 \usepackage{xcolor}
 \definecolor{periwinkledark}{RGB}{102, 102, 128}
 \newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
-\newcommand{\todo}[1]{\hl{todo: #1}}
+\newcommand{\todo}[1]{\hl{todo:} {#1}}
 
 \usepackage{hyperref} % \autoref
 \renewcommand{\equationautorefname}{Eq.}
 \renewcommand{\chapterautorefname}{\S}
 \renewcommand{\sectionautorefname}{\S}
+\renewcommand{\subsectionautorefname}{\S}
 
 % English
-\renewcommand{\ldots}{\ldots\ }
 \newcommand{\vv}{vis-\`a-vis }
 
 %================================ THEOREMS ===============================%
@@ -47,6 +49,7 @@
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}{Proposition}[section]
+\newtheorem{hypothesis}{Hypothesis}[section]
 \newtheorem{remark}{Identity}[section]
 \newtheorem{example}{Example}[section]
 \newtheorem{corollary}{Corollary}[theorem]
@@ -75,20 +78,21 @@
 \newcommand{\vect}[1]{\boldsymbol{#1}}                         % vector field
 \newcommand{\uvect}[1]{\boldsymbol{\hat{#1}}}                  % unit vector (field)
 \newcommand{\tensor}[1]{\underline{\underline{#1}}}            % second order tensor field
-\renewcommand{\i}{\mathrm{i}}                                    % sqrt(-1)
+%\DeclareMathOperator{\d}{d}                                    % total derv
+%\DeclareMathOperator{\D}{D}                                    % material derv
 \renewcommand{\d}{\mathrm{d}}                                  % total derv
-\newcommand{\D}{\mathrm{D}}                                    % material derv = \p_t+(\vect{c}\cdot\grad)
+\newcommand{\D}{\mathrm{D}}                                  % material derv = \p_t+(\vect{c}\cdot\grad)
 \newcommand{\p}{\partial}                                      % partial derv
 \newcommand{\ddd}[1]{\frac{\d}{\d #1}}                         % total derv
+\newcommand{\DDD}{\frac{\D}{\D t}}                             % material derv
 \newcommand{\ppp}[1]{\frac{\p}{\p #1}}                         % partial derv
 \newcommand{\vvv}{\delta}                                      % variation
-\newcommand{\del}{\nabla}                                      % gradient vector operator
+\newcommand{\del}{\nabla}                                      % gradient operator
 \newcommand{\grad}{\vect{\del}}                                % gradient vector operator
 \newcommand{\defeq}{\mathrel{\mathop:}=}                       % define equal to
-\newcommand{\deg}{^\circ}                                      % degree
+\renewcommand{\deg}{^\circ}                                      % degree
 \newcommand{\vvec}[1]{\begin{pmatrix}#1\end{pmatrix}}          % vector components (# \\ #)
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix [# & # \\ # & #]
-\newcommand{\transp}{T}          % \intercal doesn't look good % matrix transpose A^\transp
 \newcommand{\e}{\mathrm{e}}                                    % e = 2.71..
 \newcommand{\al}{\alpha}                                       % \alpha
 \newcommand{\supp}[1]{\mathrm{supp}(#1)}                       % support of a function
@@ -96,10 +100,9 @@
 \renewcommand{\st}{\textit{ such that }}                       % such that
 \newcommand{\contradiction}{\ensuremath{\Rightarrow\!\Leftarrow}} % contradiction
 \newcommand{\rt}[2]{\sqrt[#1]{#2}}                             % root
-\newcommand{\Re}{\text{Re}}                                    % Reynolds Number
-\newcommand{\Pe}{\text{Pe}}                                    % Peclet Number
-\newcommand{\opap}[1]{\langle #1 \rangle}                      % operator application <T,x>
-\newcommand{\inr} [1]{( #1 )}                                  % inner product (f,g)
+\newcommand{\dim} {\mathrm{dim}}                               % dimension
+\renewcommand{\Re}{\ensuremath{\mathit{Re}}}                   % Reynolds Number
+\renewcommand{\Pe}{\ensuremath{\mathit{Pe}}}                   % Peclet Number
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}          % floor
 \newcommand{\ceil }[1]{\left\lceil  #1 \right\rceil}           % ceiling
 \newcommand{\I}{\mathcal{I}}                                   % Operator
@@ -118,3 +121,8 @@
 \newcommand{\o}{\varnothing}                                   % Empty set
 \renewcommand{\ul}[1]{\underline{#1}}
 \renewcommand{\bar}[1]{\overline{#1}}
+
+% under consideration
+\newcommand{\ipr}[2]{\ensuremath{\langle #1 , #2 \rangle}}                   % operator application <T,x>
+\newcommand{\ip}[2]{(#1, #2)}                                 % inner product (f,g)
+\newcommand{\span}{\mathrm{span}}                              % span
