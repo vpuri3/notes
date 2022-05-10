@@ -32,7 +32,8 @@
 % comments
 \usepackage{xcolor}
 \definecolor{periwinkledark}{RGB}{102, 102, 128}
-\newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
+%\newcommand{\vp}[1]{\textcolor{periwinkledark} {VP: #1 }}
+\newcommand{\vp}[1]{\hl{VP: #1 }}
 \newcommand{\todo}[1]{\hl{todo:} {#1}}
 
 \usepackage{hyperref} % \autoref
@@ -81,6 +82,9 @@
 %\DeclareMathOperator{\d}{d}                                    % total derv
 %\DeclareMathOperator{\D}{D}                                    % material derv
 \renewcommand{\d}{\mathrm{d}}                                  % total derv
+\renewcommand{\dx}{\mathrm{d}x}
+\renewcommand{\dy}{\mathrm{d}y}
+\renewcommand{\dz}{\mathrm{d}z}
 \newcommand{\D}{\mathrm{D}}                                  % material derv = \p_t+(\vect{c}\cdot\grad)
 \newcommand{\p}{\partial}                                      % partial derv
 \newcommand{\ddd}[1]{\frac{\d}{\d #1}}                         % total derv
@@ -95,6 +99,7 @@
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}           % matrix [# & # \\ # & #]
 \newcommand{\e}{\mathrm{e}}                                    % e = 2.71..
 \newcommand{\al}{\alpha}                                       % \alpha
+\newcommand{\be}{\beta}                                        % \beta
 \newcommand{\supp}[1]{\mathrm{supp}(#1)}                       % support of a function
 \newcommand{\subsubset}{\subset\subset}                        % A compact subset of B
 \renewcommand{\st}{\textit{ such that }}                       % such that
@@ -105,7 +110,9 @@
 \renewcommand{\Pe}{\ensuremath{\mathit{Pe}}}                   % Peclet Number
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}          % floor
 \newcommand{\ceil }[1]{\left\lceil  #1 \right\rceil}           % ceiling
+\newcommand{\id}{\mathrm{id}}                                  % Operator
 \newcommand{\I}{\mathcal{I}}                                   % Operator
+\newcommand{\J}{\mathcal{J}}                                   % Operator
 \newcommand{\S}{\mathcal{S}}                                   % Operator
 \newcommand{\D}{\mathcal{D}}                                   % Operator
 \newcommand{\V}{\mathcal{V}}                                   % Operator
@@ -123,6 +130,6 @@
 \renewcommand{\bar}[1]{\overline{#1}}
 
 % under consideration
-\newcommand{\ipr}[2]{\ensuremath{\langle #1 , #2 \rangle}}                   % operator application <T,x>
+\newcommand{\ipr}[1]{\ensuremath{\langle #1 \rangle}}                   % operator application <T,x>
 \newcommand{\ip}[2]{(#1, #2)}                                 % inner product (f,g)
 \newcommand{\span}{\mathrm{span}}                              % span

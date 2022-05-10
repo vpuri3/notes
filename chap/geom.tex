@@ -1,71 +1,194 @@
-\chapter{Discrete Differential Geometry}
+\chapter{Geometry}
 
-Based on Keenan Crane's youtube lecture series
+Based on Keenan Crane's lectures
 
 %======================================================================%
-\section{Meshes}
+\section{Combinatorial Surfaces}
 
-\begin{definition}[Simplicial Complex]
+\begin{definition}[Surface]
+A \textbf{surface} is, roughly speaking, the outer shell of a shape. In differential geometry, we focus our attention on shapes that are manifolds, i.e. these spaces are locally Euclidean.
 \end{definition}
-
-Chains and co-chains
-
-%======================================================================%
-\section{Manifold}
 
 \begin{definition}[Manifold]
-    An $n$-manifold is a space that locally looks like (is homeomorphic to) $\R^n$.
+    An \textbf{$n$-manifold} is a space that locally looks like (is homeomorphic to (continuous bijections with continuous inverses)) $\R^n$.
 \end{definition}
 
-\begin{definition}[Simplicial Manifold]
-    A simplicial $k$-complex is a manifold if the linik of every vertex looks like  (i.e. is homeomorphic to) a $(k-1)$-dimensional sphere.
+\begin{definition}[Topology]
+     \textbf{Topology} is all about connectivity, i.e. (discrete) how nodes are connected in a graph, (continuous) where/how many holes are there in spaces, finding family of continuously deforming paths between points.
 \end{definition}
+
+\begin{definition}[Topological Disk]
+    A shape has \textbf{disk topology} if you can arrive at the shape by continuously deforming the unit disk in the plane without messing with its topology (tearing it up, making holes, gluing edges). Similarly, a donut has \textbf{annulus topology}, and a solid ball has \textbf{sphere topology}.
+\end{definition}
+
+\begin{definition}[Simplices]
+    Start out with a set $V$ of vertices on a surface, and prescribe connectivity information. The idea is to specify subsets of vertices that are ``right next to each other,'' into simplices. An \textbf{abstract $k$-simplex} is a set of $(k+1)$ vertices, and has degree $k$. For eg, a triangle is a $2$-simplex $\{v_1,v_2,v_3\}$, a line segment is a $1$-simplex $\{v_1,v_2\}$, and a single vertex in a $0$-simplex $\{v_1\}$. Any nonempty subset of a simplex is another simplex, which we call a \textbf{face} of that simplex. A strict subset is called a \textbf{proper face}.
+\end{definition}
+
+\begin{definition}[Simplicial Complex]
+    An abstract simplicial complex $K$ is just a collection of abstract simplices with the following condition: for every simplex $\sigma\in K$, every face $\sigma'\subset\sigma$ is also contained in $K$, $\sigma'\in K$. For eg, a $2$-simplex $\{v_1,v_2,v_3\}$ isn't itself a complex, but with its faces (edges), and their faces (vertices), the combined set is a complex,
+    \eqn{
+        \{
+            \{v_1,v_2,v_3\},
+            \{v_1,v_2\}, \{v_1,v_3\}, \{v_2,v_3\},
+            \{v_1\}, \{v_2\}, \{v_3\},
+        \}
+    }
+
+    An abstract simplicial complex specifies how vertices are connected, but not where they are located in space, i.e. it relays only topological information, no geometry. They don't pin down an actual shape in space, just talk about how points are connected. 
+    
+    A \textbf{subcomplex} of a simplicial complex $K$ is a subset of $K$ that is also a simplicial complex. For eg, consider the above simplicial $2$-complex. It's edge $\{v_1,v_2\}$ isn't a subcomplex in itself, though when you include its faces, it is: $\{ \{v_1,v_2\}, \{v_1\}, \{v_2\}\}$.
+    
+    A complex $K$ is a pure $k$-simplicial complex is every simplex $\sigma\in K$ is contained in a $k$-simplex (could be itself).
+\end{definition}
+
+\begin{definition}[Star, Link, Closure, Boundary, Interior]
+    The \textbf{star} of vertex $i$, $\text{St}(i)$ is the collection of all simplices that contain $i$, $\text{St}(i) = \{\sigma\in K | i\in\sigma\}$. The star of a vertex is the \textbf{equivalent of its local neighbourhood} in a simplicial complex. Similarly, the star of a collection of simplices $A$ is the set of all simplices in $K$ that contain any of the simplices in $A$. However, $\text{St}(i)$ is generally not a complex since it doesn't contain the outer edge of the ``neighbourhood''.
+    
+    To get a complex from a collection of simplices, $A$, we can take the \textbf{closure} of a collection $\text{Cl}(A)$ which is the smallest complex of $K$ containing $A$.
+    
+    \textbf{Link}:
+    \eqn{
+        \text{Lk}(A) = \text{Cl}(\text{St}(i)) \sim \text{St}(\text{Cl}(i))
+    }
+    
+    Consider $\text{Cl}(\textbf{St}(i))$, ie the closure of the local neighbourhood of some vertex $i$. Consider going the other way and taking the star of the closure of $\{i\}$. Since \{i\} is already closed, $\text{Lk}(i)$ would evaluate to the outer ring of the neighbourhood of $i$.
+    
+    Finally, the boundary of a pure $k$-subcomplex $K'\subset K$, $\text{bd}(K')$ is the closure of the set of all simplices $\sigma$ that are proper faces of exactly one simplex of $K'$.
+    
+\end{definition}
+
+\begin{definition}[Oriented Simplicial Complex]
+    A simplex is oriented, if the ordering of its vertices matters. Since we don't care about the starting point, an orientation of a simplex is really an equivalance class of ordered ($k+1$)-tuples, ie $\{ \{1,2,3\},  \{3,1,2\}, \{2,3,1\}\}$ have the same orientation, and  $\{ \{1,3,2\},  \{2,1,3\}, \{3,2,1\}\}$ the other.
+    
+    More generally, for any $k$-simplex, we have two possible orientations: the set of even permutations of $\{1,\dotsc,k+1\}$, and the set of odd permutations of its vertices. The only exception is the zero simplex $\{i\}$ where there is only one possible orientation.
+    
+    An oriented simplicial complex is one where each simplex is oriented, and the orientations agree in some way. If two oriented simplices share vertices, say $\{i,j,k\}$, and $\{j,i,l\}$ then they are consistently oriented if they are both clockwise. A consequence is that both $2$-simplices traverse the shared edge $\{i,j\}$/$\{j,i\}$ in opposite directions. In general, if two $k$-simplices $\sigma_1,\,\sgima_2$ share exactly $k-1$ vertices, then they have the same orientation if their restriction to the shared vertices are oppositely oriented.
+\end{definition}
+
+\begin{definition}[Simplicial Surfaces]
+    An abstract \textbf{simplicial surface} is a pure simplicial $2$-complex where the link of every vertex is a single loop of edges, (the link has circle-topology), or, equivalently, the star of every vertex is a combinatorial disk made out of triangles (the star has disk topology). We can extend the definition to simplicial surfaces with boundaries by allowing the link to be a simple math of edges, rather than a loop.
+    
+\end{definition}
+
+This prohibits a simplicial surface from having stuff like ``three triangles meeting at an edge, or multiple cones of vertices meeting at a vertex.'' These configurations will be referred to as nonmanifold.
+
+\begin{definition}[Simplicial $n$-manifold]
+    In general, a \textbf{simplicial $n$-manifold} is a pure simplicial $n$-complex where link of every vertex looks like  (i.e. is homeomorphic to) a simplicial $(n-1)$ sphere. A simplicial $n$-sphere is juat a (simplicial) triangulation of the $n$-sphere, $S^n$=\{x\in\R^{n+1}| \norm{x}=1\}.
+    
+\end{definition}
+    
 %======================================================================%
-\section{Exterior Algebra}
+\section{Differential Geometry}
+
+\subsection{High level}
+
+\begin{definition}[Differential $\d f$]
+    Consider a surface ($2$-manifold) in $\R^3$ described via the map $f: M\subset\R^2 \to \R^3$. The \textbf{differential} of such a map, $\d f$, tells us how to map a \textbf{tangent vector} $X$ in the plane to the corresponding vector, $\d f(X)$, on the surface $f(M)$. In other words, the differential gives the \textbf{push-forward} as you go from one surface to another.
+    
+    The differential is evaluated a every point on $M$. In particular, we say that $\d f|_a(X)$ is the push-forward of $X$ at point $a\in M$ to the surface $f(M)$
+\end{definition}
+\begin{definition}[Metric]
+    The metric on the surface $f(M)$ (or the metric induced by the map $f$)
+    \eqn{
+        g(X,Y) = \ipr{\D f(X)}{\d f(Y)}
+    }
+    where $\ipr{\cdot}{\cdot}$ denotes the standard inner-product in $\R^n$
+\end{definition}
+
+\begin{definition}[Tangent Vector]
+    Tangent vectors are vector that lays flat on a surface, i.e. $X$ lays flat on the $2-D$ plane. The vector $\d f(X)$ is also a tangent vector as it lives on a plane tangent to the surface $f(M)$ at the point of evaluation. To be precise, $\d f|_a(X)$ lives in the \textbf{tangent space} of $f$ evaluated at $a$, $Tf|_a$.
+\end{definition}
+\begin{definition}[Tanget Space $Tf|_a$]
+    The space of tangent vectors evaluated at point $a\in M$
+\end{definition}
+\begin{definition}[Tangent Bundle of $M$, $TM$]
+    Disjoint union of all tangent spaces of $f$
+    \eqn{
+        TM = \{ T_a f | a \in M \}
+    }
+\end{definition}
+
+\begin{definition}[Section of tangent bundle]
+    Push-forward of a vector field on $M$
+\end{definition}
+
+\begin{definition}[Normal]
+    $u\in\R^3$ is normal to the surface at $a\in M$ if $\forall X\in\R^2 \ipr{\d f|_a(X)}{u}=0$. For orientable surfaces with denote with $N$ the unit-normal via the \textbf{Gauss map}:
+    \eqn{
+        N:M \to S^2
+    }
+    where $S^2$ is the unit $2$-sphere. Now for $S^2\subset\R^3$, its differential $\d N$ is called \textbf{Weingarten map}. $\d N|_a(X)$ tells us about the change in normal direction when moving in direction $X$ at point $a\in M$.
+\end{definition}
+
+\begin{definition}[Conformal Coordinates]
+    A map $f:M\subset\R^2\to\R^3$ is conformal if it preserves angles, ie causes only area distortion.
+    \eqn{
+        \ipr{\d f|_a(X)}{\d f|_a(Y)} = \lambda(a)\ipr{X}{Y}
+    }
+\end{definition}
+
+%\subsection{Low Level}
+Refer to Jimmie Lawson's notes \url{https://www.math.lsu.edu/~lawson/Chapter2.pdf} for low-level details
+
+%TODO
+%\subsection{Geometry in Coordinates}
+%\subsubsection{Geometry of Curves}
+%\subsubsection{Geometry of Surfaces}
+
+%======================================================================%
+\section{Exterior Calculus}
 
 A language for manipulating signed volumes.
 
+\begin{itemize}
+    \item \textbf{Linear Algebra}: How to manipulate arrows, vectors --- add, scale, inner product, outer products
+    \item \textbf{Vector Calculus}: How arrows change over space and time, i.e how to differentiate vectors
+    \item \textbf{Exterior Algebra}: How to manipulate signed volumes, ($k$-vectors as $k$-dimensional volumes) -- vector space operations as well as wedge product (generalization of outer product)
+    \item \textbf{Exterior Calculus}: How little volumes change over space and time, i.e how to differentiate $k$-vectors
+\end{itemize}
+
+\subsection{Exterior Algebra}
+
+A \textbf{$k$-vector} is  $k$-dimensional signed volume element. A $1$-vector describes a length, $2$-vector describes an area, and a $3$-vector describes a volume. Fundamentally, a vector is described by an ``orientation'' and a ``magnitude''. The magnitude for a $k$-vector is its signed volume. We will get to its orientation later.
+
+The basic idea of a $k$-vector is that a $k$-dimensional volume can be described a list of $k$ vectors, similar to how in linear algebra a set of $k$ vectors may span a $k$-dimensional subspace. In either case, the particular choice of vectors isn't important. Few key difference between span of $k$ vectors and a $k$-vector is that $k$-vectors have finite extent, and an orientation. Consider the span of a vector (which is just a line), and the same vector ($1$-vector). The difference between the two is the same as that between a line and a vector: a line has no magnitude and no notion of orientation (forward/backward), whereas a vector has a magnitude and a direction.
+
 \begin{definition}[Wedge Product $\wedge$]
     (Analogy: oriented span of vectors)
-    For vectors $u,\,v$, the wedge product, $u \wedge v$ describe the oriented area vector. Wedging $k$ vectors gives us a {\bfseries $k$-vector}, or $k$-dimensional volumes. A $k$-vector encodes only two pieces of information: a direction and a magnitude. therefore, we can say that $k$-vectors (or $k$-vector) are the equivalance class of k-dimensional volumes with the same k-dimensional volume and orientation. For convenience, we say that a $0$-vector has no orientation, just magnitude. i.e. just a scalar.
+    For vectors $u,\,v$, the \textbf{wedge product}, $u \wedge v$ describe the oriented area vector. Wedging $k$ vectors gives us a \textbf{$k$-vector}, or $k$-dimensional volumes. A $k$-vector encodes two pieces of information: a direction and a magnitude. therefore, we can say that $k$-vectors (or $k$-vector) are the equivalance class of k-dimensional volumes with the same k-dimensional volume and orientation. For convenience, we say that a $0$-vector has no orientation, just magnitude. i.e. just a scalar.
 \end{definition}
-Since the wedge product is oriented, it is antisymmetric. Wedge product is also associative, i.e. $(u \wedge v) \wedge w = u \wedge (v \wedge w)$. Wedge product is also distributive over addition: i.e. $u \wedge v_1 + u \wedge v_2 = u \wedge (v_1 + v_2)$.
+
+A good visualization of the wedge product of two vectors, $w = u\wedge v$ is to associate it with the parallelogram area spanned by $u$ and $v$. The wedge product doesn't depend on the choice of $u$, and $v$ so long as it has the same magnitude and orientation. Similarly for $2$-vectors, $\frac{1}{2}u \wedge 2v$ is the same as $w$. A $k$-vector has two possible orientations. For $u \wedge v$ the parallelogram has two possible orientations corresponding to its two possible unit normals. We will therefore distinguish between $u \wedge v$, and $v \wedge u$ as $u \wedge v = - v \wedge u$ to indicate they have opposite orientations.
+
+We can deduce some properties of the wedge product with the volume analogy. Since the wedge product is oriented, it is antisymmetric, $u \wedge v = - v \wedge u$. We also have scaling $(au)\wedge v = a (u \wedge v)$, associativity, $(u \wedge v) \wedge w = u \wedge (v \wedge w)$, and distributive over addition, $u \wedge v_1 + u \wedge v_2 = u \wedge (v_1 + v_2)$. It is also clear that $u \wedge u = 0$.
+
+Just as with $2$-vectors, we can consider a $3$-vector $u \wedge v \wedge w$ as being constructed by taking a $2$-vector $u\wedge v$, and extruding it in the direction of a third vector, $w$. The magnitude (volume of the parallelepiped) doesn't change if we extrude $u \wedge v$ in direction of $w$, or $v \wedge w$ in direction of $u$, or $u \wedge w$ in direction of $v$. So the magnitude of $u \wedge (v \wedge w)$ is the same as that of $(u \wedge v) \wedge w$, and $v \wedge (w \wedge u)$. However, switching the order of vectors in any nested wedge product say $(u \wedge v) \wedge w = - (v \wedge u) \wedge w$ implies considering the negative of that $2$-vector and therefore constructing the negative of the original $3$-vector.
+
+We are trying to ascribe a physical intuition for \textbf{orientation}. For a vector, its orientation $+u,\, -u$ corresponds to going ``forward'' or ``backwards''. For $2$-vectors $u\wedge v, \, v \wedge u$ it corresponds to the two normals of the parallelogram spanned by $u$ and $v$. Likewise we can image $u \wedge v \wedge w$ has ``inward'' orientation if the normal of nested $2$-vectors $u \wedge v$ are in line (make an acute angle) with the third vector $w$,  ``outward'' otherwise. By playing with this idea, it is clear that any even permutation of the component vectors preserves orientation, and any odd permutation flips it.
 
 \begin{definition}[Orthogonal Complement]
-    Let $U\subset V$ be linear subspace of vector space $V$ with an inner product $\ipr{\cdot}{\cdot}$. The orthogonal complement of $U$ is the collection of vectors
+    Let $U\subset V$ be vector spaces with an inner product $\ipr{\cdot}{\cdot}$. The \textbf{orthogonal complement} of $U$ is the collection of vectors
     \eqn{
         U^\perp \defeq \{ v\in V \vert \ipr{u}{v} = 0\, \forall u \in U  \} 
     }
 \end{definition}
 
 \begin{definition}[Hodge Star $\star$]
-    (analogy: orthogonal complement to a wedge product) When you say, 
+    (analogy: orthogonal complement to a wedge product) The \textbf{Hodge star} of a $k$-vector in $\R^n$ is the $(n-k)$-vector that is in some sense complementary. Consider a $2$-vector in $\R^3$. Just as a plane can be identified with its normal which spans its orthogonal compliment in $\R^3$, a $2$-vector  $u \wedge v$ can be can be identified with a $1$-vector in the normal direction. More generally, in $n$-dimensional space, the Hodge star of a $k$-vector $v$, $w = \star v = \star (\bigwedge_{i=1}^k v_i)$ is the $(n-k)$-vector $w = \bigwedge_{i=1}^{n-k}w_i$ the span of whose elements $\{w_i\}$ is the orthogonal complement of $\{v_i\}$ with respect to some inner product. If $e_1,\dotsc e_n$ are some orthonormal basis for $\R^n$, the Hodge star is uniquely pinned down by the relationship
     \eqn{
-        \star(u \wedge v) = w
+        v \wedge \star v = \bigwedge_{i=1}^n e_i
     }
-    it means that the vector $w$ is orthogonal to $u$, and $v$. More generally, in $n$-dimensional space, the hodge star of a $k$-vector $v$, $w = \star v = \star (\bigwedge_{i=1}^k v_i)$ is the $(n-k)$-vector $w = \bigwedge_{i=1}^{n-k}w_i$ the span of whose elements $\{w_i\}$ is the orthogonal complement of $\{v_i\}$ with some inner product. These two definitions are describing the same thing!
-    
-    To fix orientation, we assert the convention that for $k$-vector $z$, $z \wedge \star z$ is a positively oriented $n$-vector.
-    
+    In short, if we wedge together a $k$-vector with its complement, we should get the one and only $n$-dimensional unit volume in $\R^n$. In general, for any basis $k$-vector $\alpha = \bigwedge_{l=1}^k e_{i_l}$ where ${i_l}_{l=1}^k \subset {1,\dotsc,n}$, we define the Hodge star such that $\det(\alpha \wedge \star \alpha) = 1$. In other words, if we start with a unit $k$-volume, wedging with its Hodge star must give a unit, positively oriented unit $n$-volume. For example, if $\alpha=e_2$, then $\star \alpha = e_3 \wedge e_1$ since $\det(e_2 \wedge e_3 \wedge e_1) = 1$, since its an even permutation of $e_1 \wedge e_2 \wedge e_3$.
 \end{definition}
-For $k$-vector $u$, we have:
-\eqn{
-    u \wedge \star u &> 0 \\
-    \star u \wedge \star \star u &> 0\\
-    \implies \star\star u &= - u
-}
-
-Summary: let $V$ be an $n$-dimensional vector space consisting of $1$-vectors. We can wedge together $k$ vectors to get a $k$-vector ($k$ dimensional signed volume). We can also apply the Hodge star to get the complementary $(n-k)$-vector.
-
-The geometric meaning of $k$-vector and vectors has nothing to do with coordinates. A vector can be represented by a list of numbers, but it isn't fundamentally a list of numbers.
-
-For any basis $k$-vector $\alpha = \bigwedge_{l=1}^k e_{i_l}$ where ${i_l}_{l=1}^k \subset {1,\dotsc,n}$, we define the Hodge star such that $\det(\alpha \wedge \star \alpha) = 1$. In other words, if we start with a unit $k$-volume, wedging with its Hodge star must give a unit, positively oriented unit $n$-volume. For example, if $\alpha=e_2$, then $\star \alpha = e_3 \wedge e_1$ since $\det(e_2 \wedge e_3 \wedge e_1) = 1$, since its an even permutation of $e_1 \wedge e_2 \wedge e_3$.
 
 \subsection{$k$-Forms and Duality}
 
-A $k$-form is something that measures a $k$-vector. Something to remember is that measurement devices have the same dimension as the thing they're measuring, i.e. a ruler (1D) measures length, a container (3D) measures volume. A vector can be paired with another vector to get some measurement (inner product). Exterior calculus generalises this idea: a $k$-dimensional volume ($k$-form) is paired with a \textit{dual} ($k$-form) $k$-dimensional volume to get a measurement.
+$k$-forms are measuring devices. A $k$-form is something that measures a $k$-vector. Something to remember is that measurement devices have the same dimension as the thing they're measuring, i.e. a ruler (1D) measures length, a container (3D) measures volume. A vector can be paired with another vector to get some measurement (inner product). Exterior calculus generalises this idea: a $k$-dimensional volume ($k$-vector) is paired with a \textit{dual} ($k$-form) $k$-dimensional volume to get a measurement.
 
-Duality is a pervasive idea in mathematics. In this chapter, we consider duality between (primal) vectors ($k$-vectors) i.e. things that are, and (dual) covectors ($k$-forms) i.e. things that measure. Just as vectors can be wedged together to form $k$-vectors, covectors can be wedged together to form $k$-forms. Covectors are represented by row vectors (adjoints), and vectors by column vectors. Then they can be combined by inner products. We can think of row vectors as a linear map that sends column vectors to $\R$ via the inner product.
+Consider a $1$-vector in $\R^n$. The extent of the 
+
+\textbf{Duality} is a pervasive idea in mathematics. We consider duality between (primal) vectors ($k$-vectors) i.e. things that are, and (dual) covectors ($k$-forms) i.e. things that measure. Just as vectors can be wedged together to form $k$-vectors, covectors can be wedged together to form $k$-forms. Covectors are represented by row vectors (adjoints of column vectors), and vectors by column vectors. Then they can be combined by inner products. We can think of row vectors as a linear map that sends column vectors to $\R$ via the inner product.
 
 \begin{definition}[Dual Space]
     For any real vector space $V$, its dual space, $V^*$ is the collection of linear functions $\alpha:V\rightarrow \R$ together with the operations of addition and scalar multiplication.
@@ -135,7 +258,7 @@ We also follow \textbf{Einstein summation notation}: if an index appears twice (
 }
 
 %======================================================================%
-\section{Differential Forms}
+\subsection{Differential Forms}
 If a vector field is the assignment of a vector to each point in space, then a differential form is the assignment of a little volume measurement to each point in space. A differential $0$-form is just a scalar field - it takes zero vectors as input and assigns a value at each point in space. A differential $1$-form is a linear function mapping a vector to $\R$ at each point in space. We apply all exterior algebra operations pointwise to differential $k$-forms.
 
 \textbf{Basis vector fields}: Just as we can pick a basis for vectors, we can pick a basis for vector fields: $\p_{x^1},\, \p_{x^2}, \dotsc, \p_{x^n}$ are constant vector fields of unit magnitude along the coordinate axes in $\R^n$. They look like partial derivatives but don't think about what these symbols have to do with derivatives. These are just the basis for vector fields in $\R^n$. Vector fields can be formed by a linear combination of the basis vector fields, but the coefficient of the linear combination may vary across the domain. So a vector field on these basis in $\R^2$ would look like
@@ -149,8 +272,8 @@ For differential one forms, the dual basis are written as $\d x^i$ with the rela
 }
 
 The explanation for the relation to the derivative is as follows: consider the scalar field $u = x_1$. The gradient is the constant field pointing to the right. The derivative of a coordinate function gives a constant field pointing in that direction. 
-%======================================================================%
-\section{Exterior Calculus}
+
+\subsection{Exterior Calculus}
 We discuss differentiation of $k$-forms via the exterior derivative, and integration of $k$-forms over $k$-dimensional regions of space. In calculus, integration and differentiation are linked by the fundamental theorem of calculus, which states
 \eqn{
     \int_a^b f'(x)\d x = f(b) - f(a)
@@ -212,4 +335,7 @@ Integration of $1$-forms
 \section{Discrete Exterior Calculus}
 
 \subsection{Discrete Differential Forms}
+
+Chains and co-chains
+
 %======================================================================%
